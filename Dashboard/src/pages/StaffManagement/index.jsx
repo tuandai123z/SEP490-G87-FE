@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { FaLock, FaPlus, FaUserCheck } from "react-icons/fa";
 import { toast } from "react-toastify";
 import validator from "validator";
+import Pagination from "../../components/common/Pagination";
 import { axiosInstance } from "../../utils/axiosInstant";
 
 
@@ -21,12 +22,21 @@ const StaffManagement = () => {
     const [statusModal, setStatusModal] = useState(false)
     const [isOpenBlock, setIsOpenBlock] = useState(false);
     const [statusBlock, setStatusBlock] = useState(false);
+    const [isBlockFilter, setIsBlockFilter] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const size = 10;
 
     const getListStaff = async () => {
         await axiosInstance
-            .get(`/employees`)
+            .get(`/employees`, {
+                params: {
+                    size: size,
+                    page: currentPage - 1,
+                    isBlock: isBlockFilter,
+                }
+            })
             .then(res => {
-                const data = res.data.result;
+                const data = res.data;
                 setListStaff(data);
                 setIsLoading(true);
             })
@@ -172,7 +182,7 @@ const StaffManagement = () => {
                 toast.warn("Số điện thoại không đúng định dạng!!")
                 return
             }
-            
+
             const employeeUpdate = {
                 name: fullname,
                 phoneNumber,
@@ -231,6 +241,10 @@ const StaffManagement = () => {
             })
     }
 
+    useEffect(() => {
+        getListStaff();
+    }, [isBlockFilter, currentPage])
+
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
             event.preventDefault();
@@ -257,7 +271,13 @@ const StaffManagement = () => {
                                 Danh sách nhân viên
                                 <p className="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">Danh sách nhân viên của công ty.</p>
                             </div>
-                            <div className="flex items-center justify-center">
+                            <div className="flex items-center justify-center gap-4">
+                                <div className="col-span-2">
+                                    <select id="jobRank" onChange={(e) => setIsBlockFilter(e.target.value)} value={isBlockFilter} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                        <option value={false}>Không khoá</option>
+                                        <option value={true}>Bị khoá</option>
+                                    </select>
+                                </div>
                                 <button className="flex items-center gap-1 px-4 py-2 text-base text-white bg-blue-500 outline-none" onClick={handleOpenModalAdd}>
                                     <FaPlus className="mr-1" />
                                     Thêm nhân viên
@@ -285,7 +305,7 @@ const StaffManagement = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {listStaff?.map((staff, index) => {
+                        {listStaff && listStaff?.content?.map((staff, index) => {
                             return (
                                 <tr className="bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700" key={index}>
                                     <td scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -306,9 +326,35 @@ const StaffManagement = () => {
                                     </td>
                                 </tr>)
                         })}
+                        {
+                            listStaff && listStaff?.content?.length == 0 && (
+                                <tr className="bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700" >
+                                    <td scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                        Không có thông tin nhân viên tương ướng
+                                    </td>
+                                    <td className="px-6 py-4">
+                                    </td>
+                                    <td className="px-6 py-4">
+                                    </td>
+                                    <td className="flex items-center px-6 py-4 cursor-pointer ">
+
+                                    </td>
+                                    <td className="px-6 py-4 ">
+                                    </td>
+                                </tr>
+                            )
+
+                        }
 
                     </tbody>
                 </table>
+                <Pagination
+                    totalPages={listStaff?.totalElements}
+                    size={size}
+                    currentPage={currentPage}
+                    onPageChange={setCurrentPage}
+                    content={'nhân viên'}
+                />
             </div>
 
             {isOpen && <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50 animate-fadeIn">
