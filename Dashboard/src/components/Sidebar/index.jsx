@@ -41,6 +41,14 @@ const Sidebar = () => {
           </div>
         </div>
       </div>
+      <div className="pt-[15px] border-b-[1px] border-[#EDEDED]/[0.3]">
+        <p className="text-[10px] font-extrabold leading-[16px] text-white/[0.4]"> Tổng quan</p>
+        <div className="flex items-center justify-between gap-[10px] py-[15px] cursor-pointer transition ease-in-out duration-300 rounded pl-4 hover:bg-secondary" onClick={() => handleNavigate('/admin/management/general')}>
+          <div className="flex items-center gap-[10px]">
+            <FaStickyNote color="white" /> <p className="text-[14px] leading-[20px] font-normal text-white">Cài đặt chung</p>
+          </div>
+        </div>
+      </div>
       <div className="pt-[15px]">
         <div className="flex items-center justify-center">
           <div className="h-[40px] w-[40px] bg-[#3C5EC1] rounded-full flex items-center justify-center cursor-pointer">
