@@ -10,9 +10,8 @@ const CategoryManagement = () => {
     const [statusModal, setStatusModal] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [listCategories, setListCategories] = useState();
-    const [isBlockFilter, setIsBlockFilter] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
-    const size = 10;
+    const size = 6;
     const inputRef = useRef(null);
     const [currentCategory, setCurrentCategory] = useState('');
 
@@ -22,7 +21,6 @@ const CategoryManagement = () => {
                 params: {
                     size: size,
                     page: currentPage - 1,
-                    isBlock: isBlockFilter,
                 }
             })
             .then(res => {
@@ -78,6 +76,7 @@ const CategoryManagement = () => {
                     setIsOpenModalCreate(false);
                     setCategoryName('');
                     getListCategory();
+                    setCurrentCategory('');
                 })
                 .catch((err) => {
                     if (err.response) {
@@ -96,12 +95,13 @@ const CategoryManagement = () => {
             }
 
             axiosInstance
-                .put(`/category/update/${currentCategory?.id}`, data)
+                .put(`/category/update/${currentCategory?.code}`, data)
                 .then(res => {
                     toast.success(`Sửa danh mục ${categoryName} thành công!`)
                     setIsOpenModalCreate(false);
                     setCategoryName('');
                     getListCategory();
+                    setCurrentCategory('');
                 })
                 .catch((err) => {
                     if (err.response) {
