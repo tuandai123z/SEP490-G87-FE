@@ -29,8 +29,9 @@ const Login = () => {
     }
     axios.post(`/authenticated/login`, userLogin)
       .then(res => {
-        const data = res.data.result;
-        const token = data.token;
+        console.log(res);
+        const data = res.data;
+        const token = data?.token;
         const user = jwtDecode(token);
         localStorage.setItem('token', token);
 

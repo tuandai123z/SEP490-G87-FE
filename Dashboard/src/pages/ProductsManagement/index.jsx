@@ -1,161 +1,359 @@
-import { useState } from "react";
+import _, { debounce } from "lodash";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { FaPlus } from "react-icons/fa";
+import { NumericFormat } from "react-number-format";
+import { toast } from "react-toastify";
+import Pagination from "../../components/common/Pagination";
+import { axiosInstance } from "../../utils/axiosInstant";
+import { MISS_FIELD_FORM } from "../../utils/constants";
+import { formatVND } from "../../utils/format";
 
 
 const ProductsManagement = () => {
 
     const [isOpenModalCreate, setIsOpenModalCreate] = useState(false);
+    const [listProducts, setListProducts] = useState();
+    const [listBrands, setListBrands] = useState([]);
+    const [listCategories, setListCategories] = useState([]);
+    const [categoryFilter, setCategoryFilter] = useState('');
+    const [brandFilter, setBrandFilter] = useState('');
+    const [productName, setProductName] = useState('');
+    const [productDescription, setProductDescription] = useState('');
+    const [unit, setUnit] = useState('');
+    const [sellingPrice, setSellingPrice] = useState(0);
+    const [currentCategoryCode, setCurrentCategoryCode] = useState('');
+    const [currentBranchCode, setCurrentBranchCode] = useState('');
+    const [currentProduct, setCurrentProduct] = useState('');
+    const [query, setQuery] = useState("");
+    const [statusModal, setStatusModal] = useState(false);
+    const [isSearch, setIsSearch] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const ref = useRef(false);
+    const size = 6;
+
+    const getListProducts = () => {
+
+        axiosInstance
+            .get(`/products/find-all`, {
+                params: {
+                    name: query,
+                    ...(brandFilter !== '' ? { brandCode: brandFilter } : {}),
+                    ...(categoryFilter !== '' ? { categoryCode: categoryFilter } : {}),
+                    page: currentPage - 1,
+                    size: size,
+                }
+            })
+            .then(res => {
+                const data = res.data
+                console.log(data);
+                setListProducts(data);
+            })
+            .catch((err) => {
+                if (err.response) {
+                    const errorRes = err.response.data;
+                    toast.error(errorRes.message);
+                } else if (err.request) {
+                    toast.error(err.request);
+                } else {
+                    toast.error(err.message);
+                }
+                setIsLoading(false);
+            });
+    }
+
+    const getListCategoryAndBrand = () => {
+        axiosInstance
+            .get('/brand/find-all', {
+                params: {
+                    size: 999,
+                    page: currentPage - 1,
+                }
+            })
+            .then(res => {
+                const data = res.data
+                setListBrands(data.content);
+            })
+            .catch((err) => {
+                if (err.response) {
+                    const errorRes = err.response.data;
+                    toast.error(errorRes.message);
+                } else if (err.request) {
+                    toast.error(err.request);
+                } else {
+                    toast.error(err.message);
+                }
+            });
+        axiosInstance
+            .get('/category/find-all', {
+                params: {
+                    size: 999,
+                    page: currentPage - 1,
+                }
+            })
+            .then(res => {
+                const data = res.data
+                setListCategories(data.content);
+            })
+            .catch((err) => {
+                if (err.response) {
+                    const errorRes = err.response.data;
+                    toast.error(errorRes.message);
+                } else if (err.request) {
+                    toast.error(err.request);
+                } else {
+                    toast.error(err.message);
+                }
+            });
+    }
+
+    const handleCreateOrUpdateProduct = () => {
+        if ((productName || '').trim() === '' || (unit || '').trim() === '' || (productDescription || '').trim() === '' || sellingPrice === 0 || (currentBranchCode || '').trim() === '' || (currentBranchCode || '').trim() === '') {
+            toast.warn(MISS_FIELD_FORM);
+            return;
+        }
+
+        const product = {
+            productName,
+            productDescription,
+            unit,
+            sellingPrice,
+            categoryCode: currentCategoryCode,
+            brandCode: currentBranchCode
+        }
+        if (!statusModal) {
+
+            axiosInstance
+                .post(`/products/create`, product)
+                .then(res => {
+                    toast.success("Tạo thiết bị mới thành công");
+                    resetState();
+                    getListProducts();
+                    setIsOpenModalCreate(false);
+                })
+                .catch((err) => {
+                    if (err.response) {
+                        const errorRes = err.response.data;
+                        toast.error(errorRes.message);
+                    } else if (err.request) {
+                        toast.error(err.request);
+                    } else {
+                        toast.error(err.message);
+                    }
+                });
+        } else {
+            axiosInstance
+                .put(`/products/update/${currentProduct?.code}`, product)
+                .then(res => {
+                    toast.success(`Cập nhật thiết bị ${currentBranchCode?.name} thành công`);
+                    resetState();
+                    getListProducts();
+                    setIsOpenModalCreate(false);
+                })
+                .catch((err) => {
+                    if (err.response) {
+                        const errorRes = err.response.data;
+                        toast.error(errorRes.message);
+                    } else if (err.request) {
+                        toast.error(err.request);
+                    } else {
+                        toast.error(err.message);
+                    }
+                });
+        }
+    }
+
+    useEffect(() => {
+        if (ref.current) return
+        ref.current = true;
+        getListProducts();
+        getListCategoryAndBrand();
+    }, [])
+
+    useEffect(() => {
+        getListProducts();
+    }, [currentPage, query, brandFilter, categoryFilter])
 
     const handleOpenModalCreate = () => {
+        setStatusModal(false);
         setIsOpenModalCreate(true);
+    }
+
+    const handleOpenModalEdit = (product) => {
+        setStatusModal(true);
+        setIsOpenModalCreate(true);
+        setCurrentProduct(product)
+        setProductName(product?.name);
+        setProductDescription(product?.description);
+        setUnit(product?.unit);
+        setSellingPrice(product?.sellingPrice);
+        setCurrentBranchCode(product?.brandCode);
+        setCurrentCategoryCode(product?.categoryCode);
     }
 
     const handleCloseModalCreate = () => {
         setIsOpenModalCreate(false);
     }
 
+    const handleChangePrice = (value) => {
+        if (!isNaN(value) && value >= 0) setSellingPrice(value);
+    }
+
+    const resetState = () => {
+        setCurrentProduct('');
+        setCurrentBranchCode('');
+        setCurrentCategoryCode('');
+        setProductDescription('');
+        setProductName('');
+        setUnit('');
+        setSellingPrice(0);
+    }
+
+    const handleDebouncedChange = useCallback(
+        _.debounce((value) => {
+            setIsSearch(prev => !prev);
+        }, 500),
+        []
+    )
+
+    useEffect(() => {
+        handleDebouncedChange(query)
+
+        return () => {
+            handleDebouncedChange.cancel();
+        }
+    }, [query])
+
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [isSearch])
+
+
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            if (isOpenModalCreate) handleCreateOrUpdateProduct();
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [handleKeyDown]);
+
     return (
 
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table className="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
-                <caption className="p-5 text-lg font-semibold text-left text-gray-900 bg-white rtl:text-right dark:text-white dark:bg-gray-800">
-                    <div className="flex justify-between">
-                        <div className="flex flex-col">
-                            Danh sách thiết bị điện
-                            <p className="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">Thông tin danh mục sản phẩm thiết bị điện</p>
+                <caption >
+                    <div className="flex flex-col">
+                        <div className="flex justify-between p-5 text-lg font-semibold text-left text-gray-900 bg-white rtl:text-right dark:text-white dark:bg-gray-800">
+                            <div className="flex flex-col">
+                                Danh sách thiết bị điện
+                                <p className="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">Thông tin danh mục sản phẩm thiết bị điện</p>
+                            </div>
                         </div>
-                        <div className="flex items-center justify-center">
-                            <button className="flex items-center gap-2 px-4 py-2 text-base text-white bg-blue-500 rounded-md outline-none" onClick={() => handleOpenModalCreate()}>
-                                <FaPlus />
-                                Thêm thiết bị
-                            </button>
+                        <div className="flex w-full">
+                            <input type="text" value={query} onChange={e => setQuery(e.target.value)} id="small-input" className="w-[40%] block p-2 text-xs text-gray-900 border border-gray-300 rounded-tl-lg rounded-bl-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                            <div className="w-[40%] flex">
+                                <select value={brandFilter} onChange={e => setBrandFilter(e.target.value)} id="jobRank" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                    <option value={""}>---Chọn thương hiệu---</option>
+                                    {listBrands?.map((item, index) => <option value={item.code} key={index}>{item?.name}</option>)}
+                                </select>
+                                <select value={categoryFilter} onChange={e => setCategoryFilter(e.target.value)} id="jobRank" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-br-lg rounded-tr-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                    <option value={''}>---Chọn danh mục---</option>
+                                    {listCategories?.map((item, index) => {
+                                        return (
+                                            <option value={item?.code} key={index}>{item?.name}</option>
+                                        )
+                                    })}
+                                </select>
+                            </div>
+                            <div className="flex items-center justify-center w-[20%]">
+                                <button className="flex items-center w-full gap-2 px-4 py-2 text-base text-white bg-blue-500 rounded-md outline-none" onClick={() => handleOpenModalCreate()}>
+                                    <FaPlus />
+                                    Thêm thiết bị
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </caption>
                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
-                        <th scope="col" className="p-4">
-                            <div className="flex items-center">
-                                <input id="checkbox-all-search" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                <label for="checkbox-all-search" className="sr-only">checkbox</label>
-                            </div>
+                        <th scope="col" className="px-6 py-3">
+                            Tên thiết bị
                         </th>
                         <th scope="col" className="px-6 py-3">
-                            Product name
+                            Giá bán
                         </th>
                         <th scope="col" className="px-6 py-3">
-                            Color
+                            Danh mục
                         </th>
                         <th scope="col" className="px-6 py-3">
-                            Category
+                            Thương hiệu
                         </th>
                         <th scope="col" className="px-6 py-3">
-                            Price
+                            Đơn vị
                         </th>
                         <th scope="col" className="px-6 py-3">
-                            Action
+                            Hành động
                         </th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr className="bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                        <td className="w-4 p-4">
-                            <div className="flex items-center">
-                                <input id="checkbox-table-search-1" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                <label for="checkbox-table-search-1" className="sr-only">checkbox</label>
-                            </div>
-                        </td>
-                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            Apple MacBook Pro 17"
-                        </th>
-                        <td className="px-6 py-4">
-                            Silver
-                        </td>
-                        <td className="px-6 py-4">
-                            Laptop
-                        </td>
-                        <td className="px-6 py-4">
-                            $2999
-                        </td>
-                        <td className="px-6 py-4">
-                            <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                        </td>
-                    </tr>
-                    <tr className="bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                        <td className="w-4 p-4">
-                            <div className="flex items-center">
-                                <input id="checkbox-table-search-2" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                <label for="checkbox-table-search-2" className="sr-only">checkbox</label>
-                            </div>
-                        </td>
-                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            Microsoft Surface Pro
-                        </th>
-                        <td className="px-6 py-4">
-                            White
-                        </td>
-                        <td className="px-6 py-4">
-                            Laptop PC
-                        </td>
-                        <td className="px-6 py-4">
-                            $1999
-                        </td>
-                        <td className="px-6 py-4">
-                            <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                        </td>
-                    </tr>
-                    <tr className="bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                        <td className="w-4 p-4">
-                            <div className="flex items-center">
-                                <input id="checkbox-table-search-3" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                <label for="checkbox-table-search-3" className="sr-only">checkbox</label>
-                            </div>
-                        </td>
-                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            Magic Mouse 2
-                        </th>
-                        <td className="px-6 py-4">
-                            Black
-                        </td>
-                        <td className="px-6 py-4">
-                            Accessories
-                        </td>
-                        <td className="px-6 py-4">
-                            $99
-                        </td>
-                        <td className="px-6 py-4">
-                            <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                        </td>
-                    </tr>
-
+                    {listProducts?.content?.map((item, index) => {
+                        return (
+                            <tr key={index} className="bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    {item?.name}
+                                </th>
+                                <td className="px-6 py-4">
+                                    {formatVND(item?.sellingPrice)}
+                                </td>
+                                <td className="px-6 py-4">
+                                    {item?.categoryCode}
+                                </td>
+                                <td className="px-6 py-4">
+                                    {item?.brandCode}
+                                </td>
+                                <td className="px-6 py-4">
+                                    {item?.unit}
+                                </td>
+                                <td className="px-6 py-4">
+                                    <a onClick={() => handleOpenModalEdit(item)} className="font-medium text-blue-600 cursor-pointer dark:text-blue-500 hover:underline">Chỉnh sửa</a>
+                                </td>
+                            </tr>
+                        )
+                    })}
+                    {listProducts?.content?.length === 0 &&
+                        <tr className="bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                            <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                Không có thông tin thiết bị tương ứng
+                            </th>
+                            <td className="px-6 py-4">
+                            </td>
+                            <td className="px-6 py-4">
+                            </td>
+                            <td className="px-6 py-4">
+                            </td>
+                            <td className="px-6 py-4">
+                            </td>
+                            <td className="px-6 py-4">
+                            </td>
+                        </tr>
+                    }
                 </tbody>
             </table>
-            <nav className="flex flex-wrap items-center justify-between pt-4 flex-column md:flex-row" aria-label="Table navigation">
-                <span className="block w-full mb-4 text-sm font-normal text-gray-500 dark:text-gray-400 md:mb-0 md:inline md:w-auto">Hiển thị <span className="font-semibold text-gray-900 dark:text-white">1-10</span> của  <span className="font-semibold text-gray-900 dark:text-white">1000</span></span>
-                <ul className="inline-flex h-8 -space-x-px text-sm rtl:space-x-reverse">
-                    <li>
-                        <a href="#" className="flex items-center justify-center h-8 px-3 leading-tight text-gray-500 bg-white border border-gray-300 ms-0 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
-                    </li>
-                    <li>
-                        <a href="#" className="flex items-center justify-center h-8 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
-                    </li>
-                    <li>
-                        <a href="#" className="flex items-center justify-center h-8 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
-                    </li>
-                    <li>
-                        <a href="#" aria-current="page" className="flex items-center justify-center h-8 px-3 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
-                    </li>
-                    <li>
-                        <a href="#" className="flex items-center justify-center h-8 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">4</a>
-                    </li>
-                    <li>
-                        <a href="#" className="flex items-center justify-center h-8 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">5</a>
-                    </li>
-                    <li>
-                        <a href="#" className="flex items-center justify-center h-8 px-3 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
-                    </li>
-                </ul>
-            </nav>
+            <Pagination
+                totalPages={listProducts?.totalElements}
+                size={size}
+                currentPage={currentPage}
+                onPageChange={setCurrentPage}
+                content={'thiết bị'}
+            />
 
             {isOpenModalCreate && <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50 animate-fadeIn">
                 <div className="relative z-50 w-full max-w-2xl max-h-screen overflow-y-auto bg-white rounded-lg shadow-lg">
@@ -165,45 +363,64 @@ const ProductsManagement = () => {
                         </h3>
                         <button type="button" onClick={handleCloseModalCreate} className="inline-flex items-center justify-center w-8 h-8 text-sm text-gray-400 bg-transparent rounded-lg hover:bg-gray-200 hover:text-gray-900 ms-auto dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="crud-modal">
                             <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                             </svg>
                             <span className="sr-only">Close modal</span>
                         </button>
                     </div>
-                    <form className="p-4 md:p-5 ">
+                    <div className="p-4 md:p-5 ">
                         <div className="grid grid-cols-2 gap-4 mb-4">
                             <div className="col-span-2 ">
                                 <label htmlFor="fullName" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tên thiết bị</label>
-                                <input type="text" name="fullName" id="fullName" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Nhập họ và tên" required="" />
+                                <input type="text" value={productName} onChange={(e) => setProductName(e.target.value)} name="fullName" id="fullName" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Nhập tên thiết bị" required="" />
                             </div>
                             <div className="col-span-2 sm:col-span-1">
-                                <label htmlFor="username" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Mã thiết bị</label>
-                                <input type="text" name="username" id="username" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Nhập tên đăng nhập" required="" />
+                                <label htmlFor="unit" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Đơn vị</label>
+                                <input type="text" value={unit} onChange={e => setUnit(e.target.value)} name="unit" id="unit" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Nhập đơn vị" required="" />
                             </div>
                             <div className="col-span-2 sm:col-span-1">
-                                <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Hình ảnh</label>
-                                <input type="text" name="password" id="password" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Mật khẩu" required="" />
+                                <label htmlFor="price" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Giá bán</label>
+                                <NumericFormat type="text" name="price" id="price"
+                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                    value={sellingPrice}
+                                    thousandSeparator=","
+                                    displayType="input"
+                                    placeholder="Giá thiết bị"
+                                    suffix=" VNĐ"
+                                    onValueChange={(values) => {
+                                        const nonNegativeValue = values.floatValue >= 0 ? values.value : "";
+                                        handleChangePrice(nonNegativeValue);
+                                    }} />
+                                {/* <input type="text" value={sellingPrice} onChange={e => handleChangePrice(e.target.value)} name="price" id="price" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="$2999" required="" /> */}
                             </div>
                             <div className="col-span-2 sm:col-span-1">
-                                <label htmlFor="date" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Loại</label>
-                                <input type="text" name="date" id="date" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="$2999" required="" />
-                            </div>
-                            <div className="col-span-2 sm:col-span-1">
-                                <label htmlFor="jobRank" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Chức vụ</label>
-                                <select id="jobRank" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                    <option selected="">---Chọn chức vụ------</option>
-                                    <option value="TV">Buồng trưởng</option>
-                                    <option value="PC">Trưởng kho</option>
-                                    <option value="GA">Gaming/Console</option>
-                                    <option value="PH">Phones</option>
+                                <label htmlFor="jobRank" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Danh mục sản phẩm</label>
+                                <select value={currentCategoryCode} onChange={e => setCurrentCategoryCode(e.target.value)} id="jobRank" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                    <option value={''}>---Chọn danh mục---</option>
+                                    {listCategories?.map((item, index) => {
+                                        return (
+                                            <option value={item?.code} key={index}>{item?.name}</option>
+                                        )
+                                    })}
                                 </select>
                             </div>
+                            <div className="col-span-2 sm:col-span-1">
+                                <label htmlFor="jobRank" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Thương hiệu</label>
+                                <select value={currentBranchCode} onChange={e => setCurrentBranchCode(e.target.value)} id="jobRank" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                    <option value={""}>---Chọn thương hiệu---</option>
+                                    {listBrands?.map((item, index) => <option value={item.code} key={index}>{item?.name}</option>)}
+                                </select>
+                            </div>
+                            <div className="col-span-2">
+                                <label htmlFor="description" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Miêu tả</label>
+                                <input type="textarea" value={productDescription} onChange={e => setProductDescription(e.target.value)} name="description" id="description" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full h-24 p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Nhập miêu tả" required="" />
+                            </div>
                         </div>
-                        <button type="submit" className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-6">
-                            <svg className="w-5 h-5 me-1 -ms-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
+                        <button onClick={handleCreateOrUpdateProduct} type="submit" className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-6">
+                            <svg className="w-5 h-5 me-1 -ms-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd"></path></svg>
                             Thêm nhân viên
                         </button>
-                    </form>
+                    </div>
                 </div>
             </div >}
             <style jsx>{`
