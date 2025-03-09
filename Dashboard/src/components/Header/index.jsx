@@ -13,14 +13,14 @@ const Header = () => {
   };
 
   const handleLogout = () => {
-    // localStorage.removeItem('token');
+    localStorage.removeItem('token');
     // localStorage.removeItem('user');
     navigate('/');
   };
 
   return (
     <div className="w-full ">
-      <div className="flex items-center justify-between h-[70px] shadow-lg px-[25px] ">
+      <div className="flex items-center justify-between h-[56px] shadow-lg px-[25px] ">
         <div className="flex items-center rounded-[5px]"></div>
         <div className="flex items-center gap-[20px]">
           <div className="flex items-center gap-[25px] border-r-[1px] pr-[25px]"></div>

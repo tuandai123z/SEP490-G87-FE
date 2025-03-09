@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import validator from "validator";
 import Pagination from "../../components/common/Pagination";
 import { axiosInstance } from "../../utils/axiosInstant";
+import { WRONG_FORMAT_PHONE } from "../../utils/constants";
 
 
 const StaffManagement = () => {
@@ -24,7 +25,7 @@ const StaffManagement = () => {
     const [statusBlock, setStatusBlock] = useState(false);
     const [isBlockFilter, setIsBlockFilter] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
-    const size = 10;
+    const size = 6;
 
     const getListStaff = async () => {
         await axiosInstance
@@ -135,7 +136,7 @@ const StaffManagement = () => {
             }
 
             if (!validator.isMobilePhone(phoneNumber, 'vi-VN')) {
-                toast.warn("Số điện thoại không đúng định dạng!!")
+                toast.warn(WRONG_FORMAT_PHONE)
                 return
             }
 

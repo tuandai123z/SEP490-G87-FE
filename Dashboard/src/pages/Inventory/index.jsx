@@ -1,7 +1,7 @@
 
 
 const Inventory = () => {
-    return <div></div>
+    return <div> Inventory</div>
 }
 
 export default Inventory

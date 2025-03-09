@@ -263,7 +263,7 @@ const ProductsManagement = () => {
                                     <option value={""}>---Chọn thương hiệu---</option>
                                     {listBrands?.map((item, index) => <option value={item.code} key={index}>{item?.name}</option>)}
                                 </select>
-                                <select value={categoryFilter} onChange={e => setCategoryFilter(e.target.value)} id="jobRank" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-br-lg rounded-tr-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                <select value={categoryFilter} onChange={e => setCategoryFilter(e.target.value)} id="jobRank" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                     <option value={''}>---Chọn danh mục---</option>
                                     {listCategories?.map((item, index) => {
                                         return (
@@ -273,9 +273,9 @@ const ProductsManagement = () => {
                                 </select>
                             </div>
                             <div className="flex items-center justify-center w-[20%]">
-                                <button className="flex items-center w-full gap-2 px-4 py-2 text-base text-white bg-blue-500 rounded-md outline-none" onClick={() => handleOpenModalCreate()}>
+                                <button className="flex items-center w-full gap-2 px-4 py-2 text-base text-white bg-blue-500 rounded-tr-lg rounded-br-lg outline-none" onClick={() => handleOpenModalCreate()}>
                                     <FaPlus />
-                                    Thêm thiết bị
+                                    Thêm thiết bị 
                                 </button>
                             </div>
                         </div>
