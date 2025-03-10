@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import { toast } from "react-toastify";
 import validator from "validator";
+import ModalAlert from "../../../components/common/ModalAlert";
 import Pagination from "../../../components/common/Pagination";
 import { axiosInstance } from "../../../utils/axiosInstant";
 import { MISS_FIELD_FORM, WRONG_FORMAT_PHONE } from "../../../utils/constants";
@@ -17,6 +18,7 @@ const Supplier = () => {
     const [listSuppliers, setListSuppliers] = useState('');
     const [currentSupplier, setCurrentSupplier] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
+    const [isOpenDelete, setIsOpenDelete] = useState(false);
     const size = 6;
     const inputRef = useRef(null);
 
@@ -123,6 +125,37 @@ const Supplier = () => {
 
 
     }
+    const handleOpenDelete = (supplier) => {
+        setIsOpenDelete(true);
+        setCurrentSupplier(supplier);
+    }
+
+    const handleCloseDelete = () => {
+        setIsOpenDelete(false);
+        setCurrentSupplier('');
+    }
+
+    const handleSubmitDelete = () => {
+        axiosInstance
+            .put(`/supplier/${currentSupplier?.id}/delete?isDeleted=true`)
+            .then(res => {
+                toast.success(`Xoá nhà cung cấp ${currentSupplier?.name} thành công!`);
+                setIsOpenDelete(false);
+                setCurrentSupplier('');
+                getListSupplier();
+            })
+            .catch((err) => {
+                if (err.response) {
+                    const errorRes = err.response.data;
+                    toast.error(errorRes.message);
+                } else if (err.request) {
+                    toast.error(err.request);
+                } else {
+                    toast.error(err.message);
+                }
+            });
+
+    }
 
     useEffect(() => {
         getListSupplier();
@@ -210,7 +243,7 @@ const Supplier = () => {
                                     <td className="px-6 py-4">
                                         <a onClick={() => handleOpenModalEdit(item)} className="font-medium text-blue-600 cursor-pointer dark:text-blue-500 hover:underline">Chỉnh sửa</a>
                                     </td>
-                                    <td className="px-6 py-4">
+                                    <td className="px-6 py-4" onClick={() => handleOpenDelete(item)}>
                                         <a className="font-medium cursor-pointer text-red dark:text-blue-500 hover:underline">Xoá</a>
                                     </td>
                                 </tr>
@@ -261,6 +294,13 @@ const Supplier = () => {
                         </div>
                     </div>
                 </div >}
+                {isOpenDelete && (
+                    <ModalAlert
+                        handleClose={handleCloseDelete}
+                        handleDelete={handleSubmitDelete}
+                        name={currentSupplier?.name}
+                    />
+                )}
                 <style jsx>{`
                     @keyframes fadeIn {
                         from {
