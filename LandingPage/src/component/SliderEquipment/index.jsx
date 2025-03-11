@@ -29,6 +29,7 @@ const settings = {
 };
 const SliderEquipment = ({ items, title }) => {
   const navigate = useNavigate();
+  if (!items || items.length === 1) return null;
 
   return (
     <div className="flex justify-center w-full px-4 pb-8 ">
@@ -42,14 +43,14 @@ const SliderEquipment = ({ items, title }) => {
               <div
                 key={index}
                 className="bg-white h-[400px] text-black pr-3 pl-3 cursor-pointer"
-                onClick={() => navigate(`/cua-hang/${item?.id}`)}
+                onClick={() => navigate(`/cua-hang/${item?.code}`)}
               >
                 <div className="flex items-center justify-center ">
-                  <img src={item?.url} alt="" className="w-full" />
+                  <img src={'https://thietbidienhaiphong.com/wp-content/uploads/2015/03/download-3-247x184.jpg'} alt={items?.name} className="w-full" />
                 </div>
 
                 <div className="flex flex-col gap-4 p-4">
-                  <p className="overflow-hidden text-[0.75em] font-semibold text- opacity-70 whitespace-nowrap">{item?.category}</p>
+                  <p className="overflow-hidden text-[0.75em] font-semibold text- opacity-70 whitespace-nowrap">{item?.categoryName}</p>
                   <p className="text-[#334862] font-medium">{item?.name}</p>
                 </div>
               </div>
