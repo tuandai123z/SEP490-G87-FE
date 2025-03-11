@@ -1,12 +1,14 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { IoIosArrowUp } from 'react-icons/io';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Footer from '../../component/layout/Footer';
 import Header from '../../component/layout/Header';
 import { FaSearch } from 'react-icons/fa';
 import CardItem from '../../component/CardItem';
 import FooterWidget from '../../component/layout/FooterWidget';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const ShopPageTile = () => {
   const navigate = useNavigate();
@@ -21,10 +23,10 @@ const ShopPageTile = () => {
         </div>
         <div className="flex items-center gap-4">
           <p>Showing 1-12 of 326 results</p>
-          <form class="max-w-sm mx-auto">
+          <form className="max-w-sm mx-auto">
             <select
               id="countries"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm outline-none focus:shadow-3xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm outline-none focus:shadow-3xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             >
               <option selected>Thứ tự mặc định</option>
               <option value="US">Thứ tự theo mức độ phổ biến</option>
@@ -40,20 +42,21 @@ const ShopPageTile = () => {
   );
 };
 
-const Categories = ({ isSingle, content }) => {
+const Categories = ({ isSingle, content, item }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <>
-      <li className="py-[6px] text-[#334862] border-b  border-gray-300 last:border-0 cursor-pointer relative">
+      <li className="py-[6px] text-[#334862] border-b  border-gray-300 last:border-0 cursor-pointer relative" onClick={() => navigate(`/danh-muc-san-pham/${item?.code}`)}>
         {content}
-        <motion.div
+        {!isSingle && <motion.div
           className="absolute right-0 -translate-y-1/2 top-1/2"
           animate={{ rotate: isOpen ? 0 : 180 }}
           transition={{ duration: 0.3, ease: 'easeOut' }}
         >
           <IoIosArrowUp onClick={() => setIsOpen(!isOpen)} />
-        </motion.div>
+        </motion.div>}
       </li>
       <AnimatePresence>
         {isOpen && (
@@ -73,38 +76,63 @@ const Categories = ({ isSingle, content }) => {
 };
 
 const Shop = () => {
-  const listCategories = ['Chưa phân loại', 'Công trình', 'Đèn chiếu sáng - trang trí'];
+  const [listCategories, setListCategories] = useState([]);
+  const [listProducts, setListProducts] = useState();
+  const [currentPage, setCurrentPage] = useState(1)
+  const size = 12;
 
-  const items = [
-    {
-      id: '1',
-      name: 'Cảm biến nhiệt độ',
-      category: 'AUTONICS',
-      url: 'https://thietbidienhaiphong.com/wp-content/uploads/2015/03/download-3-247x184.jpg',
-      price: 2000000,
-    },
-    {
-      id: '1',
-      name: 'Cảm biến nhiệt độ',
-      category: 'AUTONICS',
-      url: 'https://thietbidienhaiphong.com/wp-content/uploads/2015/03/download-3-247x184.jpg',
-      price: 2000000,
-    },
-    {
-      id: '1',
-      name: 'Cảm biến nhiệt độ',
-      category: 'AUTONICS',
-      url: 'https://thietbidienhaiphong.com/wp-content/uploads/2015/03/download-3-247x184.jpg',
-      price: 2000000,
-    },
-    {
-      id: '1',
-      name: 'Cảm biến nhiệt độ',
-      category: 'AUTONICS',
-      url: 'https://thietbidienhaiphong.com/wp-content/uploads/2015/03/download-3-247x184.jpg',
-      price: 2000000,
-    },
-  ];
+  const getListCategories = () => {
+    axios
+      .get(`/category/find-all`, {
+        params: {
+          size: 999
+        }
+      })
+      .then(res => {
+        const data = res.data.content;
+        setListCategories(data);
+      })
+      .catch(err => {
+        if (err.response) {
+          const errorRes = err.response.data;
+          toast.error(errorRes.message);
+        } else if (err.request) {
+          toast.error("Yêu cầu không thành công");
+        } else {
+          toast.error(err.message);
+        }
+      })
+  }
+
+  const getListAllProducts = () => {
+    axios
+      .get(`/products/find-all`, {
+        params: {
+          size: size,
+          page: currentPage - 1
+        }
+      })
+      .then(res => {
+        const data = res.data;
+        setListProducts(data);
+      })
+      .catch(err => {
+        if (err.response) {
+          const errorRes = err.response.data;
+          toast.error(errorRes.message);
+        } else if (err.request) {
+          toast.error("Yêu cầu không thành công");
+        } else {
+          toast.error(err.message);
+        }
+      })
+  }
+
+  useEffect(() => {
+    getListCategories();
+    getListAllProducts();
+  }, [])
+
 
   return (
     <>
@@ -123,14 +151,14 @@ const Shop = () => {
               <span className="text-xl font-semibold text-[#777]">Danh mục sản phẩm</span>
               <div className="block h-[3px] max-w-[30px] bg-slate-300"></div>
               <ul>
-                {listCategories?.map(category => (
-                  <Categories isSingle={true} content={category} />
+                {listCategories?.map((category, index) => (
+                  <Categories isSingle={true} content={category?.name} key={index} item={category} />
                 ))}
               </ul>
             </div>
           </div>
-          <div class="col-span-3 px-4 flex gap-5 flex-wrap">
-            {items?.map((item, index) => (
+          <div className="flex flex-wrap col-span-3 gap-5 px-4">
+            {listProducts?.content?.map((item, index) => (
               <CardItem key={index} item={item} />
             ))}
           </div>
