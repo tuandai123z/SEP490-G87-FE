@@ -22,7 +22,6 @@ const Detail = () => {
       .then(res => {
         const data = res.data;
         setProduct(data);
-        console.log(data);
       })
       .catch(err => {
         if (err.response) {

@@ -12,10 +12,34 @@ import Pagination from '../../component/Pagination';
 import { scrollToTop } from '../../utils/helper'
 import _ from 'lodash';
 
-const ShopPageTile = ({ products, currentPage, size }) => {
+const ShopPageTile = ({ products, currentPage, size, slug }) => {
     const navigate = useNavigate();
     const totalElement = products?.totalElements;
     const maxCurrentIndex = (((currentPage - 1) * size) + size) > totalElement ? totalElement : (((currentPage - 1) * size) + size);
+    const [category, setCategory] = useState({});
+
+    const getCategoryDetail = () => {
+        axios
+            .get(`/category/find/${slug}`)
+            .then(res => {
+                const data = res.data;
+                setCategory(data);
+            })
+            .catch(err => {
+                if (err.response) {
+                    const errorRes = err.response.data;
+                    toast.error(errorRes.message);
+                } else if (err.request) {
+                    toast.error("Yêu cầu không thành công");
+                } else {
+                    toast.error(err.message);
+                }
+            })
+    }
+
+    useEffect(() => {
+        getCategoryDetail();
+    }, [slug])
 
     return (
         <div className="flex justify-center w-full">
@@ -27,8 +51,8 @@ const ShopPageTile = ({ products, currentPage, size }) => {
                     <a onClick={() => navigate('/cua-hang')} className="pl-3 uppercase transition-all duration-200 cursor-pointer opacity-40 hover:opacity-100">
                         Cửa hàng /
                     </a>
-                    <a onClick={() => navigate('/cua-hang')} className="pl-3 uppercase transition-all duration-200 cursor-pointer opacity-40 hover:opacity-100">
-                        Cửa hàng /
+                    <a className="pl-3 font-semibold text-black uppercase">
+                        {category?.name}
                     </a>
                 </div>
                 <div className="flex items-center gap-4">
@@ -118,7 +142,6 @@ const BrandProducts = () => {
             })
             .then(res => {
                 const data = res.data;
-                console.log(data);
                 setTotalPages(data?.totalPages);
                 setListProducts(data);
             })
@@ -147,7 +170,7 @@ const BrandProducts = () => {
     return (
         <>
             <Header />
-            <ShopPageTile products={listProducts} currentPage={currentPage} size={size} />
+            <ShopPageTile products={listProducts} currentPage={currentPage} size={size} slug={slug} />
             <div className="flex justify-center w-full pb-6">
                 <div className="w-[80%] grid grid-cols-4 gap-4 pt-8">
                     <div className="flex flex-col col-span-1 gap-4 pb-8">

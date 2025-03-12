@@ -25,6 +25,11 @@ const SidebarInventory = () => {
                 <p className="text-[10px] font-extrabold leading-[16px] text-white/[0.4]">Quản lý</p>
                 <div className="flex items-center justify-between gap-[10px] py-[15px] cursor-pointer transition ease-in-out duration-300 rounded pl-4 hover:bg-secondary" onClick={() => handleNavigate('/inventory/import')}>
                     <div className="flex items-center gap-[10px]" >
+                        <FaFileImport color="white" /> <p className="text-[14px] leading-[20px] font-normal text-white">Phiếu mua hàng</p>
+                    </div>
+                </div>
+                <div className="flex items-center justify-between gap-[10px] py-[15px] cursor-pointer transition ease-in-out duration-300 rounded pl-4 hover:bg-secondary" onClick={() => handleNavigate('/inventory/import')}>
+                    <div className="flex items-center gap-[10px]" >
                         <FaFileImport color="white" /> <p className="text-[14px] leading-[20px] font-normal text-white">Nhập kho</p>
                     </div>
                 </div>
