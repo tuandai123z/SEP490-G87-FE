@@ -6,6 +6,7 @@ import Footer from '../../component/layout/Footer';
 import FooterWidget from '../../component/layout/FooterWidget';
 import Header from '../../component/layout/Header';
 import SliderEquipment from '../../component/SliderEquipment';
+import { formatVND } from '../../utils/format';
 import { scrollToTop } from '../../utils/helper';
 
 const Detail = () => {
@@ -21,6 +22,7 @@ const Detail = () => {
       .then(res => {
         const data = res.data;
         setProduct(data);
+        console.log(data);
       })
       .catch(err => {
         if (err.response) {
@@ -39,7 +41,6 @@ const Detail = () => {
         .get(`/products/category/${product?.categoryCode}`)
         .then(res => {
           const data = res.data.content;
-          console.log(data);
           setSuggestProducts(data);
         })
         .catch(err => {
@@ -64,7 +65,8 @@ const Detail = () => {
 
   useEffect(() => {
     getListSuggest();
-  }, [product])
+    getProductDetail();
+  }, [product, slug])
 
 
   return (
@@ -85,15 +87,12 @@ const Detail = () => {
                 Cửa hàng
               </a>
               /
-              <a onClick={() => navigate('/')} className="uppercase cursor-pointer hover:text-black">
-                Thương hiệu
-              </a>
-              /
-              <a onClick={() => navigate('/')} className="uppercase cursor-pointer hover:text-black">
-                {product?.brandName}
+              <a onClick={() => navigate(`/danh-muc-san-pham/${product?.categoryCode}`)} className="uppercase cursor-pointer hover:text-black">
+                {product?.categoryName}
               </a>
             </div>
             <h2 className="mb-5 text-4xl font-bold">{product?.name}</h2>
+            <span>Giá: {formatVND(product?.sellingPrice)}</span>
             <div className="block h-[3px] max-w-[30px] bg-slate-300"></div>
             {/* <hr /> */}
             <div className="border-t-[1px] border-[#ddd] text-[#777] text-xs py-4">

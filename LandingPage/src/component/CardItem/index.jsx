@@ -5,7 +5,7 @@ const CardItem = ({ item }) => {
   const navigate = useNavigate();
 
   return (
-    <div className="relative p-4 transition-all duration-300 ease-in-out bg-white border rounded-lg shadow-md w-3/10 group hover:shadow-lg hover:border-black">
+    <div className="relative p-4 transition-all duration-300 ease-in-out bg-white border rounded-lg shadow-md h-80 w-3/10 group hover:shadow-lg hover:border-black">
       <div className="relative cursor-pointer" onClick={() => navigate(`/cua-hang/${item?.code}`)}>
         <img className="w-full h-40 bg-gray-300 " src={'https://thietbidienhaiphong.com/wp-content/uploads/2015/03/download-3-247x184.jpg'} />
 

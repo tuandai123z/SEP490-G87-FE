@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { IoIosArrowUp } from 'react-icons/io';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Footer from '../../component/layout/Footer';
 import Header from '../../component/layout/Header';
@@ -9,20 +9,28 @@ import CardItem from '../../component/CardItem';
 import FooterWidget from '../../component/layout/FooterWidget';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import Pagination from '../../component/Pagination';
+import { scrollToTop } from '../../utils/helper'
+import _ from 'lodash';
 
-const ShopPageTile = () => {
+const ShopPageTile = ({ products, currentPage, size }) => {
   const navigate = useNavigate();
+  const totalElement = products?.totalElements;
+  const maxCurrentIndex = (((currentPage - 1) * size) + size) > totalElement ? totalElement : (((currentPage - 1) * size) + size);
 
   return (
     <div className="flex justify-center w-full">
       <div className="w-[80%] flex items-center px-4 pt-5 justify-between">
         <div className="flex items-center ">
-          <a onClick={() => navigate('/')} className="uppercase">
-            Trang chủ /
+          <a onClick={() => navigate('/')} className="uppercase transition-all duration-200 cursor-pointer opacity-40 hover:opacity-100">
+            Trang chủ / 
+          </a>
+          <a className="pl-4 font-semibold text-black uppercase">
+            Cửa hàng
           </a>
         </div>
         <div className="flex items-center gap-4">
-          <p>Showing 1-12 of 326 results</p>
+          <p>Showing {`${((currentPage - 1) * size) + 1}-${maxCurrentIndex}`} of {totalElement} results</p>
           <form className="max-w-sm mx-auto">
             <select
               id="countries"
@@ -78,14 +86,21 @@ const Categories = ({ isSingle, content, item }) => {
 const Shop = () => {
   const [listCategories, setListCategories] = useState([]);
   const [listProducts, setListProducts] = useState();
-  const [currentPage, setCurrentPage] = useState(1)
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [search, setSearch] = useState('');
+  const [isSearch, setIsSearch] = useState(false);
   const size = 12;
+
+  const handleChangePage = (page) => {
+    setCurrentPage(page);
+  }
 
   const getListCategories = () => {
     axios
       .get(`/category/find-all`, {
         params: {
-          size: 999
+          size: 999,
         }
       })
       .then(res => {
@@ -109,11 +124,13 @@ const Shop = () => {
       .get(`/products/find-all`, {
         params: {
           size: size,
-          page: currentPage - 1
+          page: currentPage - 1,
+          name: search
         }
       })
       .then(res => {
         const data = res.data;
+        setTotalPages(data?.totalPages);
         setListProducts(data);
       })
       .catch(err => {
@@ -133,17 +150,41 @@ const Shop = () => {
     getListAllProducts();
   }, [])
 
+  useEffect(() => {
+    getListAllProducts();
+    scrollToTop();
+  }, [currentPage])
+
+  const handleDebouncedChange = useCallback(
+    _.debounce((value) => {
+      setIsSearch(prev => !prev);
+    }, 500),
+    []
+  )
+
+  useEffect(() => {
+    handleDebouncedChange(search)
+    return () => {
+      handleDebouncedChange.cancel();
+    }
+  }, [search])
+
+  useEffect(() => {
+    setCurrentPage(1);
+    getListAllProducts();
+  }, [isSearch])
+
 
   return (
     <>
       <Header />
-      <ShopPageTile />
+      <ShopPageTile products={listProducts} currentPage={currentPage} size={size} />
       <div className="flex justify-center w-full pb-6">
         <div className="w-[80%] grid grid-cols-4 gap-4 pt-8">
           <div className="flex flex-col col-span-1 gap-4 pb-8">
             <div className="flex">
-              <input type="text" className="w-[80%] outline-none h-[40px] border-2 p-3" placeholder="Tìm kiếm..." />
-              <span className="w-[40px] h-[40px] flex justify-center items-center bg-[#132d52]">
+              <input type="text" className="w-[80%] outline-none h-[40px] border-2 p-3" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Tìm kiếm..." />
+              <span className="w-[40px] h-[40px] flex justify-center items-center bg-[#132d52] cursor-pointer">
                 <FaSearch className="text-white" />
               </span>
             </div>
@@ -163,6 +204,9 @@ const Shop = () => {
             ))}
           </div>
         </div>
+      </div>
+      <div className='flex justify-center w-full py-6'>
+        <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handleChangePage} />
       </div>
       <FooterWidget />
       <Footer />

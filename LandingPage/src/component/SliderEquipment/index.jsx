@@ -3,6 +3,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'; // Import icon
 import { useNavigate } from 'react-router-dom';
+import { scrollToTop } from '../../utils/helper';
 
 // Custom nút Previous
 const PrevArrow = ({ onClick }) => (
@@ -43,7 +44,10 @@ const SliderEquipment = ({ items, title }) => {
               <div
                 key={index}
                 className="bg-white h-[400px] text-black pr-3 pl-3 cursor-pointer"
-                onClick={() => navigate(`/cua-hang/${item?.code}`)}
+                onClick={() => {
+                  navigate(`/cua-hang/${item?.code}`);
+                  scrollToTop();
+                }}
               >
                 <div className="flex items-center justify-center ">
                   <img src={'https://thietbidienhaiphong.com/wp-content/uploads/2015/03/download-3-247x184.jpg'} alt={items?.name} className="w-full" />
