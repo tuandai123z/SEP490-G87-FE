@@ -57,16 +57,9 @@ const Header = () => {
       </div>
       <div className="flex items-center justify-center w-full h-24">
         <div className="w-[80%] flex justify-between">
-          <a className="w-[20%] h-[64px] flex justify-start items-center text-[28px] font-bold uppercase text-[#446084] no-underline text-center leading-tight px-2 overflow-hidden">
+          <a className="w-[20%] h-[64px] flex justify-start items-center text-[28px] font-bold uppercase text-[#446084] no-underline text-center leading-tight px-2 overflow-hidden cursor-pointer" onClick={() => navigate('/')}>
             Thiết bị điện hải phòng
           </a>
-
-          <div className="w-[60%] flex justify-center items-center ">
-            <input type="text" className="w-[80%] outline-none h-[40px] border-2 p-3" placeholder="Tìm kiếm..." />
-            <span className="w-[40px] h-[40px] flex justify-center items-center bg-[#132d52]">
-              <FaSearch className="text-white" />
-            </span>
-          </div>
           <div className="w-[20%] flex justify-center items-center">
             <FaPhoneAlt className="text-red size-[26px] uppercase mr-2" />
             <span className="text-2xl text-red">0888 637 937</span>
