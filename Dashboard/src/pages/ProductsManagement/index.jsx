@@ -46,7 +46,6 @@ const ProductsManagement = () => {
             })
             .then(res => {
                 const data = res.data
-                console.log(data);
                 setListProducts(data);
             })
             .catch((err) => {

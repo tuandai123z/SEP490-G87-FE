@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaChevronLeft, FaFileExport, FaFileImport } from 'react-icons/fa';
+import { FaChevronLeft, FaFileExport, FaFileImport, FaClipboardList } from 'react-icons/fa';
 import { MdInventory, MdManageAccounts } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import { FcStatistics } from "react-icons/fc";
@@ -36,6 +36,19 @@ const SidebarInventory = () => {
                 <div className="flex items-center justify-between gap-[10px] py-[15px] cursor-pointer transition ease-in-out duration-300 rounded pl-4 hover:bg-secondary" onClick={() => handleNavigate('/inventory/liquidation')}>
                     <div className="flex items-center gap-[10px]">
                         <FcStatistics color="white" /> <p className="text-[14px] leading-[20px] font-normal text-white">Kiểm kê</p>
+                    </div>
+                </div>
+            </div>
+            <div className="pt-[15px] border-b-[1px] border-[#EDEDED]/[0.3]">
+                <p className="text-[10px] font-extrabold leading-[16px] text-white/[0.4]">Phiếu mua hàng</p>
+                <div className="flex items-center justify-between gap-[10px] py-[15px] cursor-pointer transition ease-in-out duration-300 rounded pl-4 hover:bg-secondary" onClick={() => handleNavigate('/inventory/order/create')}>
+                    <div className="flex items-center gap-[10px]" >
+                        <FaClipboardList color="white" /> <p className="text-[14px] leading-[20px] font-normal text-white">Danh sách</p>
+                    </div>
+                </div>
+                <div className="flex items-center justify-between gap-[10px] py-[15px] cursor-pointer transition ease-in-out duration-300 rounded pl-4 hover:bg-secondary" onClick={() => handleNavigate('/inventory/order/create')}>
+                    <div className="flex items-center gap-[10px]" >
+                        <FaFileImport color="white" /> <p className="text-[14px] leading-[20px] font-normal text-white">Tạo phiếu</p>
                     </div>
                 </div>
             </div>
