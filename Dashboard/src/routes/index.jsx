@@ -6,7 +6,7 @@ import BranchManagement from '../pages/GeneralSetting/BranchManagement';
 import CategoryManagement from '../pages/GeneralSetting/CategoryManagement';
 import Inventory from '../pages/Inventory';
 import ExportInventory from '../pages/Inventory/ExportInventory';
-import ImportInventory from '../pages/Inventory/ImortInventory';
+import CreateOrder from '../pages/Inventory/CreateOrder';
 import InventoryStatistic from '../pages/Inventory/InventoryStatistic';
 import Liquidation from '../pages/Inventory/Liquidation';
 import Supplier from '../pages/Inventory/Supplier';
@@ -27,7 +27,7 @@ const publicRoutes = [
   { path: '/admin/management/branch', component: BranchManagement, layout: DefaultLayout },
   { path: '/inventory', component: Inventory, layout: InventoryLayout },
   { path: '/inventory/statistic', component: InventoryStatistic, layout: InventoryLayout },
-  { path: '/inventory/import', component: ImportInventory, layout: InventoryLayout },
+  { path: '/inventory/order/create', component: CreateOrder, layout: InventoryLayout },
   { path: '/inventory/export', component: ExportInventory, layout: InventoryLayout },
   { path: '/inventory/supplier', component: Supplier, layout: InventoryLayout },
   { path: '/inventory/liquidation', component: Liquidation, layout: InventoryLayout },

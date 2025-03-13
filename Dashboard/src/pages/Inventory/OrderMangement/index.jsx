@@ -1,7 +1,7 @@
 import { useState } from "react"
 
 
-const ImportInventory = () => {
+const CreateOrder = () => {
     const [statusTable, setStatusTable] = useState(false);
 
     return (
@@ -54,9 +54,6 @@ const ImportInventory = () => {
                         <div className={`px-4 py-1 border-t-2 border-l-2 cursor-pointer transition-all duration-100 ${!statusTable && 'bg-orange-200 font-medium'}`} onClick={() => { if (statusTable) setStatusTable(false) }}>
                             <span>1. Hàng tiền</span>
                         </div>
-                        <div className={`px-4 py-1 border-2 border-b-0 cursor-pointer transition-all duration-100 ${statusTable && 'bg-orange-200 font-medium'}`} onClick={() => { if (!statusTable) setStatusTable(true) }}>
-                            <span>2. Thống kê</span>
-                        </div>
                     </div>
                     <table className="w-full text-sm text-left text-blue-100 border border-blue-400 rtl:text-right dark:text-blue-100">
                         <thead className="text-xs text-white uppercase bg-blue-400 border border-blue-400 dark:text-white">
@@ -90,4 +87,4 @@ const ImportInventory = () => {
     )
 }
 
-export default ImportInventory
+export default CreateOrder

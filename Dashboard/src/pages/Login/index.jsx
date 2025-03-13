@@ -29,7 +29,6 @@ const Login = () => {
     }
     axios.post(`/authenticated/login`, userLogin)
       .then(res => {
-        console.log(res);
         const data = res.data;
         const token = data?.token;
         const user = jwtDecode(token);
@@ -104,19 +103,11 @@ const Login = () => {
           </div>
           <div className="flex justify-around w-full ">
             <div
-              className={`border-b-2 pb-1 cursor-pointer transition duration-500 ease-in-out ${typeLogin ? 'border-blue-700' : 'border-black'
-                }`}
-              onClick={() => handleChangeTypeLogin(true)}
+              className={`border-b-2 pb-1 cursor-pointer transition duration-500 ease-in-out border-blue-700`}
             >
-              <h3 className="font-semibold">Quản trị viên</h3>
+              <h3 className="font-semibold">Quản trị viên/ nhân viên</h3>
             </div>
-            <div
-              className={`border-b-2 pb-1 cursor-pointer transition duration-500 ease-in-out ${!typeLogin ? 'border-blue-700' : 'border-black'
-                }`}
-              onClick={() => handleChangeTypeLogin(false)}
-            >
-              <h3 className="font-semibold">Nhân viên</h3>
-            </div>
+
           </div>
 
           <div className="flex flex-col w-full mt-4">
