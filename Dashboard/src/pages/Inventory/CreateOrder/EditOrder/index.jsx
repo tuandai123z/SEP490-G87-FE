@@ -1,14 +1,14 @@
 import { useRef } from "react";
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { clearOrder } from "../../../actions/orderActions";
-import { axiosInstance } from "../../../utils/axiosInstant";
-import AddProduct from "./AddProduct";
+import { clearOrder } from "../../../../actions/orderActions";
+import { axiosInstance } from "../../../../utils/axiosInstant";
+import AddProduct from "../AddProduct";
 
 
-const CreateOrder = () => {
+const EditOrder = () => {
     const [currentSupplierId, setCurrentSupplierId] = useState('');
     const [currentSupplier, setCurrentSupplier] = useState({});
     const [listSuppliers, setListSuppliers] = useState([]);
@@ -19,6 +19,7 @@ const CreateOrder = () => {
     const ref = useRef(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { slug } = useParams();
 
     const getListSupplier = () => {
         axiosInstance
@@ -30,6 +31,25 @@ const CreateOrder = () => {
             .then(res => {
                 const data = res.data.content;
                 setListSuppliers(data);
+            })
+            .catch((err) => {
+                if (err.response) {
+                    const errorRes = err.response.data;
+                    toast.error(errorRes.message);
+                } else if (err.request) {
+                    toast.error(err.request);
+                } else {
+                    toast.error(err.message);
+                }
+            });
+    }
+
+    const getOrder = () => {
+        axiosInstance
+            .get(`/purchase-order/${slug}`)
+            .then(res => {
+                const data = res.data;
+                console.log(data);
             })
             .catch((err) => {
                 if (err.response) {
@@ -91,28 +111,8 @@ const CreateOrder = () => {
         if (ref.current) return;
         ref.current = true;
         getListSupplier();
+        getOrder();
     }, [])
-
-    useEffect(() => {
-        if (currentSupplierId !== '') {
-            axiosInstance
-                .get(`/supplier/${currentSupplierId}`)
-                .then(res => {
-                    const data = res.data;
-                    setCurrentSupplier(data);
-                })
-                .catch((err) => {
-                    if (err.response) {
-                        const errorRes = err.response.data;
-                        toast.error(errorRes.message);
-                    } else if (err.request) {
-                        toast.error(err.request);
-                    } else {
-                        toast.error(err.message);
-                    }
-                });
-        }
-    }, [currentSupplierId])
 
     const onChangeShowAdd = () => {
         setIsOpenAdd(!isOpenAdd);
@@ -192,4 +192,4 @@ const CreateOrder = () => {
     )
 }
 
-export default CreateOrder
+export default EditOrder
