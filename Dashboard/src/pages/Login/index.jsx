@@ -42,6 +42,7 @@ const Login = () => {
         };
 
         const action = saveUser(userStorage);
+        console.log(userStorage);
         dispatch(action);
         toast.success("Đăng nhập thành công!")
         navigate('/admin/dashboard');
