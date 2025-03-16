@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { clearOrder } from "../../../actions/orderActions";
+import ModalConfirmCreate from "../../../../src/components/common/ModalConfirmCreate";
 import { axiosInstance } from "../../../utils/axiosInstant";
 import AddProduct from "./AddProduct";
 
@@ -14,6 +15,7 @@ const CreateOrder = () => {
     const [listSuppliers, setListSuppliers] = useState([]);
     const [expectedDateShipped, setExpectedDateShipped] = useState('');
     const [isOpenAdd, setIsOpenAdd] = useState(false);
+    const [isOpenModal, setIsOpenModal] = useState(false);
     const dataUser = useSelector(state => state.user);
     const order = useSelector(state => state.order);
     const ref = useRef(false);
@@ -43,7 +45,7 @@ const CreateOrder = () => {
             });
     }
 
-    const createPurchase = () => {
+    const handleCreatePurchase = () => {
         const listProductPurchase = order?.map(product => {
             const productItem = {
                 productCode: product.code,
@@ -66,6 +68,7 @@ const CreateOrder = () => {
             deliveryDate: expectedDateShipped,
             products: listProductPurchase
         }
+        console.log(purchase, '===============');
 
         axiosInstance
             .post(`/purchase-order/create`, purchase)
@@ -74,6 +77,7 @@ const CreateOrder = () => {
                 const action = clearOrder();
                 dispatch(action)
                 navigate(`/inventory/order/management`);
+                setIsOpenAdd(false);
             })
             .catch((err) => {
                 if (err.response) {
@@ -85,6 +89,25 @@ const CreateOrder = () => {
                     toast.error(err.message);
                 }
             });
+    }
+
+    const handleOpenModal = () => {
+        const listProductPurchase = order?.map(product => {
+            const productItem = {
+                productCode: product.code,
+                quantity: product.quantity
+            }
+            return productItem
+        })
+
+        if (currentSupplierId === '' || expectedDateShipped === '' || listProductPurchase?.length === 0) {
+            currentSupplierId === '' && toast.warn("Vui lòng chọn nhà cung cấp!");
+            expectedDateShipped === '' && toast.warn("Vui lòng chọn ngày giao hàng");
+            listProductPurchase?.length === 0 && toast.warn("Vui lòng chọn thiết bị");
+            return;
+        }
+
+        setIsOpenModal(true);
     }
 
     useEffect(() => {
@@ -117,6 +140,8 @@ const CreateOrder = () => {
     const onChangeShowAdd = () => {
         setIsOpenAdd(!isOpenAdd);
     }
+
+
 
     return (
         <div className="relative overflow-x-auto ">
@@ -153,11 +178,11 @@ const CreateOrder = () => {
             <div className="w-full px-2 mb-4">
                 <div className="relative overflow-x-auto shadow-md">
                     <div className="flex justify-between">
-                        <div className={`px-4 py-1 uppercase border-t-2 border-l-2 cursor-pointer transition-all duration-100 bg-orange-200 font-medium`} onClick={() => createPurchase()}>
+                        <div className={`px-4 py-1 uppercase border-t-2 border-l-2 cursor-pointer transition-all duration-100 bg-orange-200 font-medium`} onClick={() => handleOpenModal()}>
                             <span>Tạo phiếu</span>
                         </div>
                         <div className={`px-4 py-1 uppercase border-t-2 border-l-2 cursor-pointer transition-all duration-100 bg-orange-200 font-medium`} onClick={() => onChangeShowAdd()}>
-                            <span>Thêm sản phẩm</span>
+                            <span>Thêm thiết bị</span>
                         </div>
                     </div>
                     <table className="w-full text-sm text-left text-blue-100 border border-blue-400 rtl:text-right dark:text-blue-100">
@@ -188,6 +213,11 @@ const CreateOrder = () => {
                 </div>
             </div>
             {isOpenAdd && <AddProduct onChangeShowAdd={onChangeShowAdd} />}
+            {isOpenModal && <ModalConfirmCreate
+                handleClose={() => setIsOpenModal(false)}
+                handleConfirm={handleCreatePurchase}
+                type='tạo'
+            />}
         </div>
     )
 }

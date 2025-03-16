@@ -1,6 +1,7 @@
 
 
-const ModalAlert = ({ handleClose, handleDelete, name }) => {
+const ModalAlertConfirm = ({ title, content, handleClose, handleConfirm, titleBtnConfirm }) => {
+    console.log({ title, content, handleClose, handleConfirm, titleBtnConfirm });
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50 animate-fadeIn">
             <div className="relative z-50 w-full max-w-md p-6 bg-white rounded-lg shadow-lg animate-slideIn">
@@ -11,9 +12,9 @@ const ModalAlert = ({ handleClose, handleDelete, name }) => {
                     &times;
                 </button>
                 <h2 className="mb-4 text-xl font-semibold">
-                    Xác nhận xóa
+                    {title}
                 </h2>
-                <p>Bạn có chắc chắn muốn xóa {name} không?</p>
+                <p>{content}</p>
                 <div className="flex justify-end gap-2 mt-4">
                     <button
                         onClick={handleClose}
@@ -22,10 +23,10 @@ const ModalAlert = ({ handleClose, handleDelete, name }) => {
                         Hủy
                     </button>
                     <button
-                        onClick={handleDelete}
+                        onClick={handleConfirm}
                         className="px-5 py-2 font-semibold text-white transition-all duration-300 bg-blue-500 rounded hover:bg-blue-800"
                     >
-                        Xóa
+                        {titleBtnConfirm}
                     </button>
                 </div>
             </div>
@@ -60,4 +61,4 @@ const ModalAlert = ({ handleClose, handleDelete, name }) => {
     )
 }
 
-export default ModalAlert
+export default ModalAlertConfirm
