@@ -22,25 +22,15 @@ const SidebarInventory = () => {
                 <p className="text-[14px] leading-[20px] font-bold text-white ">Báo cáo kho</p>
             </div>
             <div className="pt-[15px] border-b-[1px] border-[#EDEDED]/[0.3]">
-                <p className="text-[10px] font-extrabold leading-[16px] text-white/[0.4]">Quản lý</p>
-                <div className="flex items-center justify-between gap-[10px] py-[15px] cursor-pointer transition ease-in-out duration-300 rounded pl-4 hover:bg-secondary" onClick={() => handleNavigate('/inventory/import')}>
+                <p className="text-[10px] font-extrabold leading-[16px] text-white/[0.4]">Nhập kho</p>
+                <div className="flex items-center justify-between gap-[10px] py-[15px] cursor-pointer transition ease-in-out duration-300 rounded pl-4 hover:bg-secondary" onClick={() => handleNavigate('/inventory/reception/management')}>
                     <div className="flex items-center gap-[10px]" >
-                        <FaFileImport color="white" /> <p className="text-[14px] leading-[20px] font-normal text-white">Phiếu mua hàng</p>
+                        <FaClipboardList color="white" /> <p className="text-[14px] leading-[20px] font-normal text-white">Danh sách</p>
                     </div>
                 </div>
-                <div className="flex items-center justify-between gap-[10px] py-[15px] cursor-pointer transition ease-in-out duration-300 rounded pl-4 hover:bg-secondary" onClick={() => handleNavigate('/inventory/import')}>
+                <div className="flex items-center justify-between gap-[10px] py-[15px] cursor-pointer transition ease-in-out duration-300 rounded pl-4 hover:bg-secondary" onClick={() => handleNavigate('/inventory/reception/create')}>
                     <div className="flex items-center gap-[10px]" >
-                        <FaFileImport color="white" /> <p className="text-[14px] leading-[20px] font-normal text-white">Nhập kho</p>
-                    </div>
-                </div>
-                <div className="flex items-center justify-between gap-[10px] py-[15px] cursor-pointer transition ease-in-out duration-300 rounded pl-4 hover:bg-secondary" onClick={() => handleNavigate('/inventory/export')}>
-                    <div className="flex items-center gap-[10px]">
-                        <FaFileExport color="white" /> <p className="text-[14px] leading-[20px] font-normal text-white">Xuất kho</p>
-                    </div>
-                </div>
-                <div className="flex items-center justify-between gap-[10px] py-[15px] cursor-pointer transition ease-in-out duration-300 rounded pl-4 hover:bg-secondary" onClick={() => handleNavigate('/inventory/liquidation')}>
-                    <div className="flex items-center gap-[10px]">
-                        <FcStatistics color="white" /> <p className="text-[14px] leading-[20px] font-normal text-white">Kiểm kê</p>
+                        <FaFileImport color="white" /> <p className="text-[14px] leading-[20px] font-normal text-white">Tạo phiếu</p>
                     </div>
                 </div>
             </div>

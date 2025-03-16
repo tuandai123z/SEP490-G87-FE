@@ -7,7 +7,6 @@ import CategoryManagement from '../pages/GeneralSetting/CategoryManagement';
 import Inventory from '../pages/Inventory';
 import ExportInventory from '../pages/Inventory/ExportInventory';
 import InventoryStatistic from '../pages/Inventory/InventoryStatistic';
-import Liquidation from '../pages/Inventory/Liquidation';
 import Supplier from '../pages/Inventory/Supplier';
 import Login from '../pages/Login';
 import ProductsManagement from '../pages/ProductsManagement';
@@ -16,6 +15,9 @@ import UserProfile from '../pages/UserProfile';
 import OrderManagement from '../pages/Inventory/OrderMangement';
 import CreateOrder from '../pages/Inventory/CreateOrder';
 import EditOrder from '../pages/Inventory/CreateOrder/EditOrder';
+import ViewOrder from '../pages/Inventory/CreateOrder/ViewOrder';
+import ReceptionManagement from '../pages/Inventory/InventoryReceipt/ReceptionManagement';
+import CreateReception from '../pages/Inventory/InventoryReceipt/CreateReception';
 
 const publicRoutes = [
   { path: '/', component: Login },
@@ -32,9 +34,11 @@ const publicRoutes = [
   { path: '/inventory/order/edit/:slug', component: EditOrder, layout: InventoryLayout },
   { path: '/inventory/order/create', component: CreateOrder, layout: InventoryLayout },
   { path: '/inventory/order/management', component: OrderManagement, layout: InventoryLayout },
+  { path: '/inventory/order/view/:slug', component: ViewOrder, layout: InventoryLayout },
+  { path: '/inventory/reception/management', component: ReceptionManagement, layout: InventoryLayout },
+  { path: '/inventory/reception/create', component: CreateReception, layout: InventoryLayout },
   { path: '/inventory/export', component: ExportInventory, layout: InventoryLayout },
   { path: '/inventory/supplier', component: Supplier, layout: InventoryLayout },
-  { path: '/inventory/liquidation', component: Liquidation, layout: InventoryLayout },
   { path: '/profile', component: UserProfile },
 ];
 

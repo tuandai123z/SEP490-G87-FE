@@ -2,32 +2,34 @@ import { TbEyeSearch } from "react-icons/tb";
 import { MdModeEditOutline } from "react-icons/md";
 import { FaSearch, FaTrashAlt } from "react-icons/fa";
 import { useState } from "react"
-import { axiosInstance } from "../../../utils/axiosInstant";
+import { axiosInstance } from "../../../../utils/axiosInstant";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { LIST_STATUS_FILTER_ORDER } from "./const";
-import Pagination from "../../../components/common/Pagination";
+import Pagination from "../../../../components/common/Pagination";
+import { LIST_STATUS_FILTER_ORDER } from "../../OrderMangement/const";
+import { formatVND } from "../../../../utils/format";
 
 
-const OrderManagement = () => {
-    const [listOrders, setListOrders] = useState([]);
+const ReceptionManagement = () => {
     const [currentStatusOrder, setCurrentStatusOrder] = useState('')
     const [orderCode, setOrderCode] = useState('');
     const [currentSupplierId, setCurrentSupplierId] = useState('');
     const [fromDate, setFromDate] = useState('');
     const [listSuppliers, setListSuppliers] = useState([]);
+    const [listReceptions, setListReceptions] = useState([]);
     const [toDate, setToDate] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [paginationInformation, setPaginationInformation] = useState('');
     const size = 8;
     const navigate = useNavigate();
 
-    const getListOrders = () => {
+
+    const getListReception = () => {
         axiosInstance
-            .get(`/purchase-order/find`, {
+            .get(`/inventory-receipt/find`, {
                 params: {
-                    ...(currentStatusOrder && currentStatusOrder !== 'RECEIVE_DELIVERY' ? { approveStatus: currentStatusOrder } : { deliveryStatus: currentStatusOrder }),
+                    // ...(currentStatusOrder && currentStatusOrder !== 'RECEIVE_DELIVERY' ? { approveStatus: currentStatusOrder } : { deliveryStatus: currentStatusOrder }),
                     ...(fromDate ? { fromDate: fromDate } : {}),
                     ...(toDate ? { toDate: toDate } : {}),
                     code: `${orderCode}`,
@@ -38,7 +40,7 @@ const OrderManagement = () => {
             })
             .then(res => {
                 const data = res.data;
-                setListOrders(data?.content);
+                setListReceptions(data.content)
                 setPaginationInformation(data);
                 console.log(data);
             })
@@ -78,21 +80,23 @@ const OrderManagement = () => {
     }
 
     const handleSearch = () => {
-        getListOrders();
+        getListReception();
     }
 
     useEffect(() => {
-        getListOrders();
+        getListReception();
     }, [currentPage])
 
     useEffect(() => {
         getListSupplier();
     }, [])
 
+    console.log(paginationInformation);
+
     return (
         <div className="relative overflow-x-auto ">
             <div className="flex items-center w-full h-auto gap-4 px-2 py-4">
-                <h3 className="text-xl font-semibold uppercase">Phiếu mua hàng</h3>
+                <h3 className="text-xl font-semibold uppercase">Danh sách phiếu nhập kho</h3>
             </div>
             <div className="flex w-full gap-4 px-2 mb-2">
                 <div className="w-full p-2.5 grid grid-cols-4 gap-4 border-2 border-gray-400 relative">
@@ -140,24 +144,25 @@ const OrderManagement = () => {
                     <div className="flex justify-end py-2">
                         <div
                             className={`px-6 py-2 border-t-2 border-l-2 cursor-pointer transition-all duration-100 bg-blue-400  text-white font-semibold`}
-                            onClick={() => { navigate('/inventory/order/create') }}>
-                            <span className="uppercase" >Tạo phiếu mua hàng</span>
+                            onClick={() => { navigate('/inventory/reception/create') }}
+                        >
+                            <span className="uppercase" >Tạo phiếu nhập kho</span>
                         </div>
                     </div>
                     <table className="w-full text-sm text-left text-blue-100 border border-blue-400 shadow-sm rtl:text-right dark:text-blue-100">
                         <thead className="text-xs text-white uppercase bg-blue-400 border border-blue-400 dark:text-white">
                             <tr>
                                 <th className="px-6 py-3 text-right border border-blue-400">STT</th>
-                                <th className="px-6 py-3 text-right border-white">Mã Phiếu</th>
+                                <th className="px-6 py-3 text-right border-white">Tên</th>
                                 <th className="px-6 py-3 text-center border border-blue-400">Nguồn nhận</th>
+                                <th className="px-6 py-3 text-center border border-blue-400">Giá trị</th>
                                 <th className="px-6 py-3 text-center border border-blue-400">Thời gian</th>
-                                <th className="px-6 py-3 text-center border border-blue-400">Dự kiến</th>
                                 <th className="px-6 py-3 text-center border border-blue-400">Tình trạng</th>
                                 <th className="px-6 py-3 text-center border border-blue-400">Thao tác</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {listOrders?.map((order, index) => {
+                            {listReceptions?.map((order, index) => {
                                 return (
                                     <tr className="text-black border border-b border-blue-400" key={index}>
                                         <th scope="row" className="px-6 py-2 font-medium text-right text-black border border-blue-300 whitespace-nowrap">
@@ -165,8 +170,8 @@ const OrderManagement = () => {
                                         </th>
                                         <td className="px-6 py-2 text-right border border-blue-400">{order?.code}</td>
                                         <td className="px-6 py-2 text-right border border-blue-400">{order?.supplierName}</td>
-                                        <td className="px-6 py-2 text-right border border-blue-400">{order?.createAt}</td>
-                                        <td className="px-6 py-2 text-right border border-blue-400">{order?.deliveryDate}</td>
+                                        <td className="px-6 py-2 text-right border border-blue-400">{formatVND(order?.totalAmount)}</td>
+                                        <td className="px-6 py-2 text-right border border-blue-400">{`${order?.createAtDateTime?.split('.')[0]?.split('T')[0]} ${order?.createAtDateTime?.split('.')[0]?.split('T')[1]}`}</td>
                                         <td className="px-6 py-2 text-center border border-blue-400">
                                             {order?.approve === 'WAITING' && <span className="px-4 py-1 font-medium uppercase bg-orange-300 rounded-lg">CHỜ DUYỆT</span>}
                                             {order?.approve === 'REJECT' && <span className="px-4 py-1 font-medium uppercase rounded-lg bg-red">TỪ CHỐI</span>}
@@ -174,14 +179,14 @@ const OrderManagement = () => {
                                             {(order?.approve === 'APPROVED' && order?.deliveryStatus === 'RECEIVE_DELIVERY') && <span className="px-4 py-1 font-medium uppercase bg-blue-600 rounded-lg">ĐÃ NHẬP</span>}
                                         </td>
                                         <td className="flex items-center justify-center gap-3 px-6 py-2 border-blue-400 ">
-                                            {order?.approve === 'WAITING' && <MdModeEditOutline className="text-lg font-bold text-blue-700 transition-all duration-500 shadow-sm cursor-pointer hover:scale-[140%] " onClick={() => navigate((`/inventory/order/edit/${order?.code}`))} />}
-                                            {order?.approve !== 'WAITING' && <TbEyeSearch className="text-lg font-bold text-blue-700 transition-all duration-500 shadow-sm cursor-pointer hover:scale-[140%] " onClick={() => navigate((`/inventory/order/view/${order?.code}`))} />}
+                                            {order?.approve === 'WAITING' && <MdModeEditOutline className="text-lg font-bold text-blue-700 transition-all duration-500 shadow-sm cursor-pointer hover:scale-[140%] " />}
+                                            {order?.approve !== 'WAITING' && <TbEyeSearch className="text-lg font-bold text-blue-700 transition-all duration-500 shadow-sm cursor-pointer hover:scale-[140%] " />}
                                             {/* <FaTrashAlt className="text-lg font-bold transition-all duration-150 shadow-sm cursor-pointer hover:scale-[140%] text-red" /> */}
                                         </td>
                                     </tr>
                                 )
                             })}
-                            {listOrders?.length === 0 && (
+                            {listReceptions?.length === 0 && (
                                 <tr className="text-black border border-b border-blue-400" >
                                     <th scope="row" className="px-6 py-2 font-medium text-right text-black border border-r-0 border-blue-300 whitespace-nowrap">
                                         Không tìm thấy phiếu mua
@@ -191,13 +196,13 @@ const OrderManagement = () => {
                             )}
                         </tbody>
                     </table>
-                    {listOrders?.length !== 0 && (
+                    {listReceptions?.length !== 0 && (
                         <Pagination
                             totalPages={paginationInformation?.totalElements}
                             size={size}
                             currentPage={currentPage}
                             onPageChange={setCurrentPage}
-                            content={'phiếu mua hàng'}
+                            content={'phiếu nhập kho'}
                         />
                     )}
                 </div>
@@ -206,4 +211,4 @@ const OrderManagement = () => {
     )
 }
 
-export default OrderManagement
+export default ReceptionManagement

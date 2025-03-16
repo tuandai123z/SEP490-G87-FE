@@ -24,6 +24,13 @@ export const increaseProduct = code => {
   };
 };
 
+export const importOrder = order => {
+  return {
+    type: 'IMPORT_ORDER',
+    payload: order,
+  };
+};
+
 export const clearOrder = () => {
   return {
     type: 'CLEAR_ORDER',

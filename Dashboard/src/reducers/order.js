@@ -56,6 +56,11 @@ const orderReducer = (state = [], action) => {
       return newState;
     }
 
+    case 'IMPORT_ORDER': {
+      const data = action.payload;
+      return [...data];
+    }
+
     case 'CLEAR_ORDER': {
       return action.payload;
     }
