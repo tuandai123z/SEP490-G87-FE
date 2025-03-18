@@ -18,6 +18,8 @@ import EditOrder from '../pages/Inventory/CreateOrder/EditOrder';
 import ViewOrder from '../pages/Inventory/CreateOrder/ViewOrder';
 import ReceptionManagement from '../pages/Inventory/InventoryReceipt/ReceptionManagement';
 import CreateReception from '../pages/Inventory/InventoryReceipt/CreateReception';
+import InventoryReceptDetail from '../pages/Inventory/InventoryReceipt/InventoryReceptDetail';
+import EditReception from '../pages/Inventory/InventoryReceipt/EditReception';
 
 const publicRoutes = [
   { path: '/', component: Login },
@@ -37,6 +39,8 @@ const publicRoutes = [
   { path: '/inventory/order/view/:slug', component: ViewOrder, layout: InventoryLayout },
   { path: '/inventory/reception/management', component: ReceptionManagement, layout: InventoryLayout },
   { path: '/inventory/reception/create', component: CreateReception, layout: InventoryLayout },
+  { path: '/inventory/reception/edit/:slug', component: EditReception, layout: InventoryLayout },
+  { path: '/inventory/reception/detail/:slug', component: InventoryReceptDetail, layout: InventoryLayout },
   { path: '/inventory/export', component: ExportInventory, layout: InventoryLayout },
   { path: '/inventory/supplier', component: Supplier, layout: InventoryLayout },
   { path: '/profile', component: UserProfile },
