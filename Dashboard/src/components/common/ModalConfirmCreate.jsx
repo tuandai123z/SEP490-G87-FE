@@ -25,7 +25,7 @@ const ModalConfirmCreate = ({ handleClose, handleConfirm, type }) => {
                         onClick={handleConfirm}
                         className="px-5 py-2 font-semibold text-white transition-all duration-300 bg-blue-500 rounded hover:bg-blue-800"
                     >
-                        Xóa
+                        Xác nhận
                     </button>
                 </div>
             </div>

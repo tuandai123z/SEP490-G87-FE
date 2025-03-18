@@ -91,8 +91,6 @@ const ReceptionManagement = () => {
         getListSupplier();
     }, [])
 
-    console.log(paginationInformation);
-
     return (
         <div className="relative overflow-x-auto ">
             <div className="flex items-center w-full h-auto gap-4 px-2 py-4">
@@ -162,14 +160,15 @@ const ReceptionManagement = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {listReceptions?.map((order, index) => {
+                            {listReceptions?.map((orderItem, index) => {
+                                const order = orderItem.inventoryReceipt;
                                 return (
                                     <tr className="text-black border border-b border-blue-400" key={index}>
                                         <th scope="row" className="px-6 py-2 font-medium text-right text-black border border-blue-300 whitespace-nowrap">
                                             {(currentPage - 1) * size + index + 1}
                                         </th>
                                         <td className="px-6 py-2 text-right border border-blue-400">{order?.code}</td>
-                                        <td className="px-6 py-2 text-right border border-blue-400">{order?.supplierName}</td>
+                                        <td className="px-6 py-2 text-right border border-blue-400">{orderItem?.supplier?.name}</td>
                                         <td className="px-6 py-2 text-right border border-blue-400">{formatVND(order?.totalAmount)}</td>
                                         <td className="px-6 py-2 text-right border border-blue-400">{`${order?.createAtDateTime?.split('.')[0]?.split('T')[0]} ${order?.createAtDateTime?.split('.')[0]?.split('T')[1]}`}</td>
                                         <td className="px-6 py-2 text-center border border-blue-400">
@@ -179,8 +178,8 @@ const ReceptionManagement = () => {
                                             {(order?.approve === 'APPROVED' && order?.deliveryStatus === 'RECEIVE_DELIVERY') && <span className="px-4 py-1 font-medium uppercase bg-blue-600 rounded-lg">ĐÃ NHẬP</span>}
                                         </td>
                                         <td className="flex items-center justify-center gap-3 px-6 py-2 border-blue-400 ">
-                                            {order?.approve === 'WAITING' && <MdModeEditOutline className="text-lg font-bold text-blue-700 transition-all duration-500 shadow-sm cursor-pointer hover:scale-[140%] " />}
-                                            {order?.approve !== 'WAITING' && <TbEyeSearch className="text-lg font-bold text-blue-700 transition-all duration-500 shadow-sm cursor-pointer hover:scale-[140%] " />}
+                                            {order?.approve === 'WAITING' && <MdModeEditOutline className="text-lg font-bold text-blue-700 transition-all duration-500 shadow-sm cursor-pointer hover:scale-[140%] " onClick={() => navigate(`/inventory/reception/edit/${order?.code}`)} />}
+                                            {order?.approve !== 'WAITING' && <TbEyeSearch className="text-lg font-bold text-blue-700 transition-all duration-500 shadow-sm cursor-pointer hover:scale-[140%] " onClick={() => navigate(`/inventory/reception/detail/${order?.code}`)} />}
                                             {/* <FaTrashAlt className="text-lg font-bold transition-all duration-150 shadow-sm cursor-pointer hover:scale-[140%] text-red" /> */}
                                         </td>
                                     </tr>

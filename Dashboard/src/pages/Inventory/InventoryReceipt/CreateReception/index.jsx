@@ -12,8 +12,6 @@ import AddProduct from "../../CreateOrder/AddProduct";
 const today = new Date().toISOString().split('T')[0];
 
 const CreateReception = () => {
-    const [currentSupplier, setCurrentSupplier] = useState({});
-    const [expectedDateShipped, setExpectedDateShipped] = useState('');
     const [isOpenAdd, setIsOpenAdd] = useState(false);
     const [isOpenModal, setIsOpenModal] = useState(false);
     const [listOrders, setListOrders] = useState([]);
@@ -23,7 +21,7 @@ const CreateReception = () => {
     const [numberOfReceipts, setNumberOfReceipts] = useState('');
     const [currentOrderCode, setCurrentOrderCode] = useState('');
     const [listProducts, setListProducts] = useState([]);
-    const totalCost = listProducts && listProducts?.reduce((sum, product) => sum + Number(product?.price), Number(0));
+    const totalCost = listProducts && listProducts?.reduce((sum, product) => sum + Number(product?.price) * product?.quantity, Number(0));
     const user = useSelector(state => state.user);
     const ref = useRef(false);
     const dispatch = useDispatch();
@@ -142,7 +140,6 @@ const CreateReception = () => {
     }
 
     const handleOpenModal = () => {
-        console.log(listProducts, '------------------');
         let allowOpen = listProducts?.length !== 0 && numberOfReceipts !== '';
 
         if (!currentOrderCode) {
@@ -212,17 +209,13 @@ const CreateReception = () => {
                         <label htmlFor="first_name" className="block w-full mb-2 text-sm font-normal text-gray-900 dark:text-white">Nhà cung cấp</label>
                         <input type="text" value={orderDetail?.supplier?.name} id="first_name" disabled className="block w-full p-1 text-sm text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                     </div>
-                    <div className="flex flex-col items-start w-full col-span-2">
+                    <div className="flex flex-col items-start w-full col-span-3">
                         <label htmlFor="first_name" className="block w-full mb-2 text-sm font-normal text-gray-900 dark:text-white">Số điện thoại</label>
                         <input type="text" value={orderDetail?.supplier?.phoneNumber} id="first_name" className="block w-full p-1 text-sm text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                     </div>
-                    <div className="flex flex-col items-start w-full col-span-2">
+                    <div className="flex flex-col items-start w-full col-span-3">
                         <label htmlFor="first_name" className="block mb-2 text-sm font-normal text-gray-900 dark:text-white ">Địa chỉ</label>
                         <input type="text" value={orderDetail?.supplier?.address} id="first_name" className="block w-full p-1 text-sm text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
-                    </div>
-                    <div className="flex flex-col items-start w-full col-span-2">
-                        <label htmlFor="first_name" className="block w-full mb-2 text-sm font-normal text-gray-900 dark:text-white">Ngày giao hàng dự kiến</label>
-                        <input type="date" value={orderDetail?.deliveryDate} onChange={e => { setExpectedDateShipped(e.target.value) }} id="first_name" className="block w-full p-1 text-sm text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                     </div>
                     <p className="absolute text-gray-900 top-[-16px] bg-white font-semibold">Thông tin chung</p>
                 </div>

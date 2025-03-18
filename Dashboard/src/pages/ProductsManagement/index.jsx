@@ -18,6 +18,8 @@ const ProductsManagement = () => {
     const [categoryFilter, setCategoryFilter] = useState('');
     const [brandFilter, setBrandFilter] = useState('');
     const [productName, setProductName] = useState('');
+    const [imageBase64, setImageBase64] = useState("");
+    const [currentImg, setCurrentImg] = useState('');
     const [productDescription, setProductDescription] = useState('');
     const [unit, setUnit] = useState('');
     const [sellingPrice, setSellingPrice] = useState(0);
@@ -30,14 +32,14 @@ const ProductsManagement = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const ref = useRef(false);
-    const size = 6;
+    const size = 20;
 
     const getListProducts = () => {
 
         axiosInstance
             .get(`/products/find-all`, {
                 params: {
-                    name: query,
+                    ...(query !== '' ? { name: query } : {}),
                     ...(brandFilter !== '' ? { brandCode: brandFilter } : {}),
                     ...(categoryFilter !== '' ? { categoryCode: categoryFilter } : {}),
                     page: currentPage - 1,
@@ -47,6 +49,7 @@ const ProductsManagement = () => {
             .then(res => {
                 const data = res.data
                 setListProducts(data);
+                console.log(data);
             })
             .catch((err) => {
                 if (err.response) {
@@ -107,19 +110,20 @@ const ProductsManagement = () => {
     }
 
     const handleCreateOrUpdateProduct = () => {
-        if ((productName || '').trim() === '' || (unit || '').trim() === '' || (productDescription || '').trim() === '' || sellingPrice === 0 || (currentBranchCode || '').trim() === '' || (currentBranchCode || '').trim() === '') {
-            toast.warn(MISS_FIELD_FORM);
-            return;
-        }
-
         const product = {
             productName,
             productDescription,
+            imageBase64,
             unit,
             sellingPrice,
             categoryCode: currentCategoryCode,
             brandCode: currentBranchCode
         }
+        if ((productName || '').trim() === '' || (unit || '').trim() === '' || sellingPrice === 0 || (currentBranchCode || '').trim() === '' || (currentBranchCode || '').trim() === '' || !imageBase64) {
+            toast.warn(MISS_FIELD_FORM);
+            return;
+        }
+
         if (!statusModal) {
 
             axiosInstance
@@ -162,6 +166,24 @@ const ProductsManagement = () => {
         }
     }
 
+    const handleFileChange = (event) => {
+        const file = event.target.files[0];
+
+        if (file) {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onloadend = () => {
+                const base64Image = reader.result.split(',')[1]; // Remove the data:image/png;base64, part
+                setImageBase64(base64Image);
+                setCurrentImg(reader.result);
+            };
+            console.log(reader);
+            reader.onerror = (error) => {
+                console.error("Error converting file to Base64:", error);
+            };
+        }
+    };
+
     useEffect(() => {
         if (ref.current) return
         ref.current = true;
@@ -184,6 +206,7 @@ const ProductsManagement = () => {
         setCurrentProduct(product)
         setProductName(product?.name);
         setProductDescription(product?.description);
+        setImageBase64('')
         setUnit(product?.unit);
         setSellingPrice(product?.sellingPrice);
         setCurrentBranchCode(product?.brandCode);
@@ -204,6 +227,7 @@ const ProductsManagement = () => {
         setCurrentCategoryCode('');
         setProductDescription('');
         setProductName('');
+        setImageBase64('');
         setUnit('');
         setSellingPrice(0);
     }
@@ -248,21 +272,32 @@ const ProductsManagement = () => {
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table className="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
                 <caption >
-                    <div className="flex flex-col">
-                        <div className="flex justify-between p-5 text-lg font-semibold text-left text-gray-900 bg-white rtl:text-right dark:text-white dark:bg-gray-800">
+                    <div className="flex flex-col gap-2 ">
+                        <div className="flex items-center justify-between px-2 py-2 text-lg font-semibold text-left text-gray-900 bg-white rtl:text-right dark:text-white dark:bg-gray-800">
                             <div className="flex flex-col">
                                 Danh sách thiết bị điện
                                 <p className="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">Thông tin danh mục sản phẩm thiết bị điện</p>
                             </div>
+                            <button className="flex items-center w-[15%] h-10 gap-2 px-4 py-2 text-base text-white bg-blue-500 outline-none" onClick={() => handleOpenModalCreate()}>
+                                <FaPlus />
+                                Thêm thiết bị
+                            </button>
                         </div>
-                        <div className="flex w-full">
-                            <input type="text" value={query} onChange={e => setQuery(e.target.value)} id="small-input" className="w-[40%] block p-2 text-xs text-gray-900 border border-gray-300 rounded-tl-lg rounded-bl-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
-                            <div className="w-[40%] flex">
-                                <select value={brandFilter} onChange={e => setBrandFilter(e.target.value)} id="jobRank" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                        <div className="grid w-full grid-cols-2 gap-2 px-2">
+                            <div className="flex flex-col col-span-1">
+                                <label htmlFor="first_name" className="block w-full pr-2 mb-2 text-sm font-semibold text-left text-gray-900 dark:text-white">Tên thiết bị</label>
+                                <input type="text" value={query} onChange={e => setQuery(e.target.value)} id="small-input" className="block w-full p-2 text-xs text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Tên thiết bị điện" />
+                            </div>
+                            <div className="flex flex-col col-span-1">
+                                <label htmlFor="first_name" className="block w-full pr-2 mb-2 text-sm font-semibold text-left text-gray-900 dark:text-white">Thương hiệu</label>
+                                <select value={brandFilter} onChange={e => setBrandFilter(e.target.value)} id="jobRank" className="block w-full p-2 text-xs text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     <option value={""}>---Chọn thương hiệu---</option>
                                     {listBrands?.map((item, index) => <option value={item.code} key={index}>{item?.name}</option>)}
                                 </select>
-                                <select value={categoryFilter} onChange={e => setCategoryFilter(e.target.value)} id="jobRank" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                            </div>
+                            <div className="flex flex-col col-span-1">
+                                <label htmlFor="first_name" className="block w-full pr-2 mb-2 text-sm font-semibold text-left text-gray-900 dark:text-white">Danh mục</label>
+                                <select value={categoryFilter} onChange={e => setCategoryFilter(e.target.value)} id="jobRank" className="block w-full p-2 text-xs text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     <option value={''}>---Chọn danh mục---</option>
                                     {listCategories?.map((item, index) => {
                                         return (
@@ -271,13 +306,10 @@ const ProductsManagement = () => {
                                     })}
                                 </select>
                             </div>
-                            <div className="flex items-center justify-center w-[20%]">
-                                <button className="flex items-center w-full gap-2 px-4 py-2 text-base text-white bg-blue-500 rounded-tr-lg rounded-br-lg outline-none" onClick={() => handleOpenModalCreate()}>
-                                    <FaPlus />
-                                    Thêm thiết bị 
-                                </button>
-                            </div>
+
+
                         </div>
+
                     </div>
                 </caption>
                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -358,7 +390,7 @@ const ProductsManagement = () => {
                 <div className="relative z-50 w-full max-w-2xl max-h-screen overflow-y-auto bg-white rounded-lg shadow-lg">
                     <div className="flex items-center justify-between p-4 border-b border-gray-200 rounded-t md:p-5 dark:border-gray-600">
                         <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                            Thêm thiết bị mới
+                            {!statusModal ? 'Thêm thiết bị mới' : 'Chỉnh sửa thông tin'}
                         </h3>
                         <button type="button" onClick={handleCloseModalCreate} className="inline-flex items-center justify-center w-8 h-8 text-sm text-gray-400 bg-transparent rounded-lg hover:bg-gray-200 hover:text-gray-900 ms-auto dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="crud-modal">
                             <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
@@ -390,7 +422,15 @@ const ProductsManagement = () => {
                                         const nonNegativeValue = values.floatValue >= 0 ? values.value : "";
                                         handleChangePrice(nonNegativeValue);
                                     }} />
-                                {/* <input type="text" value={sellingPrice} onChange={e => handleChangePrice(e.target.value)} name="price" id="price" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="$2999" required="" /> */}
+                            </div>
+                            <div className="col-span-2 sm:col-span-1">
+                                <label htmlFor="img" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Hình ảnh</label>
+                                <input type="file" accept="image/*" onChange={handleFileChange} name="img" id="img" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Nhập đơn vị" required="" />
+                            </div>
+                            <div className="col-span-2 sm:col-span-1">
+                                {imageBase64 && (
+                                    <img src={currentImg} alt="Uploaded" className="w-full h-[100px] object-cover rounded-lg" />
+                                )}
                             </div>
                             <div className="col-span-2 sm:col-span-1">
                                 <label htmlFor="jobRank" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Danh mục sản phẩm</label>
