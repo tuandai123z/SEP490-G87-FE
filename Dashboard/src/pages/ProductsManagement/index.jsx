@@ -145,6 +145,7 @@ const ProductsManagement = () => {
                     }
                 });
         } else {
+
             axiosInstance
                 .put(`/products/update/${currentProduct?.code}`, product)
                 .then(res => {
@@ -206,11 +207,12 @@ const ProductsManagement = () => {
         setCurrentProduct(product)
         setProductName(product?.name);
         setProductDescription(product?.description);
-        setImageBase64('')
+        setImageBase64(product?.imagePath)
         setUnit(product?.unit);
         setSellingPrice(product?.sellingPrice);
         setCurrentBranchCode(product?.brandCode);
         setCurrentCategoryCode(product?.categoryCode);
+        console.log(product);
     }
 
     const handleCloseModalCreate = () => {

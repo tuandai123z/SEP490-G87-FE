@@ -312,19 +312,19 @@ const EditOrder = () => {
                         <span>Từ chối bởi</span>
                         {orderDetail && (orderDetail?.approve === 'WAITING') && (
                             <div
-                                onClick={() => handleOpenChange('REJECT', 'Huỷ phiếu mua hàng', 'Bạn chắc chắn huỷ phiếu mua hàng này?', 'Xác nhận')}
+                                onClick={() => handleOpenChange('REJECTED', 'Huỷ phiếu mua hàng', 'Bạn chắc chắn huỷ phiếu mua hàng này?', 'Xác nhận')}
                                 className="flex items-center gap-2 px-4 py-1 transition-all duration-150 rounded-md cursor-pointer bg-red hover:bg-rose-500">
                                 <span>Từ chối</span>
                                 <FaKey className="" />
                             </div>)}
-                        {orderDetail && orderDetail?.approve === 'REJECT' && (
+                        {orderDetail && orderDetail?.approve === 'REJECTED' && (
                             <div className="flex items-center gap-2 px-4 py-1 rounded-md bg-red ">
                                 <span>Đã từ chối</span>
                                 <FaKey className="" />
                             </div>)}
                     </div>
-                    <input type="text" disabled value={orderDetail?.approve === 'REJECT' ? orderDetail?.username : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
-                    <input type="text" disabled value={orderDetail?.approve === 'REJECT' ? `${orderDetail?.actionTime?.split('.')[0]?.split('T')[0]} ${orderDetail?.actionTime?.split('.')[0]?.split('T')[1]}` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
+                    <input type="text" disabled value={orderDetail?.approve === 'REJECTED' ? orderDetail?.username : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
+                    <input type="text" disabled value={orderDetail?.approve === 'REJECTED' ? `${orderDetail?.actionTime?.split('.')[0]?.split('T')[0]} ${orderDetail?.actionTime?.split('.')[0]?.split('T')[1]}` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
                 </div>
                 <div className="flex flex-col gap-3">
                     <div className="flex items-center justify-between ">
