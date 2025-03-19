@@ -169,9 +169,9 @@ const OrderManagement = () => {
                                         <td className="px-6 py-2 text-right border border-blue-400">{order?.deliveryDate}</td>
                                         <td className="px-6 py-2 text-center border border-blue-400">
                                             {order?.approve === 'WAITING' && <span className="px-4 py-1 font-medium uppercase bg-orange-300 rounded-lg">CHỜ DUYỆT</span>}
-                                            {order?.approve === 'REJECT' && <span className="px-4 py-1 font-medium uppercase rounded-lg bg-red">TỪ CHỐI</span>}
+                                            {order?.approve === 'REJECTED' && <span className="px-4 py-1 font-medium uppercase rounded-lg bg-red">TỪ CHỐI</span>}
                                             {(order?.approve === 'APPROVED' && order?.deliveryStatus === 'WAITING_DELIVERY') && <span className="px-4 py-1 font-medium uppercase rounded-lg bg-green">CHỜ GIAO HÀNG</span>}
-                                            {(order?.approve === 'APPROVED' && order?.deliveryStatus === 'RECEIVE_DELIVERY') && <span className="px-4 py-1 font-medium uppercase bg-blue-600 rounded-lg">ĐÃ NHẬP</span>}
+                                            {order?.deliveryStatus === 'IMPORT_SUCCESS' && <span className="px-4 py-1 font-medium uppercase bg-blue-600 rounded-lg">ĐÃ NHẬP</span>}
                                         </td>
                                         <td className="flex items-center justify-center gap-3 px-6 py-2 border-blue-400 ">
                                             {order?.approve === 'WAITING' && <MdModeEditOutline className="text-lg font-bold text-blue-700 transition-all duration-500 shadow-sm cursor-pointer hover:scale-[140%] " onClick={() => navigate((`/inventory/order/edit/${order?.code}`))} />}
