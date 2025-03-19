@@ -43,26 +43,28 @@ const AddProduct = ({ onChangeShowAdd }) => {
     }
 
     const getListProducts = () => {
-        axiosInstance
-            .get(`/products/category/${currentCategory?.code}`, {
-                params: {
-                    size: 999
-                }
-            })
-            .then(res => {
-                const data = res.data.content;
-                setListProducts(data);
-            })
-            .catch((err) => {
-                if (err.response) {
-                    const errorRes = err.response.data;
-                    toast.error(errorRes.message);
-                } else if (err.request) {
-                    toast.error(err.request);
-                } else {
-                    toast.error(err.message);
-                }
-            });
+        if (currentCategory?.code) {
+            axiosInstance
+                .get(`/products/category/${currentCategory?.code}`, {
+                    params: {
+                        size: 999
+                    }
+                })
+                .then(res => {
+                    const data = res.data.content;
+                    setListProducts(data);
+                })
+                .catch((err) => {
+                    if (err.response) {
+                        const errorRes = err.response.data;
+                        toast.error(errorRes.message);
+                    } else if (err.request) {
+                        toast.error(err.request);
+                    } else {
+                        toast.error(err.message);
+                    }
+                });
+        }
     }
 
     const handleAddProduct = (product) => {
@@ -113,7 +115,6 @@ const AddProduct = ({ onChangeShowAdd }) => {
             </div>
             <div className="flex flex-1 bg-gray-700">
                 <div className="w-[8%] bg-gray-500 rounded-sm overflow-auto max-h-[100vh] scrollbar-hide">
-                    {/* <div className="w-full h-[40px] bg-slate-200 rounded-sm mb-1"></div> */}
                     {listCategories?.map((cate, index) => (
                         <div onClick={() => setCurrentCategory(cate)}
                             className={`w-full h-[80px] flex justify-center items-center cursor-pointer ${currentCategory?.id === cate?.id ? "bg-blue-600 text-white" : "bg-white text-black"}`} key={index}>
