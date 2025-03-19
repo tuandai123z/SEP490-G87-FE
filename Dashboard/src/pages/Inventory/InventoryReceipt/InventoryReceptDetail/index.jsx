@@ -28,7 +28,7 @@ const InventoryReceptDetail = () => {
             .then(res => {
                 const data = res.data;
                 setReceptionDetail(data);
-                setListProducts(data.items)
+                setListProducts(data.itemsInInventory)
                 console.log(data, '=============');
             })
             .catch((err) => {
