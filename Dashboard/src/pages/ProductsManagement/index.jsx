@@ -7,7 +7,7 @@ import Pagination from "../../components/common/Pagination";
 import { axiosInstance } from "../../utils/axiosInstant";
 import { MISS_FIELD_FORM } from "../../utils/constants";
 import { formatVND } from "../../utils/format";
-
+import Loading from '../../components/layouts/Loading'
 
 const ProductsManagement = () => {
 
@@ -20,6 +20,7 @@ const ProductsManagement = () => {
     const [productName, setProductName] = useState('');
     const [imageBase64, setImageBase64] = useState("");
     const [currentImg, setCurrentImg] = useState('');
+    const [isChangeImage, setIsChangeImage] = useState(false);
     const [productDescription, setProductDescription] = useState('');
     const [unit, setUnit] = useState('');
     const [sellingPrice, setSellingPrice] = useState(0);
@@ -32,7 +33,7 @@ const ProductsManagement = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const ref = useRef(false);
-    const size = 20;
+    const size = 6;
 
     const getListProducts = () => {
 
@@ -110,21 +111,22 @@ const ProductsManagement = () => {
     }
 
     const handleCreateOrUpdateProduct = () => {
-        const product = {
-            productName,
-            productDescription,
-            imageBase64,
-            unit,
-            sellingPrice,
-            categoryCode: currentCategoryCode,
-            brandCode: currentBranchCode
-        }
-        if ((productName || '').trim() === '' || (unit || '').trim() === '' || sellingPrice === 0 || (currentBranchCode || '').trim() === '' || (currentBranchCode || '').trim() === '' || !imageBase64) {
+        if ((productName || '').trim() === '' || (unit || '').trim() === '' || sellingPrice === 0 || (currentBranchCode || '').trim() === '' || (currentBranchCode || '').trim() === '' || !currentImg) {
             toast.warn(MISS_FIELD_FORM);
             return;
         }
 
         if (!statusModal) {
+            const product = {
+                productName,
+                productDescription,
+                imageBase64,
+                unit,
+                sellingPrice,
+                categoryCode: currentCategoryCode,
+                brandCode: currentBranchCode
+            }
+            setIsLoading(true);
 
             axiosInstance
                 .post(`/products/create`, product)
@@ -133,6 +135,7 @@ const ProductsManagement = () => {
                     resetState();
                     getListProducts();
                     setIsOpenModalCreate(false);
+                    setIsLoading(false);
                 })
                 .catch((err) => {
                     if (err.response) {
@@ -143,16 +146,29 @@ const ProductsManagement = () => {
                     } else {
                         toast.error(err.message);
                     }
+                    setIsLoading(false);
                 });
         } else {
-
+            const product = {
+                productName,
+                productDescription,
+                imageBase64,
+                unit,
+                sellingPrice,
+                categoryCode: currentCategoryCode,
+                brandCode: currentBranchCode,
+                isChangeImage: isChangeImage
+            }
+            console.log(product);
+            setIsLoading(true);
             axiosInstance
                 .put(`/products/update/${currentProduct?.code}`, product)
                 .then(res => {
-                    toast.success(`Cập nhật thiết bị ${currentBranchCode?.name} thành công`);
+                    toast.success(`Cập nhật thiết bị ${productName} thành công`);
                     resetState();
                     getListProducts();
                     setIsOpenModalCreate(false);
+                    setIsLoading(false);
                 })
                 .catch((err) => {
                     if (err.response) {
@@ -163,11 +179,15 @@ const ProductsManagement = () => {
                     } else {
                         toast.error(err.message);
                     }
+                    setIsLoading(false);
                 });
         }
     }
 
     const handleFileChange = (event) => {
+        if (statusModal) {
+            setIsChangeImage(true);
+        }
         const file = event.target.files[0];
 
         if (file) {
@@ -178,7 +198,6 @@ const ProductsManagement = () => {
                 setImageBase64(base64Image);
                 setCurrentImg(reader.result);
             };
-            console.log(reader);
             reader.onerror = (error) => {
                 console.error("Error converting file to Base64:", error);
             };
@@ -207,16 +226,16 @@ const ProductsManagement = () => {
         setCurrentProduct(product)
         setProductName(product?.name);
         setProductDescription(product?.description);
-        setImageBase64(product?.imagePath)
+        setCurrentImg(product?.imagePath)
         setUnit(product?.unit);
         setSellingPrice(product?.sellingPrice);
         setCurrentBranchCode(product?.brandCode);
         setCurrentCategoryCode(product?.categoryCode);
-        console.log(product);
     }
 
     const handleCloseModalCreate = () => {
         setIsOpenModalCreate(false);
+        resetState();
     }
 
     const handleChangePrice = (value) => {
@@ -230,7 +249,9 @@ const ProductsManagement = () => {
         setProductDescription('');
         setProductName('');
         setImageBase64('');
+        setCurrentImg('');
         setUnit('');
+        setIsChangeImage(false);
         setSellingPrice(0);
     }
 
@@ -320,6 +341,9 @@ const ProductsManagement = () => {
                             Tên thiết bị
                         </th>
                         <th scope="col" className="px-6 py-3">
+                            Hình ảnh
+                        </th>
+                        <th scope="col" className="px-6 py-3">
                             Giá bán
                         </th>
                         <th scope="col" className="px-6 py-3">
@@ -342,6 +366,9 @@ const ProductsManagement = () => {
                             <tr key={index} className="bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     {item?.name}
+                                </th>
+                                <th scope="row" className="flex justify-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    <img src={item?.imagePath} alt={item?.name} className='object-cover rounded-lg h-[50px] w-28' />
                                 </th>
                                 <td className="px-6 py-4">
                                     {formatVND(item?.sellingPrice)}
@@ -426,11 +453,11 @@ const ProductsManagement = () => {
                                     }} />
                             </div>
                             <div className="col-span-2 sm:col-span-1">
-                                <label htmlFor="img" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Hình ảnh</label>
+                                <label htmlFor="img" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" >Hình ảnh</label>
                                 <input type="file" accept="image/*" onChange={handleFileChange} name="img" id="img" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Nhập đơn vị" required="" />
                             </div>
                             <div className="col-span-2 sm:col-span-1">
-                                {imageBase64 && (
+                                {currentImg && (
                                     <img src={currentImg} alt="Uploaded" className="w-full h-[100px] object-cover rounded-lg" />
                                 )}
                             </div>
@@ -459,11 +486,12 @@ const ProductsManagement = () => {
                         </div>
                         <button onClick={handleCreateOrUpdateProduct} type="submit" className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-6">
                             <svg className="w-5 h-5 me-1 -ms-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd"></path></svg>
-                            Thêm nhân viên
+                            {!statusModal ? 'Thêm thiết bị' : "Lưu"}
                         </button>
                     </div>
                 </div>
             </div >}
+            {isLoading && <Loading />}
             <style jsx>{`
                 @keyframes fadeIn {
                     from {
