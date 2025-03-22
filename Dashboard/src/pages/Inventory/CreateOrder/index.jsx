@@ -68,7 +68,6 @@ const CreateOrder = () => {
             deliveryDate: expectedDateShipped,
             products: listProductPurchase
         }
-        console.log(purchase, '===============');
 
         axiosInstance
             .post(`/purchase-order/create`, purchase)

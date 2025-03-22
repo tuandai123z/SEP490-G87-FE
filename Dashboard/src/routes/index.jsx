@@ -20,6 +20,10 @@ import ReceptionManagement from '../pages/Inventory/InventoryReceipt/ReceptionMa
 import CreateReception from '../pages/Inventory/InventoryReceipt/CreateReception';
 import InventoryReceptDetail from '../pages/Inventory/InventoryReceipt/InventoryReceptDetail';
 import EditReception from '../pages/Inventory/InventoryReceipt/EditReception';
+import CreateOrderSale from '../pages/Inventory/OrderSale/CreateOrderSale';
+import OrderSaleManagement from '../pages/Inventory/OrderSale/OrderSaleManagement';
+import EditOrderSale from '../pages/Inventory/OrderSale/EditOrderSale';
+import ViewOrderSale from '../pages/Inventory/OrderSale/ViewOrderSale';
 
 const publicRoutes = [
   { path: '/', component: Login },
@@ -41,6 +45,10 @@ const publicRoutes = [
   { path: '/inventory/reception/create', component: CreateReception, layout: InventoryLayout },
   { path: '/inventory/reception/edit/:slug', component: EditReception, layout: InventoryLayout },
   { path: '/inventory/reception/detail/:slug', component: InventoryReceptDetail, layout: InventoryLayout },
+  { path: '/inventory/orderSale/create', component: CreateOrderSale, layout: InventoryLayout },
+  { path: '/inventory/orderSale/management', component: OrderSaleManagement, layout: InventoryLayout },
+  { path: '/inventory/orderSale/edit/:slug', component: EditOrderSale, layout: InventoryLayout },
+  { path: '/inventory/orderSale/view/:slug', component: ViewOrderSale, layout: InventoryLayout },
   { path: '/inventory/export', component: ExportInventory, layout: InventoryLayout },
   { path: '/inventory/supplier', component: Supplier, layout: InventoryLayout },
   { path: '/profile', component: UserProfile },
