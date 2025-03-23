@@ -50,7 +50,6 @@ const ProductsManagement = () => {
             .then(res => {
                 const data = res.data
                 setListProducts(data);
-                console.log(data);
             })
             .catch((err) => {
                 if (err.response) {
@@ -159,7 +158,6 @@ const ProductsManagement = () => {
                 brandCode: currentBranchCode,
                 isChangeImage: isChangeImage
             }
-            console.log(product);
             setIsLoading(true);
             axiosInstance
                 .put(`/products/update/${currentProduct?.code}`, product)

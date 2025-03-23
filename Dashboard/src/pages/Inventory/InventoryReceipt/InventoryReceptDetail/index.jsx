@@ -29,7 +29,6 @@ const InventoryReceptDetail = () => {
                 const data = res.data;
                 setReceptionDetail(data);
                 setListProducts(data.itemsInInventory)
-                console.log(data, '=============');
             })
             .catch((err) => {
                 if (err.response) {

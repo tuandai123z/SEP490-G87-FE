@@ -62,7 +62,6 @@ const EditOrder = () => {
                 const data = res.data;
                 setOrderDetail(data);
                 setListProducts(data?.products)
-                console.log(data);
                 const actionClear = clearOrder();
                 const actionImport = importOrder(data?.products);
                 dispatch(actionClear);

@@ -24,6 +24,9 @@ import CreateOrderSale from '../pages/Inventory/OrderSale/CreateOrderSale';
 import OrderSaleManagement from '../pages/Inventory/OrderSale/OrderSaleManagement';
 import EditOrderSale from '../pages/Inventory/OrderSale/EditOrderSale';
 import ViewOrderSale from '../pages/Inventory/OrderSale/ViewOrderSale';
+import ExportManagement from '../pages/Inventory/InventoryExport/ExportManagement';
+import CreateExportDelivery from '../pages/Inventory/InventoryExport/CreateExport';
+import EditExportDelivery from '../pages/Inventory/InventoryExport/EditExport';
 
 const publicRoutes = [
   { path: '/', component: Login },
@@ -49,6 +52,9 @@ const publicRoutes = [
   { path: '/inventory/orderSale/management', component: OrderSaleManagement, layout: InventoryLayout },
   { path: '/inventory/orderSale/edit/:slug', component: EditOrderSale, layout: InventoryLayout },
   { path: '/inventory/orderSale/view/:slug', component: ViewOrderSale, layout: InventoryLayout },
+  { path: '/inventory/export/management', component: ExportManagement, layout: InventoryLayout },
+  { path: '/inventory/export/create', component: CreateExportDelivery, layout: InventoryLayout },
+  { path: '/inventory/export/edit/:slug', component: EditExportDelivery, layout: InventoryLayout },
   { path: '/inventory/export', component: ExportInventory, layout: InventoryLayout },
   { path: '/inventory/supplier', component: Supplier, layout: InventoryLayout },
   { path: '/profile', component: UserProfile },
