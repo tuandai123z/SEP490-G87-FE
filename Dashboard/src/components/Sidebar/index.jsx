@@ -1,6 +1,6 @@
 import React from 'react';
 import { FaRegSun, FaStickyNote } from 'react-icons/fa';
-import { MdDashboard, MdInventory } from 'react-icons/md';
+import { MdDashboard, MdInventory, MdManageAccounts } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import { FaArrowRightToBracket } from "react-icons/fa6";
 
@@ -31,6 +31,11 @@ const Sidebar = () => {
         <div className="flex items-center justify-between gap-[10px] py-[15px] cursor-pointer transition ease-in-out duration-300 rounded pl-4 hover:bg-secondary" onClick={() => handleNavigate('/admin/management/staffs')}>
           <div className="flex items-center gap-[10px]">
             <FaStickyNote color="white" /> <p className="text-[14px] leading-[20px] font-normal text-white">Nhân viên</p>
+          </div>
+        </div>
+        <div className="flex items-center justify-between gap-[10px] py-[15px] cursor-pointer transition ease-in-out duration-300 rounded pl-4 hover:bg-secondary" onClick={() => handleNavigate('/inventory/supplier')}>
+          <div className="flex items-center gap-[10px]" >
+            <MdManageAccounts color="white" /> <p className="text-[14px] leading-[20px] font-normal text-white">Nhà cung cấp</p>
           </div>
         </div>
       </div>

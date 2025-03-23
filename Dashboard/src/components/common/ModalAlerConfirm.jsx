@@ -1,7 +1,6 @@
 
 
 const ModalAlertConfirm = ({ title, content, handleClose, handleConfirm, titleBtnConfirm }) => {
-    console.log({ title, content, handleClose, handleConfirm, titleBtnConfirm });
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50 animate-fadeIn">
             <div className="relative z-50 w-full max-w-md p-6 bg-white rounded-lg shadow-lg animate-slideIn">

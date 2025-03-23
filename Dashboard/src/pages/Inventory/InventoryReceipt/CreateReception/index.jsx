@@ -39,7 +39,6 @@ const CreateReception = () => {
             .then(res => {
                 const data = res.data;
                 setListOrders(data);
-                console.log(data.content, '=========');
             })
             .catch((err) => {
                 if (err.response) {
@@ -171,7 +170,6 @@ const CreateReception = () => {
             return productItem
         })
 
-        console.log(listProductPurchase, '===============');
         allowOpen && setIsOpenModal(true);
     }
 

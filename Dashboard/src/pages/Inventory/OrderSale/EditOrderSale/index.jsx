@@ -36,7 +36,6 @@ const EditOrderSale = () => {
             .get(`/order/${slug}`)
             .then(res => {
                 const data = res.data;
-                console.log(data, '=========');
                 setOrderSaleDetail(data);
                 const dataImport = data?.orderProducts?.map(item => ({
                     ...item,
@@ -126,7 +125,6 @@ const EditOrderSale = () => {
     }
 
     const handleChangeStatus = () => {
-        console.log(statusChange);
         axiosInstance
             .put(`/order/${slug}/${statusChange === 'APPROVED' ? 'approve' : 'reject'}`)
             .then(res => {

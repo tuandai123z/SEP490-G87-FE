@@ -135,7 +135,7 @@ const AddProductSale = ({ onChangeShowAdd }) => {
                         {listProducts?.map((item, index) => (
                             <div className="w-[16%] mr-1 relative cursor-pointer" key={index} onClick={() => { handleAddProduct(item); }}>
                                 <div className="w-full">
-                                    <img className="object-cover md:h-[180px] rounded-l-md rounded-t-sm" src={'https://bizweb.dktcdn.net/100/499/893/products/tivi-sony-k-50s30-4k-50-inch-13-org.jpg?v=1717311645060'} alt="" />
+                                    <img className="object-cover md:h-[180px] rounded-l-md rounded-t-sm" src={item?.imagePath} alt="" />
                                 </div>
                                 <div className={`absolute bottom-0 w-full left-0 h-[50px] bg-gray-500/[0.95] rounded-b-sm flex justify-center items-center`}>
                                     <span className="font-medium text-white">{item?.name}</span>

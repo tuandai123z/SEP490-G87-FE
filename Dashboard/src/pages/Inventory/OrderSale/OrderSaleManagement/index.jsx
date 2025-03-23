@@ -44,7 +44,6 @@ const OrderSaleManagement = () => {
                 const data = res.data;
                 setListOrders(data?.content);
                 setPaginationInformation(data);
-                console.log(data);
             })
             .catch((err) => {
                 if (err.response) {
