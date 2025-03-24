@@ -27,7 +27,7 @@ const OrderManagement = () => {
         axiosInstance
             .get(`/purchase-order/find`, {
                 params: {
-                    ...(currentStatusOrder && currentStatusOrder !== 'RECEIVE_DELIVERY' ? { approveStatus: currentStatusOrder } : { deliveryStatus: currentStatusOrder }),
+                    ...(currentStatusOrder && currentStatusOrder !== 'IMPORT_SUCCESS' ? { approveStatus: currentStatusOrder } : { deliveryStatus: currentStatusOrder }),
                     ...(fromDate ? { fromDate: fromDate } : {}),
                     ...(toDate ? { toDate: toDate } : {}),
                     code: `${orderCode}`,
