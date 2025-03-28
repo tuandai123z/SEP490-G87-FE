@@ -41,6 +41,7 @@ const EditOrderSale = () => {
                     ...item,
                     discount: item?.discount * 100
                 }));
+                console.log(data);
                 const action = importOrderSale(dataImport);
                 dispatch(action);
             })
@@ -125,24 +126,44 @@ const EditOrderSale = () => {
     }
 
     const handleChangeStatus = () => {
-        axiosInstance
-            .put(`/order/${slug}/${statusChange === 'APPROVED' ? 'approve' : 'reject'}`)
-            .then(res => {
-                const contentStatus = statusChange === 'APPROVED' ? "Duyệt" : 'Huỷ ';
-                toast.success(`${contentStatus} phiếu bán hàng thành công!`);
-                getOrderSaleDetail();
-                setIsOpenModalConfirm(false);
-            })
-            .catch((err) => {
-                if (err.response) {
-                    const errorRes = err.response.data;
-                    toast.error(errorRes.message);
-                } else if (err.request) {
-                    toast.error(err.request);
-                } else {
-                    toast.error(err.message);
-                }
-            });
+        if (statusChange !== 'delivery-success') {
+            axiosInstance
+                .put(`/order/${slug}/${statusChange === 'APPROVED' ? 'approve' : 'reject'}`)
+                .then(res => {
+                    const contentStatus = statusChange === 'APPROVED' ? "Duyệt" : 'Huỷ ';
+                    toast.success(`${contentStatus} phiếu bán hàng thành công!`);
+                    getOrderSaleDetail();
+                    setIsOpenModalConfirm(false);
+                })
+                .catch((err) => {
+                    if (err.response) {
+                        const errorRes = err.response.data;
+                        toast.error(errorRes.message);
+                    } else if (err.request) {
+                        toast.error(err.request);
+                    } else {
+                        toast.error(err.message);
+                    }
+                });
+        } else {
+            axiosInstance
+                .get(`/order/${slug}/${statusChange}`)
+                .then(res => {
+                    toast.success(`Xác nhận giao hàng thành công!`);
+                    getOrderSaleDetail();
+                    setIsOpenModalConfirm(false);
+                })
+                .catch((err) => {
+                    if (err.response) {
+                        const errorRes = err.response.data;
+                        toast.error(errorRes.message);
+                    } else if (err.request) {
+                        toast.error(err.request);
+                    } else {
+                        toast.error(err.message);
+                    }
+                });
+        }
     }
 
     const handleBack = () => {
@@ -192,17 +213,17 @@ const EditOrderSale = () => {
                     <div className="relative overflow-x-auto shadow-md">
                         <div className="flex justify-between">
                             <div className="flex gap-2">
-                                <div className={`px-4 py-1 uppercase border-t-2 border-l-2 cursor-pointer transition-all duration-100 bg-orange-200 font-medium`} onClick={() => handleOpenModal()}>
+                                {orderSaleDetail?.approveStatus !== "APPROVED" && <div className={`px-4 py-1 uppercase border-t-2 border-l-2 cursor-pointer transition-all duration-100 bg-orange-200 font-medium`} onClick={() => handleOpenModal()}>
                                     <span>Lưu</span>
-                                </div>
+                                </div>}
                                 <div className={`px-4 py-1 flex gap-3 items-center uppercase border-t-2 border-l-2 cursor-pointer transition-all duration-100 bg-orange-200 font-medium`} onClick={() => handleBack()}>
                                     <IoMdArrowRoundBack />
                                     <span>Quay lại</span>
                                 </div>
                             </div>
-                            <div className={`px-4 py-1 uppercase border-t-2 border-l-2 cursor-pointer transition-all duration-100 bg-orange-200 font-medium`} onClick={() => onChangeShowAdd()}>
+                            {orderSaleDetail?.approveStatus !== "APPROVED" && <div className={`px-4 py-1 uppercase border-t-2 border-l-2 cursor-pointer transition-all duration-100 bg-orange-200 font-medium`} onClick={() => onChangeShowAdd()}>
                                 <span>Thêm thiết bị</span>
-                            </div>
+                            </div>}
                         </div>
                         <table className="w-full text-sm text-left text-blue-100 border border-blue-400 rtl:text-right dark:text-blue-100">
                             <thead className="text-xs text-white uppercase bg-blue-400 border border-blue-400 dark:text-white">
@@ -228,13 +249,13 @@ const EditOrderSale = () => {
                                             <td className="px-6 py-4 border border-blue-300">{item?.quantity}</td>
                                             <td className="px-6 py-4 border border-blue-300">{formatVND(item?.sellingPrice)}</td>
                                             <td className="relative px-6 py-4 border border-blue-300">
-                                                <input
+                                                {orderSaleDetail?.approveStatus !== "APPROVED" && <input
                                                     type="text"
                                                     value={item?.discount}
                                                     onChange={(e) => handleChangeDiscount(index, e.target.value)}
                                                     className="w-[40px] px-2 py-1 border-none rounded"
-                                                />
-                                                <span className="absolute text-gray-500 transform -translate-y-1/2 pointer-events-none left-[66px] top-1/2">%</span>
+                                                />}
+                                                <span className="absolute text-gray-500 transform -translate-y-1/2 pointer-events-none left-[66px] top-1/2">{orderSaleDetail?.approveStatus === "APPROVED" && item?.discount} %</span>
                                             </td>
                                             <td className="px-6 py-4 border border-blue-300">{formatVND(item?.quantity * item?.sellingPrice * (100 - item?.discount) / 100)}</td>
 
@@ -315,14 +336,21 @@ const EditOrderSale = () => {
                 </div>
                 <div className="flex flex-col gap-3">
                     <div className="flex items-center justify-between ">
-                        <span>Đã nhập bởi</span>
-                        {orderSaleDetail && orderSaleDetail?.deliveryStatus === 'RECEIVE_DELIVERY' && <div className="flex items-center gap-2 px-4 py-1 bg-blue-400 rounded-md ">
-                            <span>Đã nhập</span>
+                        <span>Đã giao bởi</span>
+                        {orderSaleDetail && (orderSaleDetail?.deliveryStatus === "WAITING_DELIVERY") && (
+                            <div
+                                onClick={() => handleOpenChange('delivery-success', 'Xác nhận phiếu mua hàng', 'Bạn chắc chắn đã giao thành công phiếu mua hàng này?', 'Xác nhận')}
+                                className="flex items-center gap-2 px-4 py-1 transition-all duration-150 bg-blue-400 rounded-md cursor-pointer hover:bg-blue-700">
+                                <span>Giao hàng</span>
+                                <FaKey className="" />
+                            </div>)}
+                        {orderSaleDetail && orderSaleDetail?.deliveryStatus !== "WAITING_DELIVERY" && <div className="flex items-center gap-2 px-4 py-1 bg-blue-400 rounded-md ">
+                            <span>Đã giao</span>
                             <FaKey className="" />
                         </div>}
                     </div>
                     <input type="text" disabled value={''} className='w-full px-4 py-1 text-right border border-gray-500' />
-                    <input type="text" disabled value={orderSaleDetail?.deliveryStatus === 'RECEIVE_DELIVERY' ? `${formatDate(orderSaleDetail?.actionTime)} ` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
+                    <input type="text" disabled value={orderSaleDetail?.deliveryStatus !== 'WAITING_DELIVERY' ? `${formatDate(orderSaleDetail?.actionTime)} ` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
                 </div>
             </div>
             {isOpenAdd && <AddProductSale onChangeShowAdd={onChangeShowAdd} />}

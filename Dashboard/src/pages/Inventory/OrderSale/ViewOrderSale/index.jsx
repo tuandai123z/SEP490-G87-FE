@@ -204,7 +204,7 @@ const ViewOrderSale = () => {
                     <div className="flex items-center justify-between ">
                         <span>Đã nhập bởi</span>
                         {orderSaleDetail && orderSaleDetail?.deliveryStatus === 'RECEIVE_DELIVERY' && <div className="flex items-center gap-2 px-4 py-1 bg-blue-400 rounded-md ">
-                            <span>Đã nhập</span>
+                            <span>Đã giao</span>
                             <FaKey className="" />
                         </div>}
                     </div>

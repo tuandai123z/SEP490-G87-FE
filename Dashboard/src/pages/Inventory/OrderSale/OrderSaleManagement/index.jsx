@@ -44,6 +44,7 @@ const OrderSaleManagement = () => {
                 const data = res.data;
                 setListOrders(data?.content);
                 setPaginationInformation(data);
+                console.log(data);
             })
             .catch((err) => {
                 if (err.response) {
@@ -197,11 +198,11 @@ const OrderSaleManagement = () => {
                                             {order?.approveStatus === 'WAITING' && <span className="px-4 py-1 font-medium uppercase bg-orange-300 rounded-lg">CHỜ DUYỆT</span>}
                                             {order?.approveStatus === 'REJECTED' && <span className="px-4 py-1 font-medium uppercase rounded-lg bg-red">TỪ CHỐI</span>}
                                             {(order?.approveStatus === 'APPROVED' && order?.deliveryStatus === 'WAITING_DELIVERY') && <span className="px-4 py-1 font-medium uppercase rounded-lg bg-green">CHỜ GIAO HÀNG</span>}
-                                            {order?.deliveryStatus === 'IMPORT_SUCCESS' && <span className="px-4 py-1 font-medium uppercase bg-blue-600 rounded-lg">ĐÃ NHẬP</span>}
+                                            {order?.deliveryStatus !== 'WAITING_DELIVERY' && <span className="px-4 py-1 font-medium uppercase bg-blue-600 rounded-lg">ĐÃ GIAO HÀNG</span>}
                                         </td>
                                         <td className="flex items-center justify-center gap-3 px-6 py-2 border-blue-400 ">
-                                            {order?.approveStatus === 'WAITING' && <MdModeEditOutline className="text-lg font-bold text-blue-700 transition-all duration-500 shadow-sm cursor-pointer hover:scale-[140%] " onClick={() => navigate((`/inventory/orderSale/edit/${order?.code}`))} />}
-                                            {order?.approveStatus !== 'WAITING' && <TbEyeSearch className="text-lg font-bold text-blue-700 transition-all duration-500 shadow-sm cursor-pointer hover:scale-[140%] " onClick={() => navigate((`/inventory/orderSale/view/${order?.code}`))} />}
+                                            {order?.deliveryStatus === 'WAITING_DELIVERY' && <MdModeEditOutline className="text-lg font-bold text-blue-700 transition-all duration-500 shadow-sm cursor-pointer hover:scale-[140%] " onClick={() => navigate((`/inventory/orderSale/edit/${order?.code}`))} />}
+                                            {order?.deliveryStatus !== 'WAITING_DELIVERY' && <TbEyeSearch className="text-lg font-bold text-blue-700 transition-all duration-500 shadow-sm cursor-pointer hover:scale-[140%] " onClick={() => navigate((`/inventory/orderSale/view/${order?.code}`))} />}
                                         </td>
                                     </tr>
                                 )
