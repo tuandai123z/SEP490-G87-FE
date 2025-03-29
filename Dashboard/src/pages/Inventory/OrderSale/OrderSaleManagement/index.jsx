@@ -89,6 +89,22 @@ const OrderSaleManagement = () => {
 
     }, [])
 
+    const handleFromDateChange = (e) => {
+        const newFromDate = e.target.value;
+        if (toDate && new Date(newFromDate) > new Date(toDate)) {
+            setToDate(newFromDate);
+        }
+        setFromDate(newFromDate);
+    };
+
+    const handleToDateChange = (e) => {
+        const newToDate = e.target.value;
+        if (fromDate && new Date(newToDate) < new Date(fromDate)) {
+            setFromDate(newToDate);
+        }
+        setToDate(newToDate);
+    };
+
     return (
         <div className="relative overflow-x-auto ">
             <div className="flex items-center w-full h-auto gap-4 px-2 py-4">
@@ -116,11 +132,11 @@ const OrderSaleManagement = () => {
                         </div>
                         <div className="flex items-center w-full col-span-3 gap">
                             <label htmlFor="first_name" className="block mb-2 text-sm font-normal pr-2 text-right text-gray-900 dark:text-white w-[35%]">Từ ngày</label>
-                            <input type="date" id="first_name" value={fromDate} onChange={e => setFromDate(e.target.value)} className="block w-[65%] text-sm p-1 text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                            <input type="date" id="first_name" value={fromDate} onChange={handleFromDateChange} className="block w-[65%] text-sm p-1 text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                         </div>
                         <div className="flex items-center w-full col-span-3 gap">
                             <label htmlFor="first_name" className="block mb-2 text-sm font-normal pr-2 text-right text-gray-900 dark:text-white w-[35%]">Đến ngày</label>
-                            <input type="date" id="first_name" value={toDate} onChange={e => setToDate(e.target.value)} className="block w-[65%] text-sm p-1 text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                            <input type="date" id="first_name" value={toDate} onChange={handleToDateChange} className="block w-[65%] text-sm p-1 text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                         </div>
                         <div className="flex items-center w-full col-span-3 gap">
                             <label htmlFor="first_name" className="block mb-2 text-sm font-normal pr-2 text-right text-gray-900 dark:text-white w-[35%]">Giá thấp nhất</label>
