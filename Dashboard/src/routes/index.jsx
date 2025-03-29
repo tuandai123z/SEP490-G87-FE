@@ -59,7 +59,7 @@ const publicRoutes = [
   { path: '/inventory/return/management', component: ExportManagement, layout: InventoryLayout },
   { path: '/inventory/return/create', component: CreateReturnForm, layout: InventoryLayout },
   { path: '/inventory/return/edit/:slug', component: EditExportDelivery, layout: InventoryLayout },
-  { path: '/inventory/supplier', component: Supplier, layout: InventoryLayout },
+  { path: '/inventory/supplier', component: Supplier, layout: DefaultLayout },
   { path: '/profile', component: UserProfile },
 ];
 
