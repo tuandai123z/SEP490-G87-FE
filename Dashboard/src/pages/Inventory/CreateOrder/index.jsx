@@ -169,7 +169,7 @@ const CreateOrder = () => {
                     </div>
                     <div className="flex flex-col items-start w-full">
                         <label htmlFor="first_name" className="block w-full mb-2 text-sm font-normal text-gray-900 dark:text-white">Ngày giao hàng dự kiến</label>
-                        <input type="date" value={expectedDateShipped} onChange={e => { setExpectedDateShipped(e.target.value) }} id="first_name" className="block w-full p-1 text-sm text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                        <input type="date" min={new Date().toISOString().split('T')[0]} value={expectedDateShipped} onChange={e => { setExpectedDateShipped(e.target.value) }} id="first_name" className="block w-full p-1 text-sm text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                     </div>
                     <p className="absolute text-gray-900 top-[-16px] bg-white font-semibold">Thông tin chung</p>
                 </div>
