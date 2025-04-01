@@ -5,7 +5,6 @@ import GeneralSetting from '../pages/GeneralSetting';
 import BranchManagement from '../pages/GeneralSetting/BranchManagement';
 import CategoryManagement from '../pages/GeneralSetting/CategoryManagement';
 import Inventory from '../pages/Inventory';
-import ExportInventory from '../pages/Inventory/ExportInventory';
 import InventoryStatistic from '../pages/Inventory/InventoryStatistic';
 import Supplier from '../pages/Inventory/Supplier';
 import Login from '../pages/Login';
