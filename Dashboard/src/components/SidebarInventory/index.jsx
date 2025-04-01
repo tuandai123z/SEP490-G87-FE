@@ -164,6 +164,7 @@ const SidebarInventory = () => {
                     />
                 )
             }))}
+
         </div>
     );
 };

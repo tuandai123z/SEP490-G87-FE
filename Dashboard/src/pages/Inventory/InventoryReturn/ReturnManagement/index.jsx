@@ -16,8 +16,8 @@ import { NumericFormat } from "react-number-format";
 import { Select } from "../../../../components/common/Select";
 
 
-const ExportManagement = () => {
-    const [listExport, setListExport] = useState([]);
+const ReturnManagement = () => {
+    const [listReturn, setListReturn] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [paginationInformation, setPaginationInformation] = useState('');
     const [currentStatusOrder, setCurrentStatusOrder] = useState('')
@@ -35,24 +35,25 @@ const ExportManagement = () => {
     const size = 8;
     const navigate = useNavigate();
 
-    const getListExport = () => {
+    const getListReturn = () => {
         axiosInstance
-            .get('/inventory-delivery/find-all', {
+            .get('/return-form/find-all', {
                 params: {
-                    ...(currentStatusOrder ? { approveStatus: currentStatusOrder } : {}),
-                    ...(fromDate ? { fromDate: fromDate } : {}),
-                    ...(toDate ? { toDate: toDate } : {}),
+                    // ...(currentStatusOrder ? { approveStatus: currentStatusOrder } : {}),
+                    // ...(fromDate ? { fromDate: fromDate } : {}),
+                    // ...(toDate ? { toDate: toDate } : {}),
                     ...(code ? { code: code } : {}),
-                    ...(phoneNumber ? { customerId: currentCustomer?.id } : {}),
-                    ...(minPrice ? { totalAmountFrom: minPrice } : {}),
-                    ...(maxPrice ? { totalAmountTo: maxPrice } : {}),
+                    // ...(phoneNumber ? { customerId: currentCustomer?.id } : {}),
+                    // ...(minPrice ? { totalAmountFrom: minPrice } : {}),
+                    // ...(maxPrice ? { totalAmountTo: maxPrice } : {}),
                     page: currentPage - 1,
                     size: size,
                 }
             })
             .then(res => {
                 const data = res.data;
-                setListExport(data.content)
+                setListReturn(data.content)
+                console.log(data);
                 setPaginationInformation(data);
             })
             .catch((err) => {
@@ -126,11 +127,11 @@ const ExportManagement = () => {
 
 
     const handleSearch = () => {
-        getListExport();
+        getListReturn();
     }
 
     useEffect(() => {
-        getListExport();
+        getListReturn();
     }, [currentPage])
 
     useEffect(() => {
@@ -188,7 +189,7 @@ const ExportManagement = () => {
         <>
             <div className="relative overflow-x-auto ">
                 <div className="flex items-center w-full h-auto gap-4 px-2 py-4">
-                    <h3 className="text-xl font-semibold uppercase">Danh sách phiếu xuất kho</h3>
+                    <h3 className="text-xl font-semibold uppercase">Danh sách Phiếu hoàn hàng</h3>
                 </div>
                 <div className="flex w-full gap-4 px-2 mb-2">
                     <div className="w-full p-2.5 grid grid-cols-5 gap-4 border-2 border-gray-400 relative">
@@ -223,12 +224,12 @@ const ExportManagement = () => {
                                 <input type="date" id="first_name" value={toDate} onChange={e => setToDate(e.target.value)} className="block w-[65%] text-sm p-1 text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                             </div>
                             <div className="flex items-center w-full col-span-3 gap">
-                                <label htmlFor="first_name" className="block mb-2 text-sm font-normal pr-2 text-right text-gray-900 dark:text-white w-[35%]">Giá thấp nhất</label>
+                                <label htmlFor="first_name" className="block mb-2 text-sm font-normal pr-2 text-right text-gray-900 dark:text-white w-[35%]">Giá từ</label>
                                 <NumericFormat type="text" name="price" id="price"
                                     className="block w-[65%] text-sm p-1 text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     thousandSeparator=","
                                     displayType="input"
-                                    placeholder="Giá thấp nhất"
+                                    placeholder="Giá từ"
                                     suffix=" VNĐ"
                                     value={minPrice}
                                     onValueChange={(values) => {
@@ -238,12 +239,12 @@ const ExportManagement = () => {
                                 />
                             </div>
                             <div className="flex items-center w-full col-span-3 gap">
-                                <label htmlFor="first_name" className="block mb-2 text-sm font-normal pr-2 text-right text-gray-900 dark:text-white w-[35%]">Giá cao nhất</label>
+                                <label htmlFor="first_name" className="block mb-2 text-sm font-normal pr-2 text-right text-gray-900 dark:text-white w-[35%]">Giá đến</label>
                                 <NumericFormat type="text" name="price" id="price"
                                     className="block w-[65%] text-sm p-1 text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     thousandSeparator=","
                                     displayType="input"
-                                    placeholder="Giá cao nhất"
+                                    placeholder="Giá đến"
                                     suffix=" VNĐ"
                                     value={maxPrice}
                                     onValueChange={(values) => {
@@ -284,15 +285,15 @@ const ExportManagement = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {listExport?.map((item, index) => {
+                                {listReturn?.map((item, index) => {
                                     return (
                                         <tr className="text-black border border-b border-blue-400" key={index}>
                                             <th scope="row" className="px-6 py-2 font-medium text-right text-black border border-blue-300 whitespace-nowrap">
                                                 {(currentPage - 1) * size + index + 1}
                                             </th>
                                             <td className="px-6 py-2 text-right border border-blue-400">{item?.code}</td>
-                                            <td className="px-6 py-2 text-right border border-blue-400">{item?.customer.name}</td>
-                                            <td className="px-6 py-2 text-right border border-blue-400">{item?.customer.phoneNumber}</td>
+                                            <td className="px-6 py-2 text-right border border-blue-400">{item?.customer?.name}</td>
+                                            <td className="px-6 py-2 text-right border border-blue-400">{item?.customer?.phoneNumber}</td>
                                             <td className="px-6 py-2 text-right border border-blue-400">{formatVND(item?.totalAmount)}</td>
                                             <td className="px-6 py-2 text-right border border-blue-400">{`${formatDate(item?.createAt)}`}</td>
                                             <td className="px-6 py-2 text-center border border-blue-400">
@@ -301,7 +302,7 @@ const ExportManagement = () => {
                                                 {item?.approveStatus === 'APPROVED' && <span className="px-4 py-1 font-medium uppercase rounded-lg bg-green">ĐÃ DUYỆT</span>}
                                             </td>
                                             <td className="flex items-center justify-center gap-3 px-6 py-2 border-blue-400 ">
-                                                {item?.approveStatus === 'WAITING' && <MdModeEditOutline className="text-lg font-bold text-blue-700 transition-all duration-500 shadow-sm cursor-pointer hover:scale-[140%] " onClick={() => navigate(`/inventory/export/edit/${item?.code}`)} />}
+                                                {item?.approveStatus === 'WAITING' && <MdModeEditOutline className="text-lg font-bold text-blue-700 transition-all duration-500 shadow-sm cursor-pointer hover:scale-[140%] " onClick={() => navigate(`/inventory/return/edit/${item?.code}`)} />}
                                                 {item?.approveStatus === 'APPROVED' && <TbEyeSearch className="text-lg font-bold text-blue-700 transition-all duration-500 shadow-sm cursor-pointer hover:scale-[140%] " onClick={() => handleViewPDF(item)} />}
                                                 {item?.approveStatus === 'APPROVED' && <FaFileExport className="text-lg font-bold text-blue-700 transition-all duration-500 shadow-sm cursor-pointer hover:scale-[140%] " onClick={() => handleExportPDF(item)} />}
                                                 {/* <FaTrashAlt className="text-lg font-bold transition-all duration-150 shadow-sm cursor-pointer hover:scale-[140%] text-red" /> */}
@@ -309,17 +310,17 @@ const ExportManagement = () => {
                                         </tr>
                                     )
                                 })}
-                                {listExport?.length === 0 && (
+                                {listReturn?.length === 0 && (
                                     <tr className="text-black border border-b border-blue-400" >
                                         <th scope="row" className="px-6 py-2 font-medium text-right text-black border border-r-0 border-blue-300 whitespace-nowrap">
-                                            Không tìm thấy phiếu xuất
+                                            Không tìm thấy phiếu hoàn hàng
                                         </th>
 
                                     </tr>
                                 )}
                             </tbody>
                         </table>
-                        {listExport?.length !== 0 && (
+                        {listReturn?.length !== 0 && (
                             <Pagination
                                 totalPages={paginationInformation?.totalElements}
                                 size={size}
@@ -360,4 +361,4 @@ const ExportManagement = () => {
     )
 }
 
-export default ExportManagement
+export default ReturnManagement

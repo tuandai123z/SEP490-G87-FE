@@ -181,6 +181,7 @@ const ExportManagement = () => {
 
     const handleViewPDF = (data) => {
         setCurrentDataPDF(data);
+        console.log(data);
         setTimeout(generatePDFView, 100);
     }
 
@@ -223,12 +224,12 @@ const ExportManagement = () => {
                                 <input type="date" id="first_name" value={toDate} onChange={e => setToDate(e.target.value)} className="block w-[65%] text-sm p-1 text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                             </div>
                             <div className="flex items-center w-full col-span-3 gap">
-                                <label htmlFor="first_name" className="block mb-2 text-sm font-normal pr-2 text-right text-gray-900 dark:text-white w-[35%]">Giá thấp nhất</label>
+                                <label htmlFor="first_name" className="block mb-2 text-sm font-normal pr-2 text-right text-gray-900 dark:text-white w-[35%]">Giá từ</label>
                                 <NumericFormat type="text" name="price" id="price"
                                     className="block w-[65%] text-sm p-1 text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     thousandSeparator=","
                                     displayType="input"
-                                    placeholder="Giá thấp nhất"
+                                    placeholder="Giá từ"
                                     suffix=" VNĐ"
                                     value={minPrice}
                                     onValueChange={(values) => {
@@ -238,12 +239,12 @@ const ExportManagement = () => {
                                 />
                             </div>
                             <div className="flex items-center w-full col-span-3 gap">
-                                <label htmlFor="first_name" className="block mb-2 text-sm font-normal pr-2 text-right text-gray-900 dark:text-white w-[35%]">Giá cao nhất</label>
+                                <label htmlFor="first_name" className="block mb-2 text-sm font-normal pr-2 text-right text-gray-900 dark:text-white w-[35%]">Giá đến</label>
                                 <NumericFormat type="text" name="price" id="price"
                                     className="block w-[65%] text-sm p-1 text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     thousandSeparator=","
                                     displayType="input"
-                                    placeholder="Giá cao nhất"
+                                    placeholder="Giá đến"
                                     suffix=" VNĐ"
                                     value={maxPrice}
                                     onValueChange={(values) => {

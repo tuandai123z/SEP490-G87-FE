@@ -10,17 +10,18 @@ import { addToOrderReturn, clearOrderReturn, increaseProductReturn, reduceProduc
 
 
 const AddProduct = ({ onChangeShowAdd, data }) => {
-    const [listCategories, setListCategories] = useState([]);
-    const [currentCategory, setCurrentCategory] = useState({});
-    const [listProducts, setListProducts] = useState([]);
-    const ref = useRef(false);
     const orderReturn = useSelector(state => state.orderReturn);
     const dispatch = useDispatch();
+    console.log(orderReturn, '==========');
 
     const handleAddProduct = (product) => {
-        const isSastify = orderReturn?.length === 0 ? true : orderReturn?.some(item => (item?.code === product.code && item.quantity < product.quantity));
+        const totalProduct = orderReturn?.map(item => {
+            if (item?.code === product?.code) return item
+        }).reduce((sum, product) => sum + Number(product?.currentQuantity), Number(0))
+        const isSastify = orderReturn?.length === 0 ? true : orderReturn?.some(item => !(item?.code === product.code && product.quantity <= item.currentQuantity && totalProduct >= product.quantity));
         if (isSastify) {
-            const action = addToOrderReturn(product);
+            const newProduct = { ...product, currentQuantity: 1 }
+            const action = addToOrderReturn(newProduct);
             dispatch(action);
         } else {
             toast.warn('Sản phẩm này đã đạt giới hạn!')
@@ -33,8 +34,13 @@ const AddProduct = ({ onChangeShowAdd, data }) => {
     }
 
     const handleIncrease = (product) => {
-        const action = increaseProductReturn(product);
-        dispatch(action);
+        const isSastify = orderReturn?.length === 0 ? true : orderReturn?.some(item => !(item?.code === product.code && product.quantity <= product.currentQuantity));
+        if (isSastify) {
+            const action = increaseProductReturn(product);
+            dispatch(action);
+        } else {
+            toast.warn('Sản phẩm này đã đạt giới hạn!')
+        }
     }
 
     const handleRemove = (product) => {
@@ -76,7 +82,7 @@ const AddProduct = ({ onChangeShowAdd, data }) => {
                                     <img className="object-cover md:h-[180px] rounded-l-md rounded-t-sm" src={item?.imagePath} alt="" />
                                 </div>
                                 <div className={`absolute bottom-0 w-full left-0 h-[50px] bg-gray-500/[0.95] rounded-b-sm flex justify-center items-center`}>
-                                    <span className="font-medium text-white">{item?.name}</span>
+                                    <span className="font-medium text-white">{`${item?.name}-${item?.inventoryQuantity}`}</span>
                                 </div>
 
                             </div>
@@ -104,7 +110,7 @@ const AddProduct = ({ onChangeShowAdd, data }) => {
                                             <span className="text-[12px] text-white font-normal">{d?.brandName}</span>
                                         </div>
                                         <div className="w-[30%] flex items-start">
-                                            <span className="text-[12px] text-white font-medium">Số lượng: {d?.quantity}</span>
+                                            <span className="text-[12px] text-white font-medium">Số lượng: {d?.currentQuantity}</span>
                                         </div>
                                     </div>
                                 </div>

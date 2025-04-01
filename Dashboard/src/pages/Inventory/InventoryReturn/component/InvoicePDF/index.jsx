@@ -70,7 +70,7 @@ const InvoicePDF = React.forwardRef(({ data }, ref) => {
         return ''
     }
 
-    const totalCost = data?.products && data?.products?.reduce((sum, product) => sum + Number(product?.priceExport), Number(0));
+    const totalCost = data?.products && data?.products?.reduce((sum, product) => sum + Number(product?.exportQuantity * product?.priceExport), Number(0));
 
     return (
         <div ref={ref} className="w-full p-5 mx-auto border border-gray-300 rounded-lg shadow-lg">
@@ -113,8 +113,8 @@ const InvoicePDF = React.forwardRef(({ data }, ref) => {
                                 <td className="px-6 py-2 align-middle border border-gray-300">{p?.product?.name}</td>
                                 <td className="px-6 py-2 text-center align-middle border border-gray-300">{p?.product?.unit}</td>
                                 <td className="px-6 py-2 text-center align-middle border border-gray-300">{p?.exportQuantity}</td>
-                                <td className="px-6 py-2 text-center align-middle border border-gray-300">{formatVND(p?.product.sellingPrice)}</td>
                                 <td className="px-6 py-2 text-center align-middle border border-gray-300">{formatVND(p?.priceExport)}</td>
+                                <td className="px-6 py-2 text-center align-middle border border-gray-300">{formatVND(p?.exportQuantity * p?.priceExport)}</td>
                             </tr>)
                     })}
                     <tr>
