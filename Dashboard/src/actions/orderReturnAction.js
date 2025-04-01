@@ -37,3 +37,17 @@ export const clearOrderReturn = () => {
     payload: [],
   };
 };
+
+export const changeStatusReturn = (code, newStatus) => {
+  return {
+    type: 'CHANGE_STATUS_RETURN',
+    payload: { code, newStatus },
+  };
+};
+
+export const changeReasonReturn = (code, newReason) => {
+  return {
+    type: 'CHANGE_REASON_RETURN',
+    payload: { code, newReason },
+  };
+};

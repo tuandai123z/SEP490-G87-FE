@@ -7,8 +7,9 @@ import ModalConfirmCreate from "../../../../components/common/ModalConfirmCreate
 import { axiosInstance } from "../../../../utils/axiosInstant";
 import { formatVND } from "../../../../utils/format";
 import { Select } from "../../../../components/common/Select";
-import { clearOrderReturn } from "../../../../actions/orderReturnAction";
+import { changeReasonReturn, changeStatusReturn, clearOrderReturn } from "../../../../actions/orderReturnAction";
 import AddProduct from "../component/AddProduct";
+import Loading from '../../../../components/layouts/Loading'
 
 const CreateReturnForm = () => {
     const [isOpenModal, setIsOpenModal] = useState(false);
@@ -17,8 +18,10 @@ const CreateReturnForm = () => {
     const [listOrderProducts, setListOrderProducts] = useState([]);
     const [listOrderSaleCode, setListOrderSaleCode] = useState([]);
     const [orderCodeSearch, setOrderCodeSearch] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
     const totalCost = listOrderProducts && listOrderProducts?.reduce((sum, product) => sum + Number(product?.quantity * product?.sellingPrice * (100 - product?.discount) / 100), Number(0));
     const orderReturn = useSelector(state => state.orderReturn);
+    const dataUser = useSelector(state => state.user);
     const ref = useRef(false);
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -35,7 +38,6 @@ const CreateReturnForm = () => {
                 const data = res.data;
                 const resultListOrderCode = data?.content?.map(item => item?.code);
                 setListOrderSaleCode(resultListOrderCode);
-                console.log(data, '-------------');
             })
             .catch((err) => {
                 if (err.response) {
@@ -57,9 +59,10 @@ const CreateReturnForm = () => {
                 setCurrentCustomer(data?.customer)
                 const products = data?.orderProducts?.map(item => ({
                     ...item,
-                    discount: item?.discount * 100
+                    discount: item?.discount * 100,
+                    statusReturn: false,
+                    reason: ''
                 }));
-                console.log(data, '...............');
                 setListOrderProducts(products);
             })
             .catch((err) => {
@@ -74,25 +77,64 @@ const CreateReturnForm = () => {
             });
     }
 
-    const handleCreateExportOrder = () => {
+    const handleCreateReturnOrder = () => {
+        const products = orderReturn?.map(item => ({
+            productCode: item?.code,
+            reason: item?.reason,
+            statusProduct: item?.statusReturn,
+            quantity: item?.quantity
+        }))
 
+        const data = {
+            orderCode: orderCodeSearch,
+            employeeCode: dataUser?.employee_code,
+            products: products
+        }
+
+        setIsLoading(true);
+        axiosInstance
+            .post(`/return-form/create`, data)
+            .then(res => {
+                const data = res.data;
+                console.log(data, '----------------');
+                setIsOpenModal(false);
+                setIsLoading(false);
+                toast.success("Tạo phiếu hoàn hàng thành công!")
+                const action = clearOrderReturn();
+                dispatch(action);
+            })
+            .catch((err) => {
+                if (err.response) {
+                    const errorRes = err.response.data;
+                    toast.error(errorRes.message);
+                } else if (err.request) {
+                    toast.error(err.request);
+                } else {
+                    toast.error(err.message);
+                }
+            });
+        console.log(data, '====================');
     }
 
     const handleOpenModal = () => {
         if (!orderCodeSearch) {
-            toast.warn("Bạn chưa chọn thông tin đơn hàng");
+            toast.warn("Bạn chưa chọn thông tin phiếu xuất kho");
             return
         }
 
-        const isOutOfStock = listOrderProducts?.some(product => product?.inventoryQuantity < product?.quantity);
-
-        if (isOutOfStock) {
-            toast.warn("Không đủ số lượng sản phẩm trong kho để xuất!");
-            return;
+        if (orderReturn?.length === 0) {
+            toast.warn("Bạn chưa chọn thiết bị!");
+            return
         }
 
         setIsOpenModal(true);
     }
+
+    const handleChange = (code, statusReturn) => {
+        const action = changeStatusReturn(code, statusReturn);
+        dispatch(action);
+        console.log(orderReturn);
+    };
 
     useEffect(() => {
         if (ref.current) return;
@@ -107,10 +149,17 @@ const CreateReturnForm = () => {
     }, [orderCodeSearch])
 
     const onChangeShowAdd = () => {
+        if (listOrderProducts?.length === 0) {
+            toast.warn("Vui lòng chọn phiếu xuất kho!")
+            return;
+        }
         setIsOpenModalAdd(!isOpenModalAdd);
     }
 
-    console.log(listOrderProducts[0], '=================');
+    const handleChangeReason = (code, newReason) => {
+        const action = changeReasonReturn(code, newReason);
+        dispatch(action);
+    }
 
 
     return (
@@ -163,9 +212,8 @@ const CreateReturnForm = () => {
                                 <th scope="col" className="px-6 py-3 border border-blue-300">ĐVT</th>
                                 <th scope="col" className="px-6 py-3 border border-blue-300">Số lượng</th>
                                 <th scope="col" className="px-6 py-3 border border-blue-300">Trạng thái</th>
-                                <th scope="col" className="px-6 py-3 border border-blue-300">Giá bán</th>
-                                <th scope="col" className="px-6 py-3 border border-blue-300">Chiết khấu</th>
                                 <th scope="col" className="px-6 py-3 border border-blue-300">Thành tiền</th>
+                                <th scope="col" className="px-6 py-3 border border-blue-300">Lý do</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -177,15 +225,40 @@ const CreateReturnForm = () => {
                                         </th>
                                         <td className="px-6 py-4 border border-blue-300">{item?.name}</td>
                                         <td className="px-6 py-4 border border-blue-300">{item?.unit}</td>
-                                        <td className="px-6 py-4 border border-blue-300">{item?.quantity}</td>
-                                        <td className="px-6 py-4 border border-blue-300">
-                                            
+                                        <td className="px-6 py-4 border border-blue-300">{item?.currentQuantity}</td>
+                                        <td className="relative flex items-center gap-4 px-6 py-4 translate-y-1/2">
+                                            <label className="flex items-center gap-1 " >
+                                                <input
+                                                    type="radio"
+                                                    name={`status-${item?.id}-${item?.statusReturn ? 'break' : 'old'}`}
+                                                    value="true"
+                                                    checked={item?.statusReturn}
+                                                    onChange={() => handleChange(item?.code, true)}
+                                                />
+                                                Cũ
+                                            </label>
+                                            <label className="flex items-center gap-1">
+                                                <input
+                                                    type="radio"
+                                                    name={`status-${item?.id}-${item?.statusReturn ? 'break' : 'old'}`}
+                                                    value="false"
+                                                    checked={!item?.statusReturn}
+                                                    onChange={() => handleChange(item?.code, false)}
+                                                />
+                                                Hỏng
+                                            </label>
                                         </td>
-                                        <td className="px-6 py-4 border border-blue-300">{formatVND(item?.sellingPrice)}</td>
-                                        <td className="relative px-6 py-4 border border-blue-300">
-                                            {`${item?.discount} %`}
-                                        </td>
+
                                         <td className="px-6 py-4 border border-blue-300">{formatVND(item?.quantity * item?.sellingPrice * (100 - item?.discount) / 100)}</td>
+                                        <td className="px-6 py-4 border border-blue-300">
+                                            <textarea
+                                                type="text"
+                                                value={item?.reason}
+                                                onChange={(e) => handleChangeReason(item?.code, e.target.value)}
+                                                className="w-full h-20 p-2 border-none rounded"
+                                                placeholder="Nhập lý do"
+                                            />
+                                        </td>
 
                                     </tr>
                                 )
@@ -193,7 +266,6 @@ const CreateReturnForm = () => {
                             {orderReturn?.length !== 0 && (
                                 <tr className="text-black border border-b border-blue-400" >
                                     <th scope="row" className="px-6 py-4 font-medium text-black border border-l-0 border-r-0 border-blue-300 whitespace-nowrap">Tổng tiền:</th>
-                                    <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
                                     <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
                                     <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
                                     <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
@@ -209,7 +281,6 @@ const CreateReturnForm = () => {
                                     <td className="px-6 py-4 border border-blue-300"></td>
                                     <td className="px-6 py-4 border border-blue-300"></td>
                                     <td className="px-6 py-4 border border-blue-300"></td>
-                                    <td className="px-6 py-4 border border-blue-300"></td>
                                     <td className="px-4 py-4 border border-blue-300"></td>
                                     <td className="px-6 py-4 border border-blue-300"></td>
                                 </tr>
@@ -218,9 +289,10 @@ const CreateReturnForm = () => {
                     </table>
                 </div>
             </div>
+            {isLoading && <Loading />}
             {isOpenModal && <ModalConfirmCreate
                 handleClose={() => setIsOpenModal(false)}
-                handleConfirm={handleCreateExportOrder}
+                handleConfirm={handleCreateReturnOrder}
                 type='tạo'
             />}
             {isOpenModalAdd && <AddProduct

@@ -5,7 +5,6 @@ import GeneralSetting from '../pages/GeneralSetting';
 import BranchManagement from '../pages/GeneralSetting/BranchManagement';
 import CategoryManagement from '../pages/GeneralSetting/CategoryManagement';
 import Inventory from '../pages/Inventory';
-import ExportInventory from '../pages/Inventory/ExportInventory';
 import InventoryStatistic from '../pages/Inventory/InventoryStatistic';
 import Supplier from '../pages/Inventory/Supplier';
 import Login from '../pages/Login';
@@ -28,6 +27,8 @@ import ExportManagement from '../pages/Inventory/InventoryExport/ExportManagemen
 import CreateExportDelivery from '../pages/Inventory/InventoryExport/CreateExport';
 import EditExportDelivery from '../pages/Inventory/InventoryExport/EditExport';
 import CreateReturnForm from '../pages/Inventory/InventoryReturn/CreateReturnFrom';
+import ReturnManagement from '../pages/Inventory/InventoryReturn/ReturnManagement';
+import EditReturnForm from '../pages/Inventory/InventoryReturn/EditReturn';
 
 const publicRoutes = [
   { path: '/', component: Login },
@@ -56,9 +57,9 @@ const publicRoutes = [
   { path: '/inventory/export/management', component: ExportManagement, layout: InventoryLayout },
   { path: '/inventory/export/create', component: CreateExportDelivery, layout: InventoryLayout },
   { path: '/inventory/export/edit/:slug', component: EditExportDelivery, layout: InventoryLayout },
-  { path: '/inventory/return/management', component: ExportManagement, layout: InventoryLayout },
+  { path: '/inventory/return/management', component: ReturnManagement, layout: InventoryLayout },
   { path: '/inventory/return/create', component: CreateReturnForm, layout: InventoryLayout },
-  { path: '/inventory/return/edit/:slug', component: EditExportDelivery, layout: InventoryLayout },
+  { path: '/inventory/return/edit/:slug', component: EditReturnForm, layout: InventoryLayout },
   { path: '/inventory/supplier', component: Supplier, layout: DefaultLayout },
   { path: '/profile', component: UserProfile },
 ];
