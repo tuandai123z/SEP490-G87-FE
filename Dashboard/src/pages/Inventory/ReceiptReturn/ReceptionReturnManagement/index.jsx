@@ -9,30 +9,34 @@ import { useNavigate } from "react-router-dom";
 import Pagination from "../../../../components/common/Pagination";
 import { LIST_STATUS_FILTER_ORDER } from "../../OrderMangement/const";
 import { formatVND } from "../../../../utils/format";
+import { Select } from "../../../../components/common/Select";
 
 
-const ReceptionManagement = () => {
+const ReceptionReturnManagement = () => {
     const [currentStatusOrder, setCurrentStatusOrder] = useState('')
     const [orderCode, setOrderCode] = useState('');
     const [currentSupplierId, setCurrentSupplierId] = useState('');
     const [fromDate, setFromDate] = useState('');
-    const [listSuppliers, setListSuppliers] = useState([]);
+    const [listCustomer, setListCustomer] = useState([]);
     const [listReceptions, setListReceptions] = useState([]);
     const [toDate, setToDate] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [currentCustomer, setCurrentCustomer] = useState('');
     const [paginationInformation, setPaginationInformation] = useState('');
     const size = 8;
     const navigate = useNavigate();
 
 
-    const getListReception = () => {
+    const getListReceptionReturn = () => {
         axiosInstance
             .get(`/inventory-receipt/find`, {
                 params: {
-                    ...(currentStatusOrder && currentStatusOrder !== 'RECEIVE_DELIVERY' ? { approveStatus: currentStatusOrder } : { deliveryStatus: currentStatusOrder }),
+                    // ...(currentStatusOrder && currentStatusOrder !== 'RECEIVE_DELIVERY' ? { approveStatus: currentStatusOrder } : { deliveryStatus: currentStatusOrder }),
                     ...(fromDate ? { fromDate: fromDate } : {}),
                     ...(toDate ? { toDate: toDate } : {}),
                     code: `${orderCode}`,
+                    ...(currentCustomer ? { customerId: currentCustomer?.id } : {}),
                     ...(currentSupplierId !== '' ? { supplierId: currentSupplierId } : {}),
                     page: currentPage - 1,
                     size: size,
@@ -41,7 +45,6 @@ const ReceptionManagement = () => {
             .then(res => {
                 const data = res.data;
                 setListReceptions(data.content)
-                console.log(data);
                 setPaginationInformation(data);
             })
             .catch((err) => {
@@ -56,16 +59,18 @@ const ReceptionManagement = () => {
             });
     }
 
-    const getListSupplier = () => {
+    const getListCustomer = () => {
         axiosInstance
-            .get(`/supplier/find-all`, {
+            .get(`/customer/find-all`, {
                 params: {
-                    size: 999,
+                    phoneNumber: ''
                 }
             })
             .then(res => {
-                const data = res.data.content;
-                setListSuppliers(data);
+                const data = res.data;
+                const result = data?.map(d => d?.phoneNumber)
+                console.log(result, '-----------');
+                setListCustomer(['', ...result]);
             })
             .catch((err) => {
                 if (err.response) {
@@ -79,17 +84,48 @@ const ReceptionManagement = () => {
             });
     }
 
+    const getCurrentCustomer = () => {
+        if (phoneNumber !== '') {
+            axiosInstance
+                .get(`/customer/find-all`, {
+                    params: {
+                        phoneNumber
+                    }
+                })
+                .then(res => {
+                    const data = res.data;
+                    setCurrentCustomer(data[0]);
+                })
+                .catch((err) => {
+                    if (err.response) {
+                        const errorRes = err.response.data;
+                        toast.error(errorRes.message);
+                    } else if (err.request) {
+                        toast.error(err.request);
+                    } else {
+                        toast.error(err.message);
+                    }
+                });
+        }
+    }
+
     const handleSearch = () => {
-        getListReception();
+        getListReceptionReturn();
     }
 
     useEffect(() => {
-        getListReception();
+        getListReceptionReturn();
     }, [currentPage])
 
     useEffect(() => {
-        getListSupplier();
+        getListCustomer();
     }, [])
+
+    useEffect(() => {
+        if (phoneNumber) {
+            getCurrentCustomer();
+        }
+    }, [phoneNumber])
 
     const handleFromDateChange = (e) => {
         const newFromDate = e.target.value;
@@ -106,10 +142,12 @@ const ReceptionManagement = () => {
         }
         setToDate(newToDate);
     };
+
+
     return (
         <div className="relative overflow-x-auto ">
             <div className="flex items-center w-full h-auto gap-4 px-2 py-4">
-                <h3 className="text-xl font-semibold uppercase">Danh sách phiếu nhập kho</h3>
+                <h3 className="text-xl font-semibold uppercase">Danh sách phiếu nhập kho hoàn hàng</h3>
             </div>
             <div className="flex w-full gap-4 px-2 mb-2">
                 <div className="w-full p-2.5 grid grid-cols-4 gap-4 border-2 border-gray-400 relative">
@@ -119,13 +157,12 @@ const ReceptionManagement = () => {
                             <input type="text" id="code" value={orderCode} onChange={e => setOrderCode(e.target.value)} className="block w-[75%] p-1 text-sm text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                         </div>
                         <div className="flex items-center w-full col-span-2 gap ">
-                            <label htmlFor="first_name" className="block mb-2 text-sm font-normal pr-2 text-right text-gray-900 dark:text-white w-[20%]">Nhà cung cấp</label>
-                            <select id="jobRank" value={currentSupplierId} onChange={e => setCurrentSupplierId(e.target.value)} className="bg-gray-50 w-[80%] border border-gray-300 text-gray-900 text-sm focus:ring-primary-500 focus:border-primary-500 block p-1.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                <option value={""}>---Nhà cung cấp---</option>
-                                {listSuppliers?.map((supplier, index) => {
-                                    return <option value={supplier?.id} key={index}>{supplier?.name}</option>
-                                })}
-                            </select>
+                            <label htmlFor="first_name" className="block mb-2 text-sm font-normal pr-2 text-right text-gray-900 dark:text-white w-[20%]">Khách hàng</label>
+                            <Select
+                                value={phoneNumber}
+                                onChange={setPhoneNumber}
+                                options={listCustomer}
+                            />
                         </div>
                         <div className="flex items-center w-full col-span-1 gap">
                             <label htmlFor="first_name" className="block mb-2 text-sm font-normal pr-2 text-right text-gray-900 dark:text-white w-[25%]">Tình trạng</label>
@@ -157,9 +194,9 @@ const ReceptionManagement = () => {
                     <div className="flex justify-end py-2">
                         <div
                             className={`px-6 py-2 border-t-2 border-l-2 cursor-pointer transition-all duration-100 bg-blue-400  text-white font-semibold`}
-                            onClick={() => { navigate('/inventory/reception/create') }}
+                            onClick={() => { navigate('/inventory/receipt-return/create') }}
                         >
-                            <span className="uppercase" >Tạo phiếu nhập kho</span>
+                            <span className="uppercase" >Tạo phiếu nhập kho hoàn hàng</span>
                         </div>
                     </div>
                     <table className="w-full text-sm text-left text-blue-100 border border-blue-400 shadow-sm rtl:text-right dark:text-blue-100">
@@ -183,7 +220,7 @@ const ReceptionManagement = () => {
                                             {(currentPage - 1) * size + index + 1}
                                         </th>
                                         <td className="px-6 py-2 text-right border border-blue-400">{order?.code}</td>
-                                        <td className="px-6 py-2 text-right border border-blue-400">{orderItem?.supplier?.name || 'Hoàn hàng'}</td>
+                                        <td className="px-6 py-2 text-right border border-blue-400">{orderItem?.supplier?.name}</td>
                                         <td className="px-6 py-2 text-right border border-blue-400">{formatVND(order?.totalAmount)}</td>
                                         <td className="px-6 py-2 text-right border border-blue-400">{`${order?.createAtDateTime?.split('.')[0]?.split('T')[0]} ${order?.createAtDateTime?.split('.')[0]?.split('T')[1]}`}</td>
                                         <td className="px-6 py-2 text-center border border-blue-400">
@@ -215,7 +252,7 @@ const ReceptionManagement = () => {
                             size={size}
                             currentPage={currentPage}
                             onPageChange={setCurrentPage}
-                            content={'phiếu nhập kho'}
+                            content={'phiếu nhập kho hoàn hàng'}
                         />
                     )}
                 </div>
@@ -224,4 +261,4 @@ const ReceptionManagement = () => {
     )
 }
 
-export default ReceptionManagement
+export default ReceptionReturnManagement

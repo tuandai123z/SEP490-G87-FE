@@ -58,8 +58,10 @@ const orderReturnReducer = (state = [], action) => {
 
     case 'CHANGE_STATUS_RETURN': {
       if (state?.length === 1) {
+        console.log(state);
         return state.map(item => (item.code === action.payload.code ? { ...item, statusReturn: action.payload.newStatus } : item));
       }
+      console.log(11111111111111111);
        const returnChange = state.find(item => item.code === action.payload.code && item.statusReturn === !action.payload.newStatus);
 
        const isChange = state.find(item => item.code === action.payload.code && item.statusReturn === action.payload.newStatus);

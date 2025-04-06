@@ -5,7 +5,6 @@ import GeneralSetting from '../pages/GeneralSetting';
 import BranchManagement from '../pages/GeneralSetting/BranchManagement';
 import CategoryManagement from '../pages/GeneralSetting/CategoryManagement';
 import Inventory from '../pages/Inventory';
-import InventoryStatistic from '../pages/Inventory/InventoryStatistic';
 import Supplier from '../pages/Inventory/Supplier';
 import Login from '../pages/Login';
 import ProductsManagement from '../pages/ProductsManagement';
@@ -29,6 +28,10 @@ import EditExportDelivery from '../pages/Inventory/InventoryExport/EditExport';
 import CreateReturnForm from '../pages/Inventory/InventoryReturn/CreateReturnFrom';
 import ReturnManagement from '../pages/Inventory/InventoryReturn/ReturnManagement';
 import EditReturnForm from '../pages/Inventory/InventoryReturn/EditReturn';
+import ReceptionReturnManagement from '../pages/Inventory/ReceiptReturn/ReceptionReturnManagement';
+import CreateReceptionReturn from '../pages/Inventory/ReceiptReturn/CreateReceptionReturn';
+import StatisticManagement from '../pages/Inventory/InventoryStatistic/StatisticManagement';
+import StatisticDetail from '../pages/Inventory/InventoryStatistic/StatisticDetail';
 
 const publicRoutes = [
   { path: '/', component: Login },
@@ -41,7 +44,8 @@ const publicRoutes = [
   { path: '/admin/management/category', component: CategoryManagement, layout: DefaultLayout },
   { path: '/admin/management/branch', component: BranchManagement, layout: DefaultLayout },
   { path: '/inventory', component: Inventory, layout: InventoryLayout },
-  { path: '/inventory/statistic', component: InventoryStatistic, layout: InventoryLayout },
+  { path: '/inventory/statistic', component: StatisticManagement, layout: InventoryLayout },
+  { path: '/inventory/statisticDetail/:slug', component: StatisticDetail, layout: InventoryLayout },
   { path: '/inventory/order/edit/:slug', component: EditOrder, layout: InventoryLayout },
   { path: '/inventory/order/create', component: CreateOrder, layout: InventoryLayout },
   { path: '/inventory/order/management', component: OrderManagement, layout: InventoryLayout },
@@ -60,6 +64,9 @@ const publicRoutes = [
   { path: '/inventory/return/management', component: ReturnManagement, layout: InventoryLayout },
   { path: '/inventory/return/create', component: CreateReturnForm, layout: InventoryLayout },
   { path: '/inventory/return/edit/:slug', component: EditReturnForm, layout: InventoryLayout },
+  { path: '/inventory/receipt-return/management', component: ReceptionReturnManagement, layout: InventoryLayout },
+  { path: '/inventory/receipt-return/create', component: CreateReceptionReturn, layout: InventoryLayout },
+  { path: '/inventory/receipt-return/edit/:slug', component: EditReturnForm, layout: InventoryLayout },
   { path: '/inventory/supplier', component: Supplier, layout: DefaultLayout },
   { path: '/profile', component: UserProfile },
 ];
