@@ -60,7 +60,7 @@ const CreateReturnForm = () => {
                 const products = data?.orderProducts?.map(item => ({
                     ...item,
                     discount: item?.discount * 100,
-                    statusReturn: false,
+                    statusReturn: 'broken',
                     reason: ''
                 }));
                 setListOrderProducts(products);
@@ -88,7 +88,8 @@ const CreateReturnForm = () => {
         const data = {
             orderCode: orderCodeSearch,
             employeeCode: dataUser?.employee_code,
-            products: products
+            products: products,
+            customerId: currentCustomer?.id
         }
 
         setIsLoading(true);
@@ -113,7 +114,6 @@ const CreateReturnForm = () => {
                     toast.error(err.message);
                 }
             });
-        console.log(data, '====================');
     }
 
     const handleOpenModal = () => {
@@ -230,20 +230,20 @@ const CreateReturnForm = () => {
                                             <label className="flex items-center gap-1 " >
                                                 <input
                                                     type="radio"
-                                                    name={`status-${item?.id}-${item?.statusReturn ? 'break' : 'old'}`}
-                                                    value="true"
-                                                    checked={item?.statusReturn}
-                                                    onChange={() => handleChange(item?.code, true)}
+                                                    name={`status-${item?.id}-${item?.statusReturn === 'broken' ? 'broken' : 'old'}`}
+                                                    value="old"
+                                                    checked={item?.statusReturn === 'old'}
+                                                    onChange={() => handleChange(item?.code, 'old')}
                                                 />
                                                 Cũ
                                             </label>
                                             <label className="flex items-center gap-1">
                                                 <input
                                                     type="radio"
-                                                    name={`status-${item?.id}-${item?.statusReturn ? 'break' : 'old'}`}
-                                                    value="false"
-                                                    checked={!item?.statusReturn}
-                                                    onChange={() => handleChange(item?.code, false)}
+                                                    name={`status-${item?.id}-${item?.statusReturn === 'broken' ? 'broken' : 'old'}`}
+                                                    value="broken"
+                                                    checked={item?.statusReturn === 'broken'}
+                                                    onChange={() => handleChange(item?.code, 'broken')}
                                                 />
                                                 Hỏng
                                             </label>

@@ -40,12 +40,12 @@ const ReturnManagement = () => {
             .get('/return-form/find-all', {
                 params: {
                     // ...(currentStatusOrder ? { approveStatus: currentStatusOrder } : {}),
-                    // ...(fromDate ? { fromDate: fromDate } : {}),
-                    // ...(toDate ? { toDate: toDate } : {}),
+                    ...(fromDate ? { fromDate: fromDate } : {}),
+                    ...(toDate ? { toDate: toDate } : {}),
                     ...(code ? { code: code } : {}),
-                    // ...(phoneNumber ? { customerId: currentCustomer?.id } : {}),
-                    // ...(minPrice ? { totalAmountFrom: minPrice } : {}),
-                    // ...(maxPrice ? { totalAmountTo: maxPrice } : {}),
+                    ...(currentCustomer ? { customerId: currentCustomer?.id } : {}),
+                    ...(minPrice ? { amountFrom: minPrice } : {}),
+                    ...(maxPrice ? { amountTo: maxPrice } : {}),
                     page: currentPage - 1,
                     size: size,
                 }
@@ -306,20 +306,20 @@ const ReturnManagement = () => {
                                             <th scope="row" className="px-6 py-2 font-medium text-right text-black border border-blue-300 whitespace-nowrap">
                                                 {(currentPage - 1) * size + index + 1}
                                             </th>
-                                            <td className="px-6 py-2 text-right border border-blue-400">{item?.code}</td>
+                                            <td className="px-6 py-2 text-right border border-blue-400">{item?.returnForm?.code}</td>
                                             <td className="px-6 py-2 text-right border border-blue-400">{item?.customer?.name}</td>
                                             <td className="px-6 py-2 text-right border border-blue-400">{item?.customer?.phoneNumber}</td>
-                                            <td className="px-6 py-2 text-right border border-blue-400">{formatVND(item?.totalAmount)}</td>
-                                            <td className="px-6 py-2 text-right border border-blue-400">{`${formatDate(item?.createAt)}`}</td>
+                                            <td className="px-6 py-2 text-right border border-blue-400">{formatVND(item?.returnForm?.totalAmount)}</td>
+                                            <td className="px-6 py-2 text-right border border-blue-400">{`${formatDate(item?.returnForm?.createAt)}`}</td>
                                             <td className="px-6 py-2 text-center border border-blue-400">
-                                                {item?.approveStatus === 'WAITING' && <span className="px-4 py-1 font-medium uppercase bg-orange-300 rounded-lg">CHỜ DUYỆT</span>}
-                                                {item?.approveStatus === 'REJECTED' && <span className="px-4 py-1 font-medium uppercase rounded-lg bg-red">TỪ CHỐI</span>}
-                                                {item?.approveStatus === 'APPROVED' && <span className="px-4 py-1 font-medium uppercase rounded-lg bg-green">ĐÃ DUYỆT</span>}
+                                                {item?.returnForm?.approveStatus === 'WAITING' && <span className="px-4 py-1 font-medium uppercase bg-orange-300 rounded-lg">CHỜ DUYỆT</span>}
+                                                {item?.returnForm?.approveStatus === 'REJECTED' && <span className="px-4 py-1 font-medium uppercase rounded-lg bg-red">TỪ CHỐI</span>}
+                                                {item?.returnForm?.approveStatus === 'APPROVED' && <span className="px-4 py-1 font-medium uppercase rounded-lg bg-green">ĐÃ DUYỆT</span>}
                                             </td>
                                             <td className="flex items-center justify-center gap-3 px-6 py-2 border-blue-400 ">
-                                                {item?.approveStatus === 'WAITING' && <MdModeEditOutline className="text-lg font-bold text-blue-700 transition-all duration-500 shadow-sm cursor-pointer hover:scale-[140%] " onClick={() => navigate(`/inventory/return/edit/${item?.code}`)} />}
-                                                {item?.approveStatus === 'APPROVED' && <TbEyeSearch className="text-lg font-bold text-blue-700 transition-all duration-500 shadow-sm cursor-pointer hover:scale-[140%] " onClick={() => handleViewPDF(item)} />}
-                                                {item?.approveStatus === 'APPROVED' && <FaFileExport className="text-lg font-bold text-blue-700 transition-all duration-500 shadow-sm cursor-pointer hover:scale-[140%] " onClick={() => handleExportPDF(item)} />}
+                                                {item?.returnForm?.approveStatus === 'WAITING' && <MdModeEditOutline className="text-lg font-bold text-blue-700 transition-all duration-500 shadow-sm cursor-pointer hover:scale-[140%] " onClick={() => navigate(`/inventory/return/edit/${item?.returnForm?.code}`)} />}
+                                                {item?.returnForm?.approveStatus === 'APPROVED' && <TbEyeSearch className="text-lg font-bold text-blue-700 transition-all duration-500 shadow-sm cursor-pointer hover:scale-[140%] " onClick={() => handleViewPDF(item)} />}
+                                                {item?.returnForm?.approveStatus === 'APPROVED' && <FaFileExport className="text-lg font-bold text-blue-700 transition-all duration-500 shadow-sm cursor-pointer hover:scale-[140%] " onClick={() => handleExportPDF(item)} />}
                                                 {/* <FaTrashAlt className="text-lg font-bold transition-all duration-150 shadow-sm cursor-pointer hover:scale-[140%] text-red" /> */}
                                             </td>
                                         </tr>

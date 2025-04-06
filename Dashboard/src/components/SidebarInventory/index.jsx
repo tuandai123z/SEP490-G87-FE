@@ -59,6 +59,22 @@ const Categories = ({ content, Icon, pages }) => {
 const SidebarInventory = () => {
     const navigate = useNavigate();
     const listPages = [
+        // {
+        //     content: "Phiếu nhập kho hoàn hàng",
+        //     icon: IoIosArrowUp,
+        //     listPage: [
+        //         {
+        //             content: "Danh sách",
+        //             icon: FaClipboardList,
+        //             url: '/inventory/receipt-return/management'
+        //         },
+        //         {
+        //             content: "Tạo phiếu",
+        //             icon: FaFileImport,
+        //             url: '/inventory/receipt-return/create'
+        //         }
+        //     ]
+        // },
         {
             content: "Phiếu hoàn hàng",
             icon: IoIosArrowUp,
@@ -117,9 +133,14 @@ const SidebarInventory = () => {
                     url: '/inventory/reception/management'
                 },
                 {
-                    content: "Tạo phiếu",
+                    content: "Nhập kho hàng mới",
                     icon: FaFileImport,
                     url: '/inventory/reception/create'
+                },
+                {
+                    content: "Nhập kho hàng hoàn",
+                    icon: FaFileImport,
+                    url: '/inventory/receipt-return/create'
                 }
             ]
         },
