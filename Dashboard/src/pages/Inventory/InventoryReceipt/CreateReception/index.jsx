@@ -272,15 +272,6 @@ const CreateReception = () => {
                                                 className="w-full px-2 py-1 border border-gray-300 rounded"
                                             />
                                         </td>
-                                        <td className="px-6 py-4 border border-blue-300">
-                                            <input
-                                                type="text"
-                                                placeholder="Nhập vị trí..."
-                                                value={item?.location}
-                                                onChange={(e) => handleChangeLocation(index, e.target.value)}
-                                                className="w-full px-2 py-1 border border-gray-300 rounded"
-                                            />
-                                        </td>
                                         <td className="px-6 py-4 border border-blue-300">{item?.quantity}</td>
                                         <td className="px-4 py-4 border border-blue-300">
                                             <NumericFormat type="text" name="price" id="price"
@@ -308,14 +299,12 @@ const CreateReception = () => {
                                     <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
                                     <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
                                     <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
-                                    <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
                                     <td className="px-6 py-4 border border-r-0 border-blue-300">{formatVND(totalCost)}</td>
                                 </tr>
                             )}
                             {listProducts?.length === 0 && (
                                 <tr className="text-black border border-b border-blue-400" >
                                     <th scope="row" className="px-6 py-4 font-medium text-black border border-blue-300 whitespace-nowrap">Chưa có phiếu nào được chọn</th>
-                                    <td className="px-6 py-4 border border-blue-300"></td>
                                     <td className="px-6 py-4 border border-blue-300"></td>
                                     <td className="px-6 py-4 border border-blue-300"></td>
                                     <td className="px-6 py-4 border border-blue-300"></td>
