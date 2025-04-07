@@ -21,6 +21,7 @@ const ProductsManagement = () => {
     const [imageBase64, setImageBase64] = useState("");
     const [currentImg, setCurrentImg] = useState('');
     const [isChangeImage, setIsChangeImage] = useState(false);
+    const [listUnit, setListUnit] = useState([]);
     const [productDescription, setProductDescription] = useState('');
     const [unit, setUnit] = useState('');
     const [sellingPrice, setSellingPrice] = useState(0);
@@ -50,6 +51,27 @@ const ProductsManagement = () => {
             .then(res => {
                 const data = res.data
                 setListProducts(data);
+            })
+            .catch((err) => {
+                if (err.response) {
+                    const errorRes = err.response.data;
+                    toast.error(errorRes.message);
+                } else if (err.request) {
+                    toast.error(err.request);
+                } else {
+                    toast.error(err.message);
+                }
+                setIsLoading(false);
+            });
+    }
+
+    const getListUnits = () => {
+        axiosInstance
+            .get(`/category/find/units`)
+            .then(res => {
+                const data = res.data;
+                console.log(data);
+                setListUnit(data);
             })
             .catch((err) => {
                 if (err.response) {
@@ -207,6 +229,7 @@ const ProductsManagement = () => {
         ref.current = true;
         getListProducts();
         getListCategoryAndBrand();
+        getListUnits();
     }, [])
 
     useEffect(() => {
@@ -299,7 +322,7 @@ const ProductsManagement = () => {
                                 Danh sách thiết bị điện
                                 <p className="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">Thông tin danh mục sản phẩm thiết bị điện</p>
                             </div>
-                            <button className="flex items-center gap-2 px-4 py-2 text-base text-white bg-blue-500 rounded-md outline-none" onClick={() => handleOpenModalCreate()}>
+                            <button className="flex items-center w-[15%] h-10 gap-2 px-4 py-2 text-base text-white bg-blue-500 outline-none" onClick={() => handleOpenModalCreate()}>
                                 <FaPlus />
                                 Thêm thiết bị
                             </button>
@@ -434,7 +457,14 @@ const ProductsManagement = () => {
                             </div>
                             <div className="col-span-2 sm:col-span-1">
                                 <label htmlFor="unit" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Đơn vị</label>
-                                <input type="text" value={unit} onChange={e => setUnit(e.target.value)} name="unit" id="unit" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Nhập đơn vị" required="" />
+                                <select value={unit} onChange={e => setUnit(e.target.value)} id="jobRank" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                    <option value={''}>---Chọn đơn vị---</option>
+                                    {listUnit?.map((item, index) => {
+                                        return (
+                                            <option value={item} key={index}>{item}</option>
+                                        )
+                                    })}
+                                </select>
                             </div>
                             <div className="col-span-2 sm:col-span-1">
                                 <label htmlFor="price" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Giá bán</label>

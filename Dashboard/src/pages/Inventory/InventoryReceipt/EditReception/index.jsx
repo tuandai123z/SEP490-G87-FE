@@ -93,7 +93,7 @@ const EditReception = () => {
     const handleOpenModalEdit = () => {
         let isAllowOpen = true;
         listProducts?.map((product) => {
-            if (!product?.dateExpired || !product?.dateOfManufacture || !product?.location || product?.unitPrice === '' || product?.unitPrice === '0') {
+            if (!product?.location || product?.unitPrice === '' || product?.unitPrice === '0') {
                 isAllowOpen = false;
                 toast.warn('Vui lòng điền đầy đủ thông tin phiếu nhập');
                 return;

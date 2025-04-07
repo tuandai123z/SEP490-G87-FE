@@ -136,15 +136,14 @@ const CreateReceptionReturn = () => {
             product.dateOfManufacture < product.dateOfExpiry
         ))
 
+
         if (!isAvailableDate) {
             toast.warn("HSD và NSX không hợp lệ!")
             return;
         }
 
-
-
         let allowOpen = listProducts?.length !== 0 && listProducts?.some(product => (
-            product.dateOfManufacture === '' || product.dateOfExpiry === ' ' || product.location === ''
+            product.location === ''
         ))
         if (allowOpen) {
             toast.warn("Vui lòng điền đầy đủ thông tin thiết bị")

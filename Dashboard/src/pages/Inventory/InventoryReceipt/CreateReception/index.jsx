@@ -146,15 +146,9 @@ const CreateReception = () => {
             return;
         }
 
-        if (numberOfReceipts === '') {
-            toast.warn("Vui lòng nhập số chứng từ");
-            return;
-        }
-
-
         const listProductPurchase = listProducts?.map(product => {
             if (allowOpen) {
-                if (product.dateOfManufacture === '' || product.dateOfExpiry === ' ' || product.location === '' || product.price === '') {
+                if (product.location === '' || product.price === '') {
                     allowOpen = false;
                     toast.warn("Vui lòng điền đầy đủ thông tin thiết bị")
                 }
