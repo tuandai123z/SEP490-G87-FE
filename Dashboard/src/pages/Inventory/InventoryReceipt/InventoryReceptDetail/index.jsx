@@ -96,7 +96,7 @@ const InventoryReceptDetail = () => {
                             <input type="date" disabled value={receptionDetail?.documentDate} id="documentDate" className="block w-full p-1 text-sm text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                         </div>
                         <div className="flex items-center w-full">
-                            <label htmlFor="numberOfReceipts" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white w-[50%]">Số chứng từ<span className="pl-1 text-lg font-semibold text-red">*</span></label>
+                            <label htmlFor="numberOfReceipts" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white w-[50%]">Số chứng từ</label>
                             <input type="text" placeholder="Nhập số chứng từ" value={receptionDetail?.numberOfReceipts} disabled id="numberOfReceipts" className="block w-full p-1 text-sm text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                         </div>
                         <p className="absolute text-gray-900 top-[-16px] bg-white font-semibold">Chứng từ</p>
@@ -118,9 +118,8 @@ const InventoryReceptDetail = () => {
                                     <th scope="col" className="px-6 py-3 border border-blue-300">Mã hàng</th>
                                     <th scope="col" className="px-6 py-3 border border-blue-300">Tên hàng</th>
                                     <th scope="col" className="px-6 py-3 border border-blue-300">ĐVT</th>
-                                    <th scope="col" className="px-6 py-3 border border-blue-300">NSX<span className="pl-1 text-lg font-semibold text-red">*</span></th>
-                                    <th scope="col" className="px-6 py-3 border border-blue-300">HSD<span className="pl-1 text-lg font-semibold text-red">*</span></th>
-                                    <th scope="col" className="px-6 py-3 border border-blue-300">Vị trí<span className="pl-1 text-lg font-semibold text-red">*</span></th>
+                                    <th scope="col" className="px-6 py-3 border border-blue-300">NSX</th>
+                                    <th scope="col" className="px-6 py-3 border border-blue-300">HSD</th>
                                     <th scope="col" className="px-6 py-3 border border-blue-300">Số lượng</th>
                                     <th scope="col" className="px-6 py-3 border border-blue-300 ">Giá nhập<span className="pl-1 text-lg font-semibold text-red">*</span></th>
                                     <th scope="col" className="px-6 py-3 border border-blue-300">Thành tiền</th>
@@ -151,15 +150,6 @@ const InventoryReceptDetail = () => {
                                                     className="w-full px-2 py-1 border border-gray-300 rounded"
                                                 />
                                             </td>
-                                            <td className="px-4 py-4 border border-blue-300">
-                                                <input
-                                                    type="text"
-                                                    placeholder="Nhập vị trí..."
-                                                    value={item?.location}
-                                                    disabled
-                                                    className="w-full px-2 py-1 border border-gray-300 rounded"
-                                                />
-                                            </td>
                                             <td className="px-4 py-4 text-center border border-blue-300">{item?.quantityShipped}</td>
                                             <td className="px-2 py-4 border border-blue-300">
                                                 {formatVND(item?.unitPrice)}
@@ -171,7 +161,6 @@ const InventoryReceptDetail = () => {
                                 {receptionDetail?.items?.length !== 0 && (
                                     <tr className="text-black border border-b border-blue-400" >
                                         <th scope="row" className="px-4 py-4 font-medium text-black border border-l-0 border-r-0 border-blue-300 whitespace-nowrap">Tổng tiền:</th>
-                                        <td className="px-4 py-4 border border-l-0 border-r-0 border-blue-300"></td>
                                         <td className="px-4 py-4 border border-l-0 border-r-0 border-blue-300"></td>
                                         <td className="px-4 py-4 border border-l-0 border-r-0 border-blue-300"></td>
                                         <td className="px-4 py-4 border border-l-0 border-r-0 border-blue-300"></td>
