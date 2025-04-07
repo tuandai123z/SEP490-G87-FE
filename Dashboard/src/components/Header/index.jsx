@@ -6,6 +6,7 @@ const Header = () => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const dataUser = useSelector(state => state.user);
+  const routerLadingPage = `http://localhost:4000/`
 
   const showProfile = () => {
     // alert("helloo")
@@ -31,12 +32,15 @@ const Header = () => {
             </div>
 
             {open && (
-              <div className="bg-white border h-[120px] w-[180px] absolute bottom-[-135px] z-20 right-0 pt-[15px] pl-[15px] space-y-[10px]">
+              <div className="bg-white border h-[150px] w-[180px] absolute bottom-[-135px] z-20 right-0 pt-[15px] pl-[15px] space-y-[10px]">
                 <p className="cursor-pointer hover:text-[blue] font-semibold" onClick={() => navigate('/admin/dashboard')}>
                   Tổng quan
                 </p>
                 <p className="cursor-pointer hover:text-[blue] font-semibold" onClick={() => navigate('/profile')}>
                   Thông tin
+                </p>
+                <p className="cursor-pointer hover:text-[blue] font-semibold"onClick={() => {window.location.href = `${routerLadingPage}`}}>
+                Website 
                 </p>
                 <p className="cursor-pointer hover:text-[blue] font-semibold" onClick={() => handleLogout()}>
                   Đăng xuất
