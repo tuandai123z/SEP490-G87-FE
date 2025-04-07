@@ -27,8 +27,9 @@ const InventoryReceptDetail = () => {
             .get(`/inventory-receipt/${slug}`)
             .then(res => {
                 const data = res.data;
+                console.log(data, '--------------');
                 setReceptionDetail(data);
-                setListProducts(data.itemsInInventory)
+                setListProducts(data.items)
             })
             .catch((err) => {
                 if (err.response) {
@@ -151,15 +152,7 @@ const InventoryReceptDetail = () => {
                                             </td>
                                             <td className="px-4 py-4 text-center border border-blue-300">{item?.quantityShipped}</td>
                                             <td className="px-2 py-4 border border-blue-300">
-                                                <NumericFormat type="text" name="price" id="price"
-                                                    className="block w-full px-2 py-1 text-sm text-gray-900 border rounded-lg outline-none focus:ring-primary-600 focus:border-primary-600 dark:text-white"
-                                                    value={item?.unitPrice}
-                                                    thousandSeparator=","
-                                                    displayType="input"
-                                                    placeholder="Giá thiết bị"
-                                                    suffix=" VNĐ"
-                                                    disabled
-                                                />
+                                                {formatVND(item?.unitPrice)}
                                             </td>
                                             <td className="px-4 py-4 border border-blue-300">{formatVND(item?.unitPrice * item?.quantityShipped)}</td>
                                         </tr>

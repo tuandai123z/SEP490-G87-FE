@@ -41,7 +41,7 @@ const ReceptionManagement = () => {
             .then(res => {
                 const data = res.data;
                 setListReceptions(data.content)
-                console.log(data);
+                console.log(data, '=================');
                 setPaginationInformation(data);
             })
             .catch((err) => {
