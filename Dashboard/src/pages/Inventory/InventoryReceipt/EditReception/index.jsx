@@ -212,7 +212,7 @@ const EditReception = () => {
                             <input type="date" disabled value={receptionDetail?.documentDate} id="documentDate" className="block w-full p-1 text-sm text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                         </div>
                         <div className="flex items-center w-full">
-                            <label htmlFor="numberOfReceipts" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white w-[50%]">Số chứng từ<span className="pl-1 text-lg font-semibold text-red">*</span></label>
+                            <label htmlFor="numberOfReceipts" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white w-[50%]">Số chứng từ</label>
                             <input type="text" placeholder="Nhập số chứng từ" value={receptionDetail?.numberOfReceipts} disabled id="numberOfReceipts" className="block w-full p-1 text-sm text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                         </div>
                         <p className="absolute text-gray-900 top-[-16px] bg-white font-semibold">Chứng từ</p>
