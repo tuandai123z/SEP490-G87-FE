@@ -299,7 +299,7 @@ const ProductsManagement = () => {
                                 Danh sách thiết bị điện
                                 <p className="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">Thông tin danh mục sản phẩm thiết bị điện</p>
                             </div>
-                            <button className="flex items-center w-[15%] h-10 gap-2 px-4 py-2 text-base text-white bg-blue-500 outline-none" onClick={() => handleOpenModalCreate()}>
+                            <button className="flex items-center gap-2 px-4 py-2 text-base text-white bg-blue-500 rounded-md outline-none" onClick={() => handleOpenModalCreate()}>
                                 <FaPlus />
                                 Thêm thiết bị
                             </button>
@@ -478,8 +478,8 @@ const ProductsManagement = () => {
                                 </select>
                             </div>
                             <div className="col-span-2">
-                                <label htmlFor="description" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Miêu tả</label>
-                                <input type="textarea" value={productDescription} onChange={e => setProductDescription(e.target.value)} name="description" id="description" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full h-24 p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Nhập miêu tả" required="" />
+                                <label htmlFor="description" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Mô tả</label>
+                                <input type="textarea" value={productDescription} onChange={e => setProductDescription(e.target.value)} name="description" id="description" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full h-24 p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Nhập mô tả" required="" />
                             </div>
                         </div>
                         <button onClick={handleCreateOrUpdateProduct} type="submit" className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-6">
