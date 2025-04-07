@@ -281,9 +281,9 @@ const ReturnManagement = () => {
                         <div className="flex justify-end py-2">
                             <div
                                 className={`px-6 py-2 border-t-2 border-l-2 cursor-pointer transition-all duration-100 bg-blue-400  text-white font-semibold`}
-                                onClick={() => { navigate('/inventory/export/create') }}
+                                onClick={() => { navigate('/inventory/return/create') }}
                             >
-                                <span className="uppercase" >Tạo phiếu xuất kho</span>
+                                <span className="uppercase" >Tạo phiếu hoàn hàng</span>
                             </div>
                         </div>
                         <table className="w-full text-sm text-left text-blue-100 border border-blue-400 shadow-sm rtl:text-right dark:text-blue-100">

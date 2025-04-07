@@ -12,7 +12,7 @@ import { addToOrderReturn, clearOrderReturn, increaseProductReturn, reduceProduc
 const AddProduct = ({ onChangeShowAdd, data }) => {
     const orderReturn = useSelector(state => state.orderReturn);
     const dispatch = useDispatch();
-    console.log(orderReturn, '==========');
+    console.log(data, '==========');
 
     const handleAddProduct = (product) => {
         const totalProduct = orderReturn?.map(item => {
@@ -81,8 +81,9 @@ const AddProduct = ({ onChangeShowAdd, data }) => {
                                 <div className="w-full">
                                     <img className="object-cover md:h-[180px] rounded-l-md rounded-t-sm" src={item?.imagePath} alt="" />
                                 </div>
-                                <div className={`absolute bottom-0 w-full left-0 h-[50px] bg-gray-500/[0.95] rounded-b-sm flex justify-center items-center`}>
+                                <div className={`absolute bottom-0 w-full left-0 h-[50px] bg-gray-500/[0.95] rounded-b-sm flex flex-col justify-center items-center`}>
                                     <span className="font-medium text-white">{`${item?.name}-${item?.inventoryQuantity}`}</span>
+                                    <span className={`font-medium ${item?.inventoryQuantity === 0 ? 'text-red' : 'text-green'}`}>{`Còn lại: ${item?.inventoryQuantity}`}</span>
                                 </div>
 
                             </div>
