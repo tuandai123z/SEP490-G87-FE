@@ -125,6 +125,45 @@ const StatisticManagement = () => {
             });
     }
 
+    const handleExport = async (sheetCode) => {
+        try {
+            const response = await axiosInstance.get(`/inventory-sheet/${sheetCode}/export`, {
+                responseType: 'blob',
+            });
+
+            // Tạo blob từ dữ liệu
+            const blob = new Blob([response.data], {
+                type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            });
+
+            // Tạo URL từ blob
+            const url = window.URL.createObjectURL(blob);
+
+            // Tạo thẻ <a> để tải xuống
+            const link = document.createElement('a');
+            link.href = url;
+
+            // Lấy tên file từ header nếu có
+            const disposition = response.headers['content-disposition'];
+            let fileName = `bangkiemke${sheetCode}.xlsx`;
+
+            if (disposition && disposition.includes('filename=')) {
+                const match = disposition.match(/filename="?(.+?)"?$/);
+                if (match && match[1]) {
+                    fileName = match[1];
+                }
+            }
+
+            link.setAttribute('download', fileName);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(url);
+        } catch (error) {
+            toast.error('Lỗi khi tải Excel:', error);
+        }
+    }
+
     return (
         <div className="relative overflow-x-auto ">
             <div className="flex items-center justify-between w-full h-auto gap-4 px-2 py-4 mb-2">
@@ -160,7 +199,6 @@ const StatisticManagement = () => {
                                 <th className="px-6 py-3 text-right border border-blue-400">NGÀY</th>
                                 <th className="px-6 py-3 text-center border border-blue-400">ĐẾN NGÀY</th>
                                 <th className="px-6 py-3 text-center border border-blue-400">MỤC ĐÍCH</th>
-                                <th className="px-6 py-3 text-center border border-blue-400">KẾT LUẬN</th>
                                 <th className="px-6 py-3 text-center border border-blue-400">CHỨC NĂNG</th>
                             </tr>
                         </thead>
@@ -172,10 +210,9 @@ const StatisticManagement = () => {
                                         <td className="px-6 py-2 text-right border border-blue-400">{item?.startDate}</td>
                                         <td className="px-6 py-2 text-right border border-blue-400">{item?.endDate}</td>
                                         <td className="px-6 py-2 text-center border border-blue-400"></td>
-                                        <td className="px-6 py-2 text-center border border-blue-400"></td>
                                         <td className="flex items-center justify-center gap-3 px-6 py-2 border-blue-400 ">
                                             <TbEyeSearch className="text-lg font-bold text-blue-700 transition-all duration-500 shadow-sm cursor-pointer hover:scale-[140%] " onClick={() => navigate(`/inventory/statisticDetail/${item?.code}`)} />
-                                            <FaFileExport className="text-lg font-bold text-blue-700 transition-all duration-500 shadow-sm cursor-pointer hover:scale-[140%] " />
+                                            <FaFileExport className="text-lg font-bold text-blue-700 transition-all duration-500 shadow-sm cursor-pointer hover:scale-[140%] " onClick={() => handleExport(item?.code)} />
                                         </td>
                                     </tr>
                                 )
@@ -185,14 +222,13 @@ const StatisticManagement = () => {
                                     <th scope="row" className="px-6 py-2 font-medium text-right text-black border border-r-0 border-blue-300 whitespace-nowrap">
                                         Không tìm thấy bản ghi
                                     </th>
-
                                 </tr>
                             )}
                         </tbody>
                     </table>
                     {listReceptions && listReceptions?.length !== 0 && (
                         <Pagination
-                            totalPages={100}
+                            totalPages={paginationInformation?.totalElements}
                             size={size}
                             currentPage={currentPage}
                             onPageChange={setCurrentPage}

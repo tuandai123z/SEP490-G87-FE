@@ -83,23 +83,43 @@ const StatisticDetail = () => {
         }
     }
 
-    const handleExport = () => {
-        axiosInstance
-            .get(`/inventory-sheet/${slug}/export`)
-            .then(res => {
-                const data = res.data;
-                console.log(data, '===========');
-            })
-            .catch((err) => {
-                if (err.response) {
-                    const errorRes = err.response.data;
-                    toast.error(errorRes.message);
-                } else if (err.request) {
-                    toast.error(err.request);
-                } else {
-                    toast.error(err.message);
-                }
+    const handleExport = async () => {
+        try {
+            const response = await axiosInstance.get(`/inventory-sheet/${slug}/export`, {
+                responseType: 'blob',
             });
+
+            // Tạo blob từ dữ liệu
+            const blob = new Blob([response.data], {
+                type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            });
+
+            // Tạo URL từ blob
+            const url = window.URL.createObjectURL(blob);
+
+            // Tạo thẻ <a> để tải xuống
+            const link = document.createElement('a');
+            link.href = url;
+
+            // Lấy tên file từ header nếu có
+            const disposition = response.headers['content-disposition'];
+            let fileName = `bangkiemke${slug}.xlsx`;
+
+            if (disposition && disposition.includes('filename=')) {
+                const match = disposition.match(/filename="?(.+?)"?$/);
+                if (match && match[1]) {
+                    fileName = match[1];
+                }
+            }
+
+            link.setAttribute('download', fileName);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(url);
+        } catch (error) {
+            toast.error('Lỗi khi tải Excel:', error);
+        }
     }
 
 
@@ -111,16 +131,16 @@ const StatisticDetail = () => {
             <div className="flex w-full gap-4 px-2 mb-4">
                 <div className="w-full p-2.5 grid grid-cols-4 gap-4 border-2 border-gray-400 relative">
                     <div className="flex items-center w-full col-span-2 gap-2">
+                        <label htmlFor="fromDateSearch" className="block mb-2 text-sm font-normal pr-2 text-right text-gray-900 dark:text-white w-[20%]">Từ ngày</label>
+                        <input type="date" id="fromDateSearch" value={fromDateSearch} disabled className="block w-[70%] text-sm p-1 text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                    </div>
+                    <div className="flex items-center w-full col-span-2 gap-2">
+                        <label htmlFor="toDateSearch" className="block mb-2 text-sm font-normal pr-2 text-right text-gray-900 dark:text-white w-[18.5%]">Đến ngày</label>
+                        <input type="date" id="toDateSearch" value={toDateSearch} disable className="block w-[76.5%] text-sm p-1 text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                    </div>
+                    <div className="flex items-center w-full col-span-2 gap-2">
                         <label htmlFor="fromDateSearch" className="block mb-2 text-sm font-normal pr-2 text-right text-gray-900 dark:text-white w-[20%]">Số</label>
                         <input type="text" id="fromDateSearch" value={slug} disabled className="block w-[70%] text-sm p-1 text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
-                    </div>
-                    <div className="flex items-center w-full col-span-2 gap-2">
-                        <label htmlFor="fromDateSearch" className="block mb-2 text-sm font-normal pr-2 text-right text-gray-900 dark:text-white w-[18.5%]">Từ ngày</label>
-                        <input type="date" id="fromDateSearch" value={fromDateSearch} disabled className="block w-[75%] text-sm p-1 text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
-                    </div>
-                    <div className="flex items-center w-full col-span-2 gap-2">
-                        <label htmlFor="toDateSearch" className="block mb-2 text-sm font-normal pr-2 text-right text-gray-900 dark:text-white w-[20%]">Đến ngày</label>
-                        <input type="date" id="toDateSearch" value={toDateSearch} disable className="block w-[70%] text-sm p-1 text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                     </div>
                     <div className="flex grid items-center w-full grid-cols-4 col-span-2 gap-2">
                         <div className="flex items-center w-full col-span-3 gap-2">
