@@ -53,9 +53,9 @@ const EditReception = () => {
         const listProductPurchase = listProducts?.map(product => {
             const productItem = {
                 productCode: product.productCode,
-                dateOfManufacture: product.dateOfManufacture,
-                dateOfExpiry: product.dateExpired,
-                location: product.location,
+                dateOfManufacture: product.dateOfManufacture || "",
+                dateOfExpiry: product.dateExpired || "",
+                location: product.location || "",
                 quantityShipped: product.quantityShipped,
                 unitPrice: product.unitPrice
             }
@@ -93,7 +93,7 @@ const EditReception = () => {
     const handleOpenModalEdit = () => {
         let isAllowOpen = true;
         listProducts?.map((product) => {
-            if (!product?.dateExpired || !product?.dateOfManufacture || !product?.location || product?.unitPrice === '' || product?.unitPrice === '0') {
+            if (product?.unitPrice === '' || product?.unitPrice === '0') {
                 isAllowOpen = false;
                 toast.warn('Vui lòng điền đầy đủ thông tin phiếu nhập');
                 return;
@@ -237,9 +237,8 @@ const EditReception = () => {
                                     <th scope="col" className="px-6 py-3 border border-blue-300">Mã hàng</th>
                                     <th scope="col" className="px-6 py-3 border border-blue-300">Tên hàng</th>
                                     <th scope="col" className="px-6 py-3 border border-blue-300">ĐVT</th>
-                                    <th scope="col" className="px-6 py-3 border border-blue-300">NSX<span className="pl-1 text-lg font-semibold text-red">*</span></th>
-                                    <th scope="col" className="px-6 py-3 border border-blue-300">HSD<span className="pl-1 text-lg font-semibold text-red">*</span></th>
-                                    <th scope="col" className="px-6 py-3 border border-blue-300">Vị trí<span className="pl-1 text-lg font-semibold text-red">*</span></th>
+                                    <th scope="col" className="px-6 py-3 border border-blue-300">NSX</th>
+                                    <th scope="col" className="px-6 py-3 border border-blue-300">HSD</th>
                                     <th scope="col" className="px-6 py-3 border border-blue-300">Số lượng</th>
                                     <th scope="col" className="px-6 py-3 border border-blue-300 ">Giá nhập<span className="pl-1 text-lg font-semibold text-red">*</span></th>
                                     <th scope="col" className="px-6 py-3 border border-blue-300">Thành tiền</th>
@@ -270,15 +269,6 @@ const EditReception = () => {
                                                     className="w-full px-2 py-1 border border-gray-300 rounded"
                                                 />
                                             </td>
-                                            <td className="px-4 py-4 border border-blue-300">
-                                                <input
-                                                    type="text"
-                                                    placeholder="Nhập vị trí..."
-                                                    value={item?.location}
-                                                    onChange={(e) => handleChangeLocation(index, e.target.value)}
-                                                    className="w-full px-2 py-1 border border-gray-300 rounded"
-                                                />
-                                            </td>
                                             <td className="px-4 py-4 text-center border border-blue-300">{item?.quantityShipped}</td>
                                             <td className="px-2 py-4 border border-blue-300">
                                                 <NumericFormat type="text" name="price" id="price"
@@ -300,7 +290,6 @@ const EditReception = () => {
                                 {receptionDetail?.items?.length !== 0 && (
                                     <tr className="text-black border border-b border-blue-400" >
                                         <th scope="row" className="px-4 py-4 font-medium text-black border border-l-0 border-r-0 border-blue-300 whitespace-nowrap">Tổng tiền:</th>
-                                        <td className="px-4 py-4 border border-l-0 border-r-0 border-blue-300"></td>
                                         <td className="px-4 py-4 border border-l-0 border-r-0 border-blue-300"></td>
                                         <td className="px-4 py-4 border border-l-0 border-r-0 border-blue-300"></td>
                                         <td className="px-4 py-4 border border-l-0 border-r-0 border-blue-300"></td>

@@ -101,9 +101,9 @@ const CreateReception = () => {
         const listProductPurchase = listProducts?.map(product => {
             const productItem = {
                 productCode: product.code,
-                dateOfManufacture: product.dateOfManufacture,
-                dateOfExpiry: product.dateOfExpiry,
-                location: product.location,
+                dateOfManufacture: product.dateOfManufacture || "",
+                dateOfExpiry: product.dateOfExpiry || "",
+                location: product.location||"",
                 quantityShipped: product.quantity,
                 unitPrice: product.price
             }
@@ -139,7 +139,7 @@ const CreateReception = () => {
     }
 
     const handleOpenModal = () => {
-        let allowOpen = listProducts?.length !== 0 && numberOfReceipts !== '';
+        let allowOpen = listProducts?.length !== 0;
 
         if (!currentOrderCode) {
             toast.warn("Vui lòng chọn phiếu mua hàng");
