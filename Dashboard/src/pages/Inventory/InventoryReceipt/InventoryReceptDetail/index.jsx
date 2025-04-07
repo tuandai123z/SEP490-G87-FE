@@ -6,11 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { clearOrder, importOrder, } from "../../../../actions/orderActions";
 import { axiosInstance } from "../../../../utils/axiosInstant";
-import ModalConfirmCreate from "../../../../components/common/ModalConfirmCreate";
 import { FaKey } from "react-icons/fa";
-import ModalAlertConfirm from "../../../../components/common/ModalAlerConfirm";
-import AddProduct from "../../CreateOrder/AddProduct";
-import { NumericFormat } from "react-number-format";
 import { formatVND } from "../../../../utils/format";
 
 const InventoryReceptDetail = () => {

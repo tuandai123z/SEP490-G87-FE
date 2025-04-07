@@ -29,6 +29,7 @@ const EditExportDelivery = () => {
                 const data = res.data;
                 setOrderDetail(data);
                 setListOrderProducts(data?.products)
+                console.log(data, '============');
             })
             .catch((err) => {
                 if (err.response) {
@@ -128,7 +129,6 @@ const EditExportDelivery = () => {
                                     <th scope="col" className="px-6 py-3 border border-blue-300">Tên hàng</th>
                                     <th scope="col" className="px-6 py-3 border border-blue-300">ĐVT</th>
                                     <th scope="col" className="px-6 py-3 border border-blue-300">Số lượng</th>
-                                    <th scope="col" className="px-6 py-3 border border-blue-300">Đơn giá</th>
                                     <th scope="col" className="px-6 py-3 border border-blue-300">Thành tiền</th>
                                 </tr>
                             </thead>
@@ -143,8 +143,7 @@ const EditExportDelivery = () => {
                                             <td className="px-6 py-4 border border-blue-300">{item?.product?.name}</td>
                                             <td className="px-6 py-4 border border-blue-300">{item?.product?.unit}</td>
                                             <td className="px-6 py-4 border border-blue-300">{item?.exportQuantity}</td>
-                                            <td className="px-6 py-4 border border-blue-300">{item?.priceExport}</td>
-                                            <td className="px-6 py-4 border border-blue-300">{formatVND(item?.exportQuantity * item?.priceExport)}</td>
+                                            <td className="px-6 py-4 border border-blue-300">{formatVND(item?.priceExport)}</td>
                                         </tr>
                                     )
                                 })}
@@ -156,8 +155,7 @@ const EditExportDelivery = () => {
                                             <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
                                             <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
                                             <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
-                                            <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
-                                            <td className="px-6 py-4 border border-r-0 border-blue-300">{formatVND(totalCost)}</td>
+                                            <td className="px-6 py-4 border border-r-0 border-blue-300">{formatVND(orderDetail?.totalAmount)}</td>
                                         </tr>
                                         <tr className="text-black border border-b border-blue-400" >
                                             <th scope="row" className="px-6 py-4 font-medium text-black border border-l-0 border-r-0 border-blue-300 whitespace-nowrap">Thuế GTGT:</th>
@@ -165,8 +163,7 @@ const EditExportDelivery = () => {
                                             <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
                                             <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
                                             <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
-                                            <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
-                                            <td className="px-6 py-4 border border-r-0 border-blue-300">{formatVND(totalCost * orderDetail?.taxExportGtGt)}</td>
+                                            <td className="px-6 py-4 border border-r-0 border-blue-300">{formatVND(orderDetail?.totalAmount * orderDetail?.taxExportGtGt)}</td>
                                         </tr>
                                         <tr className="text-black border border-b border-blue-400" >
                                             <th scope="row" className="px-6 py-4 font-medium text-black border border-l-0 border-r-0 border-blue-300 whitespace-nowrap">Tổng tiền thanh toán:</th>
@@ -174,8 +171,7 @@ const EditExportDelivery = () => {
                                             <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
                                             <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
                                             <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
-                                            <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
-                                            <td className="px-6 py-4 border border-r-0 border-blue-300">{formatVND(totalCost * (orderDetail?.taxExportGtGt + 1))}</td>
+                                            <td className="px-6 py-4 border border-r-0 border-blue-300">{formatVND(orderDetail?.totalAmount * (orderDetail?.taxExportGtGt + 1))}</td>
                                         </tr>
                                     </>
                                 )}

@@ -33,6 +33,7 @@ const Supplier = () => {
             .then(res => {
                 const data = res.data;
                 setListSuppliers(data);
+                console.log(data, '=======');
             })
             .catch((err) => {
                 if (err.response) {

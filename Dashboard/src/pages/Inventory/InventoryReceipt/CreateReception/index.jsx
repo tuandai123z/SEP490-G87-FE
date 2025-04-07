@@ -101,9 +101,9 @@ const CreateReception = () => {
         const listProductPurchase = listProducts?.map(product => {
             const productItem = {
                 productCode: product.code,
-                dateOfManufacture: product.dateOfManufacture || "",
-                dateOfExpiry: product.dateOfExpiry || "",
-                location: product.location||"",
+                dateOfManufacture: product.dateOfManufacture,
+                dateOfExpiry: product.dateOfExpiry,
+                location: product.location,
                 quantityShipped: product.quantity,
                 unitPrice: product.price
             }
@@ -139,25 +139,26 @@ const CreateReception = () => {
     }
 
     const handleOpenModal = () => {
-        let allowOpen = listProducts?.length !== 0;
+        let allowOpen = listProducts?.length !== 0 && numberOfReceipts !== '';
 
         if (!currentOrderCode) {
             toast.warn("Vui lòng chọn phiếu mua hàng");
             return;
         }
 
+
         const listProductPurchase = listProducts?.map(product => {
             if (allowOpen) {
-                if ( product.price === '') {
+                if (product.location === '' || product.price === '') {
                     allowOpen = false;
-                    toast.warn("Vui lòng điền giá thiết bị")
+                    toast.warn("Vui lòng điền đầy đủ thông tin thiết bị")
                 }
             }
             const productItem = {
                 productCode: product.code,
-                dateOfManufacture: product.dateOfManufacture || "",
-                dateOfExpiry: product.dateOfExpiry || "",
-                location: product.location || "",
+                dateOfManufacture: product.dateOfManufacture,
+                dateOfExpiry: product.dateOfExpiry,
+                location: product.location,
                 quantityShipped: product.quantity,
                 unitPrice: product.price
             }
@@ -221,7 +222,7 @@ const CreateReception = () => {
                         <input type="date" value={documentDate} disabled id="documentDate" className="block w-full p-1 text-sm text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                     </div>
                     <div className="flex items-center w-full">
-                        <label htmlFor="numberOfReceipts" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white w-[50%]">Số chứng từ</label>
+                        <label htmlFor="numberOfReceipts" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white w-[50%]">Số chứng từ<span className="pl-1 text-lg font-semibold text-red">*</span></label>
                         <input type="text" placeholder="Nhập số chứng từ" value={numberOfReceipts} onChange={e => setNumberOfReceipts(e.target.value)} id="numberOfReceipts" className="block w-full p-1 text-sm text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                     </div>
                     <p className="absolute text-gray-900 top-[-16px] bg-white font-semibold">Chứng từ</p>
@@ -240,8 +241,9 @@ const CreateReception = () => {
                                 <th scope="col" className="px-6 py-3 border border-blue-300">Mã hàng</th>
                                 <th scope="col" className="px-6 py-3 border border-blue-300">Tên hàng</th>
                                 <th scope="col" className="px-6 py-3 border border-blue-300">ĐVT</th>
-                                <th scope="col" className="px-6 py-3 border border-blue-300">NSX</th>
-                                <th scope="col" className="px-6 py-3 border border-blue-300">HSD</th>
+                                <th scope="col" className="px-6 py-3 border border-blue-300">NSX<span className="pl-1 text-lg font-semibold text-red">*</span></th>
+                                <th scope="col" className="px-6 py-3 border border-blue-300">HSD<span className="pl-1 text-lg font-semibold text-red">*</span></th>
+                                <th scope="col" className="px-6 py-3 border border-blue-300">Vị trí<span className="pl-1 text-lg font-semibold text-red">*</span></th>
                                 <th scope="col" className="px-6 py-3 border border-blue-300">Số lượng</th>
                                 <th scope="col" className="px-6 py-3 border border-blue-300 ">Giá nhập<span className="pl-1 text-lg font-semibold text-red">*</span></th>
                                 <th scope="col" className="px-6 py-3 border border-blue-300">Thành tiền</th>
@@ -272,6 +274,15 @@ const CreateReception = () => {
                                                 className="w-full px-2 py-1 border border-gray-300 rounded"
                                             />
                                         </td>
+                                        <td className="px-6 py-4 border border-blue-300">
+                                            <input
+                                                type="text"
+                                                placeholder="Nhập vị trí..."
+                                                value={item?.location}
+                                                onChange={(e) => handleChangeLocation(index, e.target.value)}
+                                                className="w-full px-2 py-1 border border-gray-300 rounded"
+                                            />
+                                        </td>
                                         <td className="px-6 py-4 border border-blue-300">{item?.quantity}</td>
                                         <td className="px-4 py-4 border border-blue-300">
                                             <NumericFormat type="text" name="price" id="price"
@@ -299,12 +310,14 @@ const CreateReception = () => {
                                     <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
                                     <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
                                     <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
+                                    <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
                                     <td className="px-6 py-4 border border-r-0 border-blue-300">{formatVND(totalCost)}</td>
                                 </tr>
                             )}
                             {listProducts?.length === 0 && (
                                 <tr className="text-black border border-b border-blue-400" >
                                     <th scope="row" className="px-6 py-4 font-medium text-black border border-blue-300 whitespace-nowrap">Chưa có phiếu nào được chọn</th>
+                                    <td className="px-6 py-4 border border-blue-300"></td>
                                     <td className="px-6 py-4 border border-blue-300"></td>
                                     <td className="px-6 py-4 border border-blue-300"></td>
                                     <td className="px-6 py-4 border border-blue-300"></td>

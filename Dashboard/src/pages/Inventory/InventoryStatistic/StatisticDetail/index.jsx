@@ -15,6 +15,7 @@ const StatisticDetail = () => {
     const [fromDateSearch, setFromDateSearch] = useState('');
     const [toDateSearch, setToDateSearch] = useState('');
     const [listProduct, setListProduct] = useState([]);
+    const [data, setData] = useState();
     const [currentPage, setCurrentPage] = useState(1);
     const [fromDate, setFromDate] = useState('');
     const [toDate, setToDate] = useState('');
@@ -34,8 +35,9 @@ const StatisticDetail = () => {
             .then(res => {
                 const data = res.data;
                 console.log(data, '=============');
-                setPaginationInformation(data)
-                setListProduct(data?.content)
+                setData(data.sheet);
+                setPaginationInformation(data.data)
+                setListProduct(data?.data?.content)
             })
             .catch((err) => {
                 if (err.response) {
@@ -132,11 +134,11 @@ const StatisticDetail = () => {
                 <div className="w-full p-2.5 grid grid-cols-4 gap-4 border-2 border-gray-400 relative">
                     <div className="flex items-center w-full col-span-2 gap-2">
                         <label htmlFor="fromDateSearch" className="block mb-2 text-sm font-normal pr-2 text-right text-gray-900 dark:text-white w-[20%]">Từ ngày</label>
-                        <input type="date" id="fromDateSearch" value={fromDateSearch} disabled className="block w-[70%] text-sm p-1 text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                        <input type="date" id="fromDateSearch" value={data?.startDate} disabled className="block w-[70%] text-sm p-1 text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                     </div>
                     <div className="flex items-center w-full col-span-2 gap-2">
                         <label htmlFor="toDateSearch" className="block mb-2 text-sm font-normal pr-2 text-right text-gray-900 dark:text-white w-[18.5%]">Đến ngày</label>
-                        <input type="date" id="toDateSearch" value={toDateSearch} disable className="block w-[76.5%] text-sm p-1 text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                        <input type="date" id="toDateSearch" value={data?.endDate} disabled className="block w-[76.5%] text-sm p-1 text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                     </div>
                     <div className="flex items-center w-full col-span-2 gap-2">
                         <label htmlFor="fromDateSearch" className="block mb-2 text-sm font-normal pr-2 text-right text-gray-900 dark:text-white w-[20%]">Số</label>
