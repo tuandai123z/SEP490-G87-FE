@@ -21,7 +21,7 @@ const Categories = ({ content, Icon, pages }) => {
                 transition={{ duration: 0.3, ease: 'easeOut' }}
             >
                 <li className="py-[8px] text-[#334862] flex justify-between items-center border-b  border-gray-300 last:border-0 cursor-pointer relative list-none" onClick={() => setIsOpen(!isOpen)}>
-                    <p className="text-[10px] font-extrabold leading-[16px] text-white/[0.4]">{content}</p>
+                    <p className="text-[15px] font-bold leading-[16px] text-white">{content}</p>
 
                     <motion.div
                         className=""
@@ -76,59 +76,59 @@ const SidebarInventory = () => {
         //     ]
         // },
         {
-            content: "Phiếu hoàn hàng",
+            content: "Hoàn hàng",
             icon: IoIosArrowUp,
             listPage: [
                 {
-                    content: "Danh sách",
+                    content: "Danh sách hoàn hàng",
                     icon: FaClipboardList,
                     url: '/inventory/return/management'
                 },
                 {
-                    content: "Tạo phiếu",
+                    content: "Tạo phiếu hoàn hàng",
                     icon: FaFileImport,
                     url: '/inventory/return/create'
                 }
             ]
         },
         {
-            content: "Phiếu xuất kho",
+            content: "Xuất kho",
             icon: IoIosArrowUp,
             listPage: [
                 {
-                    content: "Danh sách",
+                    content: "Danh sách xuất kho",
                     icon: FaClipboardList,
                     url: '/inventory/export/management'
                 },
                 {
-                    content: "Tạo phiếu",
+                    content: "Tạo phiếu xuất kho",
                     icon: FaFileImport,
                     url: '/inventory/export/create'
                 }
             ]
         },
         {
-            content: "Phiếu bán hàng",
+            content: "Bán hàng",
             icon: IoIosArrowUp,
             listPage: [
                 {
-                    content: "Danh sách",
+                    content: "Danh sách bán hàng",
                     icon: FaClipboardList,
                     url: '/inventory/orderSale/management'
                 },
                 {
-                    content: "Tạo phiếu",
+                    content: "Tạo phiếu bán hàng",
                     icon: FaFileImport,
                     url: '/inventory/orderSale/create'
                 }
             ]
         },
         {
-            content: "Phiếu nhập kho",
+            content: "Nhập kho",
             icon: IoIosArrowUp,
             listPage: [
                 {
-                    content: "Danh sách",
+                    content: "Danh sách nhập kho",
                     icon: FaClipboardList,
                     url: '/inventory/reception/management'
                 },
@@ -145,16 +145,16 @@ const SidebarInventory = () => {
             ]
         },
         {
-            content: "Phiếu mua hàng",
+            content: "Mua hàng",
             icon: IoIosArrowUp,
             listPage: [
                 {
-                    content: "Danh sách",
+                    content: "Danh sách mua hàng",
                     icon: FaClipboardList,
                     url: '/inventory/order/management'
                 },
                 {
-                    content: "Tạo phiếu",
+                    content: "Tạo phiếu mua hàng",
                     icon: FaFileImport,
                     url: '/inventory/order/create'
                 }

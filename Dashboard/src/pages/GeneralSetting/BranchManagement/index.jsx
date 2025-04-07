@@ -149,13 +149,13 @@ const BranchManagement = () => {
                 <caption className="p-5 text-lg font-semibold text-left text-gray-900 bg-white rtl:text-right dark:text-white dark:bg-gray-800">
                     <div className="flex justify-between">
                         <div className="flex flex-col">
-                            Danh sách danh mục sản phẩm
-                            <p className="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">Thông tin danh sách danh mục sản phẩm thiết bị điện</p>
+                            Danh sách thương hiệu
+                            <p className="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">Thông tin danh sách thương hiệu</p>
                         </div>
                         <div className="flex items-center justify-center">
                             <button className="flex items-center gap-2 px-4 py-2 text-base text-white bg-blue-500 rounded-md outline-none" onClick={() => handleOpenModalCreate()}>
                                 <FaPlus />
-                                Thêm danh mục
+                                Thêm thương hiệu
                             </button>
                         </div>
                     </div>
@@ -164,7 +164,7 @@ const BranchManagement = () => {
                     <tr>
 
                         <th scope="col" className="px-6 py-3">
-                            Tên danh mục
+                            Tên thương hiệu
                         </th>
                         <th scope="col" className="px-6 py-3">
                             Hành động
