@@ -58,7 +58,7 @@ const Sidebar = () => {
               className={`${currentPath === "/admin/management/products" ? "text-primary" : "text-white"}`}
             />
             <p
-              className={`text-[14px] leading-[20px] font-normal text-white  ${currentPath === "/admin/management/products" ? "text-primary" : "text-white"}`}
+              className={`text-[14px] leading-[20px] font-normal ${currentPath === "/admin/management/products" ? "text-primary" : "text-white"}`}
             >
               Thiết bị
             </p>
@@ -71,7 +71,7 @@ const Sidebar = () => {
         >
           <div className="flex items-center gap-[10px]">
             <FaClipboardList  className={`${currentPath === "/admin/management/units" ? "text-primary" : "text-white"}`} />
-            <p  className={`text-[14px] leading-[20px] font-normal text-white  ${currentPath === "/admin/management/units" ? "text-primary" : "text-white"}`}>
+            <p  className={`text-[14px] leading-[20px] font-normal  ${currentPath === "/admin/management/units" ? "text-primary" : "text-white"}`}>
               Đơn vị tính
             </p>
           </div>
@@ -83,7 +83,7 @@ const Sidebar = () => {
         >
           <div className="flex items-center gap-[10px]">
             <FaUsers  className={`${currentPath === "/admin/management/staffs" ? "text-primary" : "text-white"}`} />
-            <p className={`text-[14px] leading-[20px] font-normal text-white  ${currentPath === "/admin/management/staffs" ? "text-primary" : "text-white"}`}>
+            <p className={`text-[14px] leading-[20px] font-normal  ${currentPath === "/admin/management/staffs" ? "text-primary" : "text-white"}`}>
               Nhân viên
             </p>
           </div>
@@ -95,7 +95,7 @@ const Sidebar = () => {
         >
           <div className="flex items-center gap-[10px]">
             <FaBoxOpen  className={`${currentPath === "/inventory/supplier" ? "text-primary" : "text-white"}`} />
-            <p className={`text-[14px] leading-[20px] font-normal text-white  ${currentPath === "/inventory/supplier" ? "text-primary" : "text-white"}`}>
+            <p className={`text-[14px] leading-[20px] font-normal  ${currentPath === "/inventory/supplier" ? "text-primary" : "text-white"}`}>
               Nhà cung cấp
             </p>
           </div>
@@ -107,7 +107,7 @@ const Sidebar = () => {
         >
           <div className="flex items-center gap-[10px]">
             <FaGlobe  className={`${currentPath === "/admin/management/branch" ? "text-primary" : "text-white"}`} />
-            <p className={`text-[14px] leading-[20px] font-normal text-white  ${currentPath === "/admin/management/branch" ? "text-primary" : "text-white"}`}>
+            <p className={`text-[14px] leading-[20px] font-normal  ${currentPath === "/admin/management/branch" ? "text-primary" : "text-white"}`}>
               Thương hiệu
             </p>
           </div>
@@ -119,7 +119,7 @@ const Sidebar = () => {
         >
           <div className="flex items-center gap-[10px]">
             <FaListAlt  className={`${currentPath === "/admin/management/category" ? "text-primary" : "text-white"}`} />
-            <p className={`text-[14px] leading-[20px] font-normal text-white  ${currentPath === "/admin/management/category" ? "text-primary" : "text-white"}`}>
+            <p className={`text-[14px] leading-[20px] font-normal ${currentPath === "/admin/management/category" ? "text-primary" : "text-white"}`}>
               Danh mục sản phẩm
             </p>
           </div>
