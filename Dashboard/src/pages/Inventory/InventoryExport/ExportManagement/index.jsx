@@ -182,7 +182,6 @@ const ExportManagement = () => {
 
     const handleViewPDF = (data) => {
         setCurrentDataPDF(data);
-        console.log(data);
         setTimeout(generatePDFView, 100);
     }
 

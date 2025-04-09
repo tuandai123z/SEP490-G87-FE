@@ -140,8 +140,6 @@ const CreateOrder = () => {
         setIsOpenAdd(!isOpenAdd);
     }
 
-
-
     return (
         <div className="relative overflow-x-auto ">
             <div className="flex items-center w-full h-auto gap-4 px-2 py-4">
@@ -201,7 +199,7 @@ const CreateOrder = () => {
                                             {item?.code}
                                         </th>
                                         <td className="px-6 py-4 border border-blue-300">{item?.name}</td>
-                                        <td className="px-6 py-4 border border-blue-300">{item?.unit}</td>
+                                        <td className="px-6 py-4 border border-blue-300">{item?.unitName}</td>
                                         <td className="px-6 py-4 border border-blue-300">{item?.quantity}</td>
 
                                     </tr>

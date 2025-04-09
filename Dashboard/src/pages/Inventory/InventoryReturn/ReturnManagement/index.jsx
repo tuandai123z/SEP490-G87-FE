@@ -39,7 +39,7 @@ const ReturnManagement = () => {
         axiosInstance
             .get('/return-form/find-all', {
                 params: {
-                    // ...(currentStatusOrder ? { approveStatus: currentStatusOrder } : {}),
+                    ...(currentStatusOrder && { approveStatus: currentStatusOrder }),
                     ...(fromDate ? { fromDate: fromDate } : {}),
                     ...(toDate ? { toDate: toDate } : {}),
                     ...(code ? { code: code } : {}),
@@ -318,9 +318,7 @@ const ReturnManagement = () => {
                                             </td>
                                             <td className="flex items-center justify-center gap-3 px-6 py-2 border-blue-400 ">
                                                 {item?.returnForm?.approveStatus === 'WAITING' && <MdModeEditOutline className="text-lg font-bold text-blue-700 transition-all duration-500 shadow-sm cursor-pointer hover:scale-[140%] " onClick={() => navigate(`/inventory/return/edit/${item?.returnForm?.code}`)} />}
-                                                {item?.returnForm?.approveStatus === 'APPROVED' && <TbEyeSearch className="text-lg font-bold text-blue-700 transition-all duration-500 shadow-sm cursor-pointer hover:scale-[140%] " onClick={() => handleViewPDF(item)} />}
-                                                {item?.returnForm?.approveStatus === 'APPROVED' && <FaFileExport className="text-lg font-bold text-blue-700 transition-all duration-500 shadow-sm cursor-pointer hover:scale-[140%] " onClick={() => handleExportPDF(item)} />}
-                                                {/* <FaTrashAlt className="text-lg font-bold transition-all duration-150 shadow-sm cursor-pointer hover:scale-[140%] text-red" /> */}
+                                                {item?.returnForm?.approveStatus === 'APPROVED' && <TbEyeSearch className="text-lg font-bold text-blue-700 transition-all duration-500 shadow-sm cursor-pointer hover:scale-[140%] " onClick={() => navigate(`/inventory/return/view/${item?.returnForm?.code}`)} />}
                                             </td>
                                         </tr>
                                     )

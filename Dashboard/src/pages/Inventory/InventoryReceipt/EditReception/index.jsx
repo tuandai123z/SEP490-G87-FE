@@ -252,7 +252,7 @@ const EditReception = () => {
                                                 {item?.productCode}
                                             </th>
                                             <td className="px-4 py-4 border border-blue-300">{item?.productName}</td>
-                                            <td className="px-4 py-4 border border-blue-300">{item?.productUnit}</td>
+                                            <td className="px-4 py-4 border border-blue-300">{item?.productUnitName}</td>
                                             <td className="px-2 py-4 border border-blue-300">
                                                 <input
                                                     type="date"

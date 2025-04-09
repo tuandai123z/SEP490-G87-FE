@@ -51,6 +51,7 @@ const ViewOrder = () => {
             .get(`/purchase-order/${slug}`)
             .then(res => {
                 const data = res.data;
+                console.log(data);
                 setOrderDetail(data);
                 setListProducts(data?.products)
                 const actionClear = clearOrder();

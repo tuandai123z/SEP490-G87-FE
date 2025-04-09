@@ -268,7 +268,7 @@ const EditOrder = () => {
                                                 {item?.code}
                                             </th>
                                             <td className="px-6 py-4 border border-blue-300">{item?.name}</td>
-                                            <td className="px-6 py-4 border border-blue-300">{item?.unit}</td>
+                                            <td className="px-6 py-4 border border-blue-300">{item?.unitName}</td>
                                             <td className="px-6 py-4 border border-blue-300">{item?.quantity}</td>
 
                                         </tr>
