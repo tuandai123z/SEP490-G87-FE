@@ -30,6 +30,8 @@ const OrderSaleManagement = () => {
         axiosInstance
             .get(`/order/find-all`, {
                 params: {
+                    ...(currentStatusOrder && currentStatusOrder !== 'RECEIVE_DELIVERY' ? { approveStatus: currentStatusOrder } : { deliveryStatus: currentStatusOrder }),
+                    ...(currentStatusOrder && currentStatusOrder === 'APPROVED' && { deliveryStatus: "WAITING_DELIVERY" }),
                     ...(fromDate ? { fromDate: fromDate } : {}),
                     ...(toDate ? { toDate: toDate } : {}),
                     ...(code ? { code: code } : {}),
@@ -125,9 +127,10 @@ const OrderSaleManagement = () => {
                             <label htmlFor="first_name" className="block mb-2 text-sm font-normal pr-2 text-right text-gray-900 dark:text-white w-[25%]">Tình trạng</label>
                             <select id="statusOrder" value={currentStatusOrder} onChange={e => setCurrentStatusOrder(e.target.value)} className="bg-gray-50 w-[80%] border border-gray-300 text-gray-900 text-sm focus:ring-primary-500 focus:border-primary-500 block p-1.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                 <option value={""}>-----Chọn trạng thái-------</option>
-                                {LIST_STATUS_FILTER_ORDER?.map((status, index) => {
-                                    return <option value={status?.approveStatus} key={index}>{status?.title}</option>
-                                })}
+                                <option value={'WAITING'} >CHỜ DUYỆT</option>
+                                <option value={'REJECT'} >TỪ CHỐI</option>
+                                <option value={'APPROVED'} >CHỜ GIAO HÀNG</option>
+                                <option value={'RECEIVE_DELIVERY'} >ĐÃ GIAO HÀNG</option>
                             </select>
                         </div>
                         <div className="flex items-center w-full col-span-3 gap">

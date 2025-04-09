@@ -7,7 +7,7 @@ const CardItem = ({ item }) => {
   return (
     <div className="relative p-4 transition-all duration-300 ease-in-out bg-white border rounded-lg shadow-md h-80 w-3/10 group hover:shadow-lg hover:border-black">
       <div className="relative cursor-pointer" onClick={() => navigate(`/cua-hang/${item?.code}`)}>
-        <img className="w-full h-40 bg-gray-300 " src={'https://thietbidienhaiphong.com/wp-content/uploads/2015/03/download-3-247x184.jpg'} />
+        <img className="w-full h-40 bg-gray-300 " src={item?.imagePath} />
 
         <button className="absolute uppercase bottom-0 left-0 w-full py-1 font-bold text-white text-sm transition duration-700 translate-y-4 bg-[#446084] opacity-0 group-hover:opacity-100 group-hover:translate-y-0">
           Quick view

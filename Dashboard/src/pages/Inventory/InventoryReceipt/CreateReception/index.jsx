@@ -60,6 +60,7 @@ const CreateReception = () => {
                 setOrderDetail(data);
                 const productOrder = data.products?.map((item) => ({ ...item, price: "", dateOfManufacture: "", dateOfExpiry: "", location: "" }))
                 setListProducts(productOrder)
+                console.log(productOrder);
             })
             .catch((err) => {
                 if (err.response) {
@@ -139,7 +140,7 @@ const CreateReception = () => {
     }
 
     const handleOpenModal = () => {
-        let allowOpen = listProducts?.length !== 0 && numberOfReceipts !== '';
+        let allowOpen = listProducts?.length !== 0;
 
         if (!currentOrderCode) {
             toast.warn("Vui lòng chọn phiếu mua hàng");

@@ -63,6 +63,7 @@ const CreateExportDelivery = () => {
                     ...item,
                     discount: item?.discount * 100
                 }));
+                console.log(products);
                 setListOrderProducts(products);
             })
             .catch((err) => {
