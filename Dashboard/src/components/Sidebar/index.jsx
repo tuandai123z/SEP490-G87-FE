@@ -27,6 +27,11 @@ const Sidebar = () => {
           <div className="flex items-center gap-[10px]" >
             <FaRegSun color="white" /> <p className="text-[14px] leading-[20px] font-normal text-white">Thiết bị</p>
           </div>
+        </div>  
+        <div className="flex items-center justify-between gap-[10px] py-[15px] cursor-pointer transition ease-in-out duration-300 rounded pl-4 hover:bg-secondary" onClick={() => handleNavigate('/admin/management/units')}>
+          <div className="flex items-center gap-[10px]" >
+            <FaRegSun color="white" /> <p className="text-[14px] leading-[20px] font-normal text-white">Đơn vị tính</p>
+          </div>
         </div>
         <div className="flex items-center justify-between gap-[10px] py-[15px] cursor-pointer transition ease-in-out duration-300 rounded pl-4 hover:bg-secondary" onClick={() => handleNavigate('/admin/management/staffs')}>
           <div className="flex items-center gap-[10px]">
