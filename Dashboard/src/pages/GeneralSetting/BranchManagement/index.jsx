@@ -144,7 +144,7 @@ const BranchManagement = () => {
 
     return (
 
-        <div className="relative mx-16 overflow-x-auto shadow-md sm:rounded-lg">
+        <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table className="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
                 <caption className="p-5 text-lg font-semibold text-left text-gray-900 bg-white rtl:text-right dark:text-white dark:bg-gray-800">
                     <div className="flex justify-between">
