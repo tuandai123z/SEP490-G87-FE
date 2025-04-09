@@ -32,12 +32,14 @@ import ReceptionReturnManagement from '../pages/Inventory/ReceiptReturn/Receptio
 import CreateReceptionReturn from '../pages/Inventory/ReceiptReturn/CreateReceptionReturn';
 import StatisticManagement from '../pages/Inventory/InventoryStatistic/StatisticManagement';
 import StatisticDetail from '../pages/Inventory/InventoryStatistic/StatisticDetail';
+import UnitsManagement from '../pages/Units';
 
 const publicRoutes = [
   { path: '/', component: Login },
   { path: '/admin/dashboard', component: Dashboard, layout: DefaultLayout },
   { path: '/admin/management/staffs', component: StaffManagement, layout: DefaultLayout },
   { path: '/admin/profile', component: UserProfile, layout: DefaultLayout },
+  { path: '/admin/management/units', component: UnitsManagement, layout: DefaultLayout },
   { path: '/admin/management/products', component: ProductsManagement, layout: DefaultLayout },
   { path: '/admin/management/inventory', component: Inventory, layout: DefaultLayout },
   { path: '/admin/management/general', component: GeneralSetting, layout: DefaultLayout },

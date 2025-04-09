@@ -24,6 +24,7 @@ const ProductsManagement = () => {
     const [listUnit, setListUnit] = useState([]);
     const [productDescription, setProductDescription] = useState('');
     const [unit, setUnit] = useState('');
+    const [currentUnit, setCurrentUnit] = useState('');
     const [sellingPrice, setSellingPrice] = useState(0);
     const [currentCategoryCode, setCurrentCategoryCode] = useState('');
     const [currentBranchCode, setCurrentBranchCode] = useState('');
@@ -51,6 +52,7 @@ const ProductsManagement = () => {
             .then(res => {
                 const data = res.data
                 setListProducts(data);
+                console.log(data);
             })
             .catch((err) => {
                 if (err.response) {
@@ -67,11 +69,15 @@ const ProductsManagement = () => {
 
     const getListUnits = () => {
         axiosInstance
-            .get(`/category/find/units`)
+            .get(`/unit/find-all?isDeleted=false`, {
+                params: {
+                    size: 999,
+                }
+            })
             .then(res => {
                 const data = res.data;
-                console.log(data);
-                setListUnit(data);
+                setListUnit(data?.content)
+                console.log(data, '---------');
             })
             .catch((err) => {
                 if (err.response) {
@@ -82,7 +88,6 @@ const ProductsManagement = () => {
                 } else {
                     toast.error(err.message);
                 }
-                setIsLoading(false);
             });
     }
 
@@ -132,17 +137,17 @@ const ProductsManagement = () => {
     }
 
     const handleCreateOrUpdateProduct = () => {
-        if ((productName || '').trim() === '' || (unit || '').trim() === '' || sellingPrice === 0 || (currentBranchCode || '').trim() === '' || (currentBranchCode || '').trim() === '' || !currentImg) {
-            toast.warn(MISS_FIELD_FORM);
-            return;
-        }
+        // if ((productName || '').trim() === '' || (unit || '').trim() === '' || sellingPrice === 0 || (currentBranchCode || '').trim() === '' || (currentBranchCode || '').trim() === '' || !currentImg) {
+        //     toast.warn(MISS_FIELD_FORM);
+        //     return;
+        // }
 
         if (!statusModal) {
             const product = {
                 productName,
                 productDescription,
                 imageBase64,
-                unit,
+                unit: unit?.code,
                 sellingPrice,
                 categoryCode: currentCategoryCode,
                 brandCode: currentBranchCode
@@ -174,7 +179,7 @@ const ProductsManagement = () => {
                 productName,
                 productDescription,
                 imageBase64,
-                unit,
+                unit: unit?.code,
                 sellingPrice,
                 categoryCode: currentCategoryCode,
                 brandCode: currentBranchCode,
@@ -248,7 +253,7 @@ const ProductsManagement = () => {
         setProductName(product?.name);
         setProductDescription(product?.description);
         setCurrentImg(product?.imagePath)
-        setUnit(product?.unit);
+        setCurrentUnit(product?.unitCode);
         setSellingPrice(product?.sellingPrice);
         setCurrentBranchCode(product?.brandCode);
         setCurrentCategoryCode(product?.categoryCode);
@@ -295,6 +300,10 @@ const ProductsManagement = () => {
         setCurrentPage(1);
     }, [isSearch])
 
+    useEffect(() => {
+        const unitFind = listUnit?.find(item => item?.code === currentUnit);
+        setUnit(unitFind)
+    }, [currentUnit])
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
@@ -401,7 +410,7 @@ const ProductsManagement = () => {
                                     {item?.brandCode}
                                 </td>
                                 <td className="px-6 py-4">
-                                    {item?.unit}
+                                    {item?.unitName}
                                 </td>
                                 <td className="px-6 py-4">
                                     <a onClick={() => handleOpenModalEdit(item)} className="font-medium text-blue-600 cursor-pointer dark:text-blue-500 hover:underline">Chỉnh sửa</a>
@@ -457,11 +466,11 @@ const ProductsManagement = () => {
                             </div>
                             <div className="col-span-2 sm:col-span-1">
                                 <label htmlFor="unit" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Đơn vị</label>
-                                <select value={unit} onChange={e => setUnit(e.target.value)} id="jobRank" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                <select value={currentUnit} onChange={e => setCurrentUnit(e.target.value)} id="jobRank" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                     <option value={''}>---Chọn đơn vị---</option>
                                     {listUnit?.map((item, index) => {
                                         return (
-                                            <option value={item} key={index}>{item}</option>
+                                            <option value={item?.code} key={index} >{item?.name}</option>
                                         )
                                     })}
                                 </select>
