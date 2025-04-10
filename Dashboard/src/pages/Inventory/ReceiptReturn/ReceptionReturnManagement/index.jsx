@@ -69,7 +69,6 @@ const ReceptionReturnManagement = () => {
             .then(res => {
                 const data = res.data;
                 const result = data?.map(d => d?.phoneNumber)
-                console.log(result, '-----------');
                 setListCustomer(['', ...result]);
             })
             .catch((err) => {

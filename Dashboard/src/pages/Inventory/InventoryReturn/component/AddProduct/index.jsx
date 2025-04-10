@@ -1,31 +1,28 @@
 import { IoMdArrowBack, IoMdMore } from "react-icons/io";
 import { BiSolidDish } from "react-icons/bi"
 import { FaMinus, FaPlus } from "react-icons/fa";
-import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { axiosInstance } from "../../../../../utils/axiosInstant";
-import { addToOrderReturn, clearOrderReturn, increaseProductReturn, reduceProductReturn, removeProductReturn } from "../../../../../actions/orderReturnAction";
+import { addToOrderReturn, changeQuantityProductReturn, clearOrderReturn, increaseProductReturn, reduceProductReturn, removeProductReturn } from "../../../../../actions/orderReturnAction";
 
 
 const AddProduct = ({ onChangeShowAdd, data }) => {
     const orderReturn = useSelector(state => state.orderReturn);
     const dispatch = useDispatch();
-    console.log(data, '==========');
 
     const handleAddProduct = (product) => {
-        const totalProduct = orderReturn?.map(item => {
-            if (item?.code === product?.code) return item
-        }).reduce((sum, product) => sum + Number(product?.currentQuantity), Number(0))
-        const isSastify = orderReturn?.length === 0 ? true : orderReturn?.some(item => !(item?.code === product.code && product.quantity <= item.currentQuantity && totalProduct >= product.quantity));
-        if (isSastify) {
-            const newProduct = { ...product, currentQuantity: 1 }
-            const action = addToOrderReturn(newProduct);
-            dispatch(action);
-        } else {
-            toast.warn('Sản phẩm này đã đạt giới hạn!')
+        const resultProduct = orderReturn?.filter(p => p.code === product.code);
+        const totalQuantity = resultProduct.reduce((sum, product) => sum + Number(product?.currentQuantity), Number(0));
+        if (resultProduct?.length > 0) {
+            if (totalQuantity === resultProduct[0].quantity) {
+                toast.warn(`Số lượng thiết bị ${product?.name} trả hàng đã đạt tối đa`);
+                return;
+            }
         }
+
+        const newProduct = { ...product, currentQuantity: 1 }
+        const action = addToOrderReturn(newProduct);
+        dispatch(action);
     }
 
     const handleDecrease = (product) => {
@@ -41,6 +38,21 @@ const AddProduct = ({ onChangeShowAdd, data }) => {
         } else {
             toast.warn('Sản phẩm này đã đạt giới hạn!')
         }
+    }
+
+    const handleChangeQuantity = (productDetail, quantity) => {
+        if (Number(quantity) <= 0) return
+        const resultProduct = orderReturn?.filter(product => product.code === productDetail.code);
+        const totalQuantity = resultProduct.reduce((sum, product) => sum + Number(product?.currentQuantity), Number(0));
+        if (resultProduct?.length > 0) {
+            if (totalQuantity === resultProduct[0].quantity) {
+                toast.warn(`Số lượng thiết bị ${productDetail?.name} trả hàng đã đạt tối đa`);
+                return;
+            }
+        }
+        const payload = { productDetail: productDetail, quantity: Number(quantity) }
+        const action = changeQuantityProductReturn(payload);
+        dispatch(action);
     }
 
     const handleRemove = (product) => {
@@ -115,10 +127,13 @@ const AddProduct = ({ onChangeShowAdd, data }) => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="flex justify-between w-full my-3">
+                                <div className="flex justify-between w-full gap-2 my-3">
                                     <div onClick={() => handleDecrease(d)}
                                         className="w-[17%] bg-white shadow-lg flex justify-center items-center py-2 rounded-md cursor-pointer">
                                         <FaMinus className="text-xl font-bold " />
+                                    </div>
+                                    <div className="w-[17%] bg-white shadow-lg flex justify-center items-center py-2 rounded-md cursor-pointer">
+                                        <input className="w-full px-2 text-center outline-none" value={d?.currentQuantity} onChange={(e) => handleChangeQuantity(d, e.target.value)} />
                                     </div>
                                     <div onClick={() => handleIncrease(d)}
                                         className="w-[17%] bg-white shadow-lg flex justify-center items-center py-2 rounded-md cursor-pointer">

@@ -53,7 +53,6 @@ const ReturnManagement = () => {
             .then(res => {
                 const data = res.data;
                 setListReturn(data.content)
-                console.log(data, '==========');
                 setPaginationInformation(data);
             })
             .catch((err) => {

@@ -24,6 +24,11 @@ export const increaseProductReturn = code => {
   };
 };
 
+export const changeQuantityProductReturn = payload => ({
+  type: 'CHANGE_QUANTITY_PRODUCT_RETURN',
+  payload: payload,
+});
+
 export const importOrderReturn = order => {
   return {
     type: 'IMPORT_ORDER_RETURN',

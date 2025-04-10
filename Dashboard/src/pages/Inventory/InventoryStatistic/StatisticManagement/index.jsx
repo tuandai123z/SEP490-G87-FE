@@ -40,7 +40,6 @@ const StatisticManagement = () => {
             .then(res => {
                 const data = res.data;
                 const listData = data.content;
-                console.log(data, '===========');
                 setListReceptions(listData);
                 setPaginationInformation(data);
                 setIsLoading(false);
@@ -109,7 +108,6 @@ const StatisticManagement = () => {
             .post(`/inventory-sheet/sheet?startDate=${fromDate}&endDate=${toDate}`)
             .then(res => {
                 const data = res.data;
-                console.log(data, '==========');
                 toast.success("Thêm bảng kiểm kê thành công!")
                 setIsOpenModal(false);
             })

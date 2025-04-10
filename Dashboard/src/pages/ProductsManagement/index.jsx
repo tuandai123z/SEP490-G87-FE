@@ -52,7 +52,6 @@ const ProductsManagement = () => {
             .then(res => {
                 const data = res.data
                 setListProducts(data);
-                console.log(data);
             })
             .catch((err) => {
                 if (err.response) {
@@ -77,7 +76,6 @@ const ProductsManagement = () => {
             .then(res => {
                 const data = res.data;
                 setListUnit(data?.content)
-                console.log(data, '---------');
             })
             .catch((err) => {
                 if (err.response) {
