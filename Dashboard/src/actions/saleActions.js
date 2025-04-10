@@ -24,6 +24,11 @@ export const increaseProductSale = code => {
   };
 };
 
+export const changeQuantityProductSale = payload => ({
+  type: 'CHANGE_QUANTITY_PRODUCT_SALE',
+  payload: payload,
+});
+
 export const importOrderSale = order => {
   return {
     type: 'IMPORT_ORDER_SALE',

@@ -7,7 +7,7 @@ import { axiosInstance } from "../../../../utils/axiosInstant";
 import { toast } from "react-toastify";
 import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addToOrder, clearOrder, increaseProduct, reduceProduct, removeProduct } from "../../../../actions/orderActions";
+import { addToOrder, changeQuantityProduct, clearOrder, increaseProduct, reduceProduct, removeProduct } from "../../../../actions/orderActions";
 
 
 const AddProduct = ({ onChangeShowAdd }) => {
@@ -17,6 +17,7 @@ const AddProduct = ({ onChangeShowAdd }) => {
     const ref = useRef(false);
     const order = useSelector(state => state.order);
     const dispatch = useDispatch();
+    console.log(order);
 
     const getListCategories = () => {
         axiosInstance
@@ -87,8 +88,10 @@ const AddProduct = ({ onChangeShowAdd }) => {
         dispatch(action);
     }
 
-    const handleClear = () => {
-        const action = clearOrder();
+    const handleChangeQuantity = (code, quantity) => {
+        if (Number(quantity) <= 0) return
+        const payload = { code: code, quantity: Number(quantity) }
+        const action = changeQuantityProduct(payload);
         dispatch(action);
     }
 
@@ -170,10 +173,13 @@ const AddProduct = ({ onChangeShowAdd }) => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="flex justify-between w-full my-3">
+                                <div className="flex justify-between w-full gap-2 my-3">
                                     <div onClick={() => handleDecrease(d)}
                                         className="w-[17%] bg-white shadow-lg flex justify-center items-center py-2 rounded-md cursor-pointer">
                                         <FaMinus className="text-xl font-bold " />
+                                    </div>
+                                    <div className="w-[17%] bg-white shadow-lg flex justify-center items-center py-2 rounded-md cursor-pointer">
+                                        <input className="w-full px-2 text-center outline-none" value={d?.quantity} onChange={(e) => handleChangeQuantity(d?.code, e.target.value)} />
                                     </div>
                                     <div onClick={() => handleIncrease(d)}
                                         className="w-[17%] bg-white shadow-lg flex justify-center items-center py-2 rounded-md cursor-pointer">

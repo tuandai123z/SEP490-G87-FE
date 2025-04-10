@@ -38,6 +38,7 @@ const CreateReturnForm = () => {
                 const data = res.data;
                 const resultListOrderCode = data?.content?.map(item => item?.code);
                 setListOrderSaleCode(resultListOrderCode);
+                console.log(data);
             })
             .catch((err) => {
                 if (err.response) {
@@ -97,12 +98,12 @@ const CreateReturnForm = () => {
             .post(`/return-form/create`, data)
             .then(res => {
                 const data = res.data;
-                console.log(data, '----------------');
                 setIsOpenModal(false);
                 setIsLoading(false);
                 toast.success("Tạo phiếu hoàn hàng thành công!")
                 const action = clearOrderReturn();
                 dispatch(action);
+                navigate(`/inventory/return/management`);
             })
             .catch((err) => {
                 if (err.response) {
@@ -133,7 +134,6 @@ const CreateReturnForm = () => {
     const handleChange = (code, statusReturn) => {
         const action = changeStatusReturn(code, statusReturn);
         dispatch(action);
-        console.log(orderReturn);
     };
 
     useEffect(() => {

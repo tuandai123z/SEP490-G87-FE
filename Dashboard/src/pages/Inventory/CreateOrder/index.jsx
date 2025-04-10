@@ -3,10 +3,11 @@ import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { clearOrder } from "../../../actions/orderActions";
+import { clearOrder, removeProduct } from "../../../actions/orderActions";
 import ModalConfirmCreate from "../../../../src/components/common/ModalConfirmCreate";
 import { axiosInstance } from "../../../utils/axiosInstant";
 import AddProduct from "./AddProduct";
+import { FaTrashAlt } from "react-icons/fa";
 
 
 const CreateOrder = () => {
@@ -140,6 +141,11 @@ const CreateOrder = () => {
         setIsOpenAdd(!isOpenAdd);
     }
 
+    const handleRemove = (product) => {
+        const action = removeProduct(product);
+        dispatch(action);
+    }
+
     return (
         <div className="relative overflow-x-auto ">
             <div className="flex items-center w-full h-auto gap-4 px-2 py-4">
@@ -189,6 +195,7 @@ const CreateOrder = () => {
                                 <th scope="col" className="px-6 py-3 border border-blue-300">Tên hàng</th>
                                 <th scope="col" className="px-6 py-3 border border-blue-300">ĐVT</th>
                                 <th scope="col" className="px-6 py-3 border border-blue-300">Số lượng</th>
+                                <th scope="col" className="px-6 py-3 border border-blue-300">Hành động</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -201,7 +208,7 @@ const CreateOrder = () => {
                                         <td className="px-6 py-4 border border-blue-300">{item?.name}</td>
                                         <td className="px-6 py-4 border border-blue-300">{item?.unitName}</td>
                                         <td className="px-6 py-4 border border-blue-300">{item?.quantity}</td>
-
+                                        <td className="px-6 py-4 border border-blue-300"><FaTrashAlt onClick={() => handleRemove(item)} className="text-xl cursor-pointer text-red" /></td>
                                     </tr>
                                 )
                             })}

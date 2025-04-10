@@ -63,7 +63,6 @@ const CreateExportDelivery = () => {
                     ...item,
                     discount: item?.discount * 100
                 }));
-                console.log(products);
                 setListOrderProducts(products);
             })
             .catch((err) => {
@@ -198,7 +197,7 @@ const CreateExportDelivery = () => {
                                             {item?.code}
                                         </th>
                                         <td className="px-6 py-4 border border-blue-300">{item?.name}</td>
-                                        <td className="px-6 py-4 border border-blue-300">{item?.unit}</td>
+                                        <td className="px-6 py-4 border border-blue-300">{item?.unitName}</td>
                                         <td className="px-6 py-4 border border-blue-300">{item?.quantity}</td>
                                         <td className="px-6 py-4 border border-blue-300">{item?.inventoryQuantity}</td>
                                         <td className="px-6 py-4 border border-blue-300">{formatVND(item?.sellingPrice)}</td>

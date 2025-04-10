@@ -56,6 +56,13 @@ const orderReducer = (state = [], action) => {
       return newState;
     }
 
+    case 'CHANGE_QUANTITY_PRODUCT': {
+      const { code, quantity } = action.payload;
+      const products = state.map(product => (product.code === code ? { ...product, quantity } : product));
+
+      return products;
+    }
+
     case 'IMPORT_ORDER': {
       const data = action.payload;
       return [...data];

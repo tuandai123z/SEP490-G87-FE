@@ -41,7 +41,6 @@ const EditOrderSale = () => {
                     ...item,
                     discount: item?.discount * 100
                 }));
-                console.log(data);
                 const action = importOrderSale(dataImport);
                 dispatch(action);
             })

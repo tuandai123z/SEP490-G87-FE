@@ -184,7 +184,7 @@ const OrderSaleManagement = () => {
                     <div className="flex justify-end py-2">
                         <div
                             className={`px-6 py-2 border-t-2 border-l-2 cursor-pointer transition-all duration-100 bg-blue-400  text-white font-semibold`}
-                            onClick={() => { navigate('/inventory/order/create') }}>
+                            onClick={() => { navigate('/inventory/orderSale/create') }}>
                             <span className="uppercase" >Tạo phiếu mua hàng</span>
                         </div>
                     </div>

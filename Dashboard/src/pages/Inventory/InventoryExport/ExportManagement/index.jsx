@@ -54,7 +54,6 @@ const ExportManagement = () => {
                 const data = res.data;
                 setListExport(data.content)
                 setPaginationInformation(data);
-                console.log(data);
             })
             .catch((err) => {
                 if (err.response) {

@@ -10,6 +10,11 @@ export const removeProduct = code => ({
   payload: code,
 });
 
+export const changeQuantityProduct = payload => ({
+  type: 'CHANGE_QUANTITY_PRODUCT',
+  payload: payload,
+});
+
 export const reduceProduct = product => {
   return {
     type: 'REDUCE_PRODUCT_QUANTITY',

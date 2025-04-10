@@ -7,7 +7,7 @@ import { axiosInstance } from "../../../../utils/axiosInstant";
 import { toast } from "react-toastify";
 import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addToOrderSale, clearOrderSale, increaseProductSale, reduceProductSale, removeProductSale } from "../../../../actions/saleActions";
+import { addToOrderSale, changeQuantityProductSale, clearOrderSale, increaseProductSale, reduceProductSale, removeProductSale } from "../../../../actions/saleActions";
 
 
 const AddProductSale = ({ onChangeShowAdd }) => {
@@ -85,6 +85,13 @@ const AddProductSale = ({ onChangeShowAdd }) => {
 
     const handleRemove = (product) => {
         const action = removeProductSale(product);
+        dispatch(action);
+    }
+
+    const handleChangeQuantity = (code, quantity) => {
+        if (Number(quantity) <= 0) return
+        const payload = { code: code, quantity: Number(quantity) }
+        const action = changeQuantityProductSale(payload);
         dispatch(action);
     }
 
@@ -171,10 +178,13 @@ const AddProductSale = ({ onChangeShowAdd }) => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="flex justify-between w-full my-3">
+                                <div className="flex justify-between w-full gap-2 my-3">
                                     <div onClick={() => handleDecrease(d)}
                                         className="w-[17%] bg-white shadow-lg flex justify-center items-center py-2 rounded-md cursor-pointer">
                                         <FaMinus className="text-xl font-bold " />
+                                    </div>
+                                    <div className="w-[17%] bg-white shadow-lg flex justify-center items-center py-2 rounded-md cursor-pointer">
+                                        <input className="w-full px-2 text-center outline-none" value={d?.quantity} onChange={(e) => handleChangeQuantity(d?.code, e.target.value)} />
                                     </div>
                                     <div onClick={() => handleIncrease(d)}
                                         className="w-[17%] bg-white shadow-lg flex justify-center items-center py-2 rounded-md cursor-pointer">

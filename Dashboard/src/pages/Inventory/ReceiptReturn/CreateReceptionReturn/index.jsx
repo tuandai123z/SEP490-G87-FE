@@ -35,7 +35,6 @@ const CreateReceptionReturn = () => {
             .then(res => {
                 const data = res.data;
                 setListOrders(data);
-                console.log(data, '===========');
             })
             .catch((err) => {
                 if (err.response) {
@@ -55,7 +54,6 @@ const CreateReceptionReturn = () => {
             .then(res => {
                 const data = res.data;
                 setOrderDetail(data);
-                console.log(data, '------------');
                 const productOrder = data.returnProducts?.map((item) => ({ ...item, dateOfManufacture: "", dateOfExpiry: "", location: "" }))
                 setListProducts(productOrder)
             })

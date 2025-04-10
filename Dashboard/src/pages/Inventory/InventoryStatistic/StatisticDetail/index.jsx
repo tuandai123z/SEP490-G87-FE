@@ -34,7 +34,6 @@ const StatisticDetail = () => {
             .get(`/inventory-sheet/${slug}`)
             .then(res => {
                 const data = res.data;
-                console.log(data, '=============');
                 setData(data.sheet);
                 setPaginationInformation(data.data)
                 setListProduct(data?.data?.content)
