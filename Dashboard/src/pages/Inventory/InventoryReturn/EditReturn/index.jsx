@@ -126,6 +126,7 @@ const EditReturnForm = () => {
                                     <th scope="col" className="px-6 py-3 border border-blue-300">Tên hàng</th>
                                     <th scope="col" className="px-6 py-3 border border-blue-300">ĐVT</th>
                                     <th scope="col" className="px-6 py-3 border border-blue-300">Số lượng</th>
+                                    <th scope="col" className="px-6 py-3 border border-blue-300">Tình trạng</th>
                                     <th scope="col" className="px-6 py-3 border border-blue-300">Lý do</th>
                                     <th scope="col" className="px-6 py-3 border border-blue-300">Thành tiền</th>
                                 </tr>
@@ -141,6 +142,7 @@ const EditReturnForm = () => {
                                             <td className="px-6 py-4 border border-blue-300">{item?.productInformation?.name}</td>
                                             <td className="px-6 py-4 border border-blue-300">{item?.productInformation?.unitName}</td>
                                             <td className="px-6 py-4 border border-blue-300">{item?.quantityReturn}</td>
+                                            <td className="px-6 py-4 border border-blue-300">{item?.statusProduct === 'broken' ? "Hỏng" : "Cũ"}</td>
                                             <td className="px-6 py-4 border border-blue-300">{item?.reason}</td>
                                             <td className="px-6 py-4 border border-blue-300">{formatVND(item?.quantityReturn * (1 - (item?.discount / 100)) * item?.productInformation?.sellingPrice)}</td>
                                         </tr>
