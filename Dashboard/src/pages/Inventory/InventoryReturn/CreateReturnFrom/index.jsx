@@ -58,6 +58,7 @@ const CreateReturnForm = () => {
             .then(res => {
                 const data = res.data;
                 setCurrentCustomer(data?.customer)
+                console.log(data);
                 const products = data?.orderProducts?.map(item => ({
                     ...item,
                     discount: item?.discount * 100,
@@ -83,7 +84,7 @@ const CreateReturnForm = () => {
             productCode: item?.code,
             reason: item?.reason,
             statusProduct: item?.statusReturn,
-            quantity: item?.quantity
+            quantity: item?.currentQuantity
         }))
 
         const data = {
@@ -92,7 +93,6 @@ const CreateReturnForm = () => {
             products: products,
             customerId: currentCustomer?.id
         }
-
         setIsLoading(true);
         axiosInstance
             .post(`/return-form/create`, data)
