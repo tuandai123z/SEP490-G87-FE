@@ -37,6 +37,7 @@ const StatisticDetail = () => {
                 setData(data.sheet);
                 setPaginationInformation(data.data)
                 setListProduct(data?.data?.content)
+                console.log(data?.data.content, '============');
             })
             .catch((err) => {
                 if (err.response) {
@@ -181,13 +182,14 @@ const StatisticDetail = () => {
                                         <div className="w-[50%] px-2 py-2">Giá trị</div>
                                     </div>
                                 </th>
+                                <th className="px-6 py-3 text-center border border-blue-400 h-[60px]">Tồn kho</th>
                                 <th className="px-6 py-3 text-center border border-blue-400 h-[60px]">Trạng thái</th>
                             </tr>
                         </thead>
                         <tbody>
                             {listProduct && listProduct?.map((item, index) => {
                                 return (
-                                    <tr className={`text-black border border-b border-blue-400 ${item?.quantityShipped <= currentNumberBase ? 'bg-gray-300' : ''}`} key={index}>
+                                    <tr className={`text-black border border-b border-blue-400 ${item?.productStatus !== 'NEW' ? 'bg-gray-300' : ''} ${item?.totalInventoryQuantity <= 20 && item?.productStatus === 'NEW' ? 'bg-red' : ''}`} key={index}>
                                         <td className="px-6 py-2 text-right border border-blue-400">{item?.productCode}</td>
                                         <td className="px-6 py-2 text-right border border-blue-400">{item?.productName}</td>
                                         <td className="px-6 py-2 text-right border border-blue-400">{item?.productUnit}</td>
@@ -196,11 +198,12 @@ const StatisticDetail = () => {
                                             <div className="w-[50%] px-3 py-2 ">{formatVND(item?.totalImportAmount)}</div>
                                         </td>
                                         <td className="text-center border border-blue-400 ">
-                                            <div className="flex divide-x divide-blue-400">
+                                            {item?.productStatus === 'NEW' && <div className="flex divide-x divide-blue-400">
                                                 <div className="w-[50%] px-3 py-2 ">{item?.productExportQuantity}</div>
                                                 <div className="w-[50%] px-3 py-2 ">{formatVND(item?.exportTotalAmount)}</div>
-                                            </div>
+                                            </div>}
                                         </td>
+                                        <td className="px-6 py-2 text-center border border-blue-400">{`${item?.totalInventoryQuantity} `}</td>
                                         <td className="flex items-center justify-center gap-3 px-6 py-2 border-blue-400 ">
                                             {item?.productStatus === 'NEW' && 'MỚI'}
                                             {item?.productStatus === 'OLD' && 'Cũ'}

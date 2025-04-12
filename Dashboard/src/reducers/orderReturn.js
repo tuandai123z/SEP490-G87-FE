@@ -53,10 +53,6 @@ const orderReturnReducer = (state = [], action) => {
         products[index].currentQuantity -= 1;
       }
 
-      if (products[index].currentQuantity === 1) {
-        products.splice(index, 1);
-      }
-
       return products;
     }
 

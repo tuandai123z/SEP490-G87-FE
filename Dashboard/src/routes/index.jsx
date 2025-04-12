@@ -34,6 +34,7 @@ import StatisticManagement from '../pages/Inventory/InventoryStatistic/Statistic
 import StatisticDetail from '../pages/Inventory/InventoryStatistic/StatisticDetail';
 import UnitsManagement from '../pages/Units';
 import ViewReturnForm from '../pages/Inventory/InventoryReturn/ViewReturnForm';
+import InventoryReceptReturnDetail from '../pages/Inventory/ReceiptReturn/InventoryReceptReturnDetail';
 
 const publicRoutes = [
   { path: '/', component: Login },
@@ -71,6 +72,7 @@ const publicRoutes = [
   { path: '/inventory/receipt-return/management', component: ReceptionReturnManagement, layout: InventoryLayout },
   { path: '/inventory/receipt-return/create', component: CreateReceptionReturn, layout: InventoryLayout },
   { path: '/inventory/receipt-return/edit/:slug', component: EditReturnForm, layout: InventoryLayout },
+  { path: '/inventory/receipt-return/detail/:slug', component: InventoryReceptReturnDetail, layout: InventoryLayout },
   { path: '/inventory/supplier', component: Supplier, layout: DefaultLayout },
   { path: '/profile', component: UserProfile },
 ];
