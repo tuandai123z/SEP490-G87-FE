@@ -12,7 +12,7 @@ import { IoMdArrowRoundBack } from "react-icons/io";
 const ViewReturnForm = () => {
     const [listOrderProducts, setListOrderProducts] = useState([]);
     const [returnDetail, setReturnDetail] = useState({});
-    const [returnOverview, setReturnOverview] = useState('');
+    const [returnOverview, setReturnOverview] = useState({});
     const [statusChange, setStatusChange] = useState('');
     const [titleModalConfirm, setTitleModalConfirm] = useState('');
     const [contentModalConfirm, setContentModalConfirm] = useState('');
@@ -30,8 +30,8 @@ const ViewReturnForm = () => {
                 const data = res.data;
                 setReturnDetail(data?.returnForm);
                 setReturnOverview(data)
-                    (data);
                 setListOrderProducts(data?.returnProducts)
+                console.log(data);
             })
             .catch((err) => {
                 if (err.response) {
