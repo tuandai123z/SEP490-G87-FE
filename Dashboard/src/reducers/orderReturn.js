@@ -78,25 +78,27 @@ const orderReturnReducer = (state = [], action) => {
     }
 
     case 'CHANGE_STATUS_RETURN': {
+      const { code, newStatus } = action.payload;
       if (state?.length === 1) {
-        return state.map(item => (item.code === action.payload.code ? { ...item, statusReturn: action.payload.newStatus } : item));
+        return state.map(item => (item.code === code ? { ...item, statusReturn: newStatus } : item));
       }
-      const returnChange = state.find(item => item.code === action.payload.code && item.statusReturn === !action.payload.newStatus);
+      const returnChange = state.find(item => item.code === code && item.statusReturn !== newStatus);
 
-      const isChange = state.find(item => item.code === action.payload.code && item.statusReturn === action.payload.newStatus);
-
+      const isChange = state.some(item => item.code === code && item.statusReturn === newStatus);
       if (!isChange) {
-        return state.map(item => (item.code === action.payload.code ? { ...item, statusReturn: action.payload.newStatus } : item));
+        return state.map(item => (item.code === code ? { ...item, statusReturn: newStatus } : item));
       }
-
-      return state
+      const statusFind = newStatus === 'old' ? 'broken' : 'old';
+      const newState = state
+        .filter(item => !(item?.code === code && item?.statusReturn === statusFind))
         .map(item => {
-          if (item.code === action.payload.code && item.statusReturn === action.payload.newStatus) {
-            return { ...item, quantity: item.quantity + returnChange.quantity };
+          if (item.code === code && item.statusReturn === newStatus) {
+            return { ...item, currentQuantity: item?.currentQuantity + returnChange?.currentQuantity };
           }
           return item;
-        })
-        .filter(item => !(item.code === action.payload.code && item.statusReturn === !action.payload.newStatus));
+        });
+
+      return newState;
     }
 
     case 'CHANGE_REASON_RETURN': {

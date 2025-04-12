@@ -132,7 +132,8 @@ const CreateReturnForm = () => {
     }
 
     const handleChange = (code, statusReturn) => {
-        const action = changeStatusReturn(code, statusReturn);
+        const payload = { code: code, newStatus: statusReturn }
+        const action = changeStatusReturn(payload);
         dispatch(action);
     };
 
@@ -240,7 +241,7 @@ const CreateReturnForm = () => {
                                             <label className="flex items-center gap-1">
                                                 <input
                                                     type="radio"
-                                                    name={`status-${item?.id}-${item?.statusReturn === 'broken' ? 'broken' : 'old'}`}
+                                                    name={`status-${item?.id}-broken`}
                                                     value="broken"
                                                     checked={item?.statusReturn === 'broken'}
                                                     onChange={() => handleChange(item?.code, 'broken')}
