@@ -143,7 +143,7 @@ const UnitsManagement = () => {
 
     useEffect(() => {
         getListUnits();
-    }, [])
+    }, [currentPage])
 
     return (
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
