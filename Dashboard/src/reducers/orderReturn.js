@@ -15,7 +15,9 @@ const orderReturnReducer = (state = [], action) => {
         products.push({ ...action.payload, currentQuantity: 1 });
       }
 
-      return products;
+      const newState = [...products].sort((a, b) => a.code.localeCompare(b.code));
+
+      return newState;
     }
 
     case 'INCREASE_PRODUCT_QUANTITY_RETURN': {
@@ -49,6 +51,10 @@ const orderReturnReducer = (state = [], action) => {
 
       if (index !== -1 && products[index].currentQuantity > 1) {
         products[index].currentQuantity -= 1;
+      }
+
+      if (products[index].currentQuantity === 1) {
+        products.splice(index, 1);
       }
 
       return products;
@@ -88,7 +94,7 @@ const orderReturnReducer = (state = [], action) => {
       if (!isChange) {
         return state.map(item => (item.code === code ? { ...item, statusReturn: newStatus } : item));
       }
-      const statusFind = newStatus === 'old' ? 'broken' : 'old';
+      const statusFind = newStatus === 'OLD' ? 'BROKEN' : 'OLD';
       const newState = state
         .filter(item => !(item?.code === code && item?.statusReturn === statusFind))
         .map(item => {

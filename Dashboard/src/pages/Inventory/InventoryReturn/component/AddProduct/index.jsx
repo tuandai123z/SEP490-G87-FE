@@ -10,6 +10,8 @@ const AddProduct = ({ onChangeShowAdd, data }) => {
     const orderReturn = useSelector(state => state.orderReturn);
     const dispatch = useDispatch();
 
+    console.log(data, '-----------');
+
     const handleAddProduct = (product) => {
         const resultProduct = orderReturn?.filter(p => p.code === product.code);
         const totalQuantity = resultProduct.reduce((sum, product) => sum + Number(product?.currentQuantity), Number(0));
@@ -91,10 +93,11 @@ const AddProduct = ({ onChangeShowAdd, data }) => {
                         {data?.map((item, index) => (
                             <div className="w-[16%] mr-1 relative cursor-pointer" key={index} onClick={() => { handleAddProduct(item); }}>
                                 <div className="w-full">
-                                    <img className="object-cover md:h-[180px] rounded-l-md rounded-t-sm" src={item?.imagePath} alt="" />
+                                    <img className="object-cover md:h-[220px] rounded-l-md rounded-t-sm" src={item?.imagePath} alt="" />
                                 </div>
-                                <div className={`absolute bottom-0 w-full left-0 h-[50px] bg-gray-500/[0.95] rounded-b-sm flex flex-col justify-center items-center`}>
-                                    <span className="font-medium text-white">{`${item?.name}-${item?.inventoryQuantity}`}</span>
+                                <div className={`absolute bottom-0 w-full left-0 h-[70px] bg-gray-500/[0.95] rounded-b-sm flex flex-col justify-center items-center`}>
+                                    <span className="font-medium text-white">{`${item?.name}`}</span>
+                                    <span className="font-medium text-white">{`Hoàn tối đa: ${item?.quantity}`}</span>
                                     <span className={`font-medium ${item?.inventoryQuantity === 0 ? 'text-red' : 'text-green'}`}>{`Còn lại: ${item?.inventoryQuantity}`}</span>
                                 </div>
 

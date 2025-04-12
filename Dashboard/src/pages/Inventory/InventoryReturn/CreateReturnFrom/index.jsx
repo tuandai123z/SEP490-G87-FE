@@ -62,7 +62,7 @@ const CreateReturnForm = () => {
                 const products = data?.orderProducts?.map(item => ({
                     ...item,
                     discount: item?.discount * 100,
-                    statusReturn: 'broken',
+                    statusReturn: 'BROKEN',
                     reason: ''
                 }));
                 setListOrderProducts(products);
@@ -93,7 +93,8 @@ const CreateReturnForm = () => {
             products: products,
             customerId: currentCustomer?.id
         }
-        setIsLoading(true);
+        console.log(data, '-----------');
+        // setIsLoading(true);
         axiosInstance
             .post(`/return-form/create`, data)
             .then(res => {
@@ -231,20 +232,20 @@ const CreateReturnForm = () => {
                                             <label className="flex items-center gap-1 " >
                                                 <input
                                                     type="radio"
-                                                    name={`status-${item?.id}-${item?.statusReturn === 'broken' ? 'broken' : 'old'}`}
-                                                    value="old"
-                                                    checked={item?.statusReturn === 'old'}
-                                                    onChange={() => handleChange(item?.code, 'old')}
+                                                    name={`status-${index}`}
+                                                    value="OLD"
+                                                    checked={item?.statusReturn === 'OLD'}
+                                                    onChange={() => handleChange(item?.code, 'OLD')}
                                                 />
                                                 Cũ
                                             </label>
                                             <label className="flex items-center gap-1">
                                                 <input
                                                     type="radio"
-                                                    name={`status-${item?.id}-broken`}
-                                                    value="broken"
-                                                    checked={item?.statusReturn === 'broken'}
-                                                    onChange={() => handleChange(item?.code, 'broken')}
+                                                    name={`status-${index}`}
+                                                    value="BROKEN"
+                                                    checked={item?.statusReturn === 'BROKEN'}
+                                                    onChange={() => handleChange(item?.code, 'BROKEN')}
                                                 />
                                                 Hỏng
                                             </label>
