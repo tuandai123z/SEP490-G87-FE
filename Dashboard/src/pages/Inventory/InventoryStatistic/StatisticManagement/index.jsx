@@ -109,6 +109,7 @@ const StatisticManagement = () => {
             .then(res => {
                 const data = res.data;
                 toast.success("Thêm bảng kiểm kê thành công!")
+                getListSheet();
                 setIsOpenModal(false);
             })
             .catch((err) => {

@@ -40,6 +40,11 @@ const orderReducer = (state = [], action) => {
         products[index].quantity -= 1;
       }
 
+       if (products[index].quantity === 1) {
+         products.splice(index, 1);
+       }
+
+
       return products;
     }
 
