@@ -23,7 +23,6 @@ const InventoryReceptReturnDetail = () => {
             .get(`/inventory-receipt/${slug}`)
             .then(res => {
                 const data = res.data;
-                console.log(data, '===============');
                 setReceptionDetail(data);
                 setListProducts(data.itemsInInventory)
             })
@@ -59,10 +58,11 @@ const InventoryReceptReturnDetail = () => {
     return (
         <div className="relative grid grid-cols-5 gap-2 pr-2 overflow-x-auto">
             <div className="col-span-4">
-                <div className="flex items-center w-full h-auto gap-4 px-2 py-4">
+                <div className="flex flex-col w-full h-auto gap-4 px-2 py-4">
                     <h3 className="text-xl font-semibold uppercase">Thông tin phiếu nhập kho hoàn hàng</h3>
+                    <h5 className="text-sm font-normal uppercase">Mã phiếu nhập kho hoàn hàng: {slug}</h5>
                 </div>
-                <div className="flex w-full gap-4 px-2 mb-2">
+                {/* <div className="flex w-full gap-4 px-2 mb-2">
                     <div className="w-[100%] p-2.5 grid grid-cols-6 gap-4 border-2 border-gray-400 relative">
                         <div className="flex flex-col items-start w-full col-span-3">
                             <label htmlFor="first_name" className="block w-full text-sm font-normal text-gray-900 dark:text-white">Phiếu mua hàng<span className="pl-1 text-lg font-semibold text-red">*</span></label>
@@ -82,7 +82,7 @@ const InventoryReceptReturnDetail = () => {
                         </div>
                         <p className="absolute text-gray-900 top-[-16px] bg-white font-semibold">Thông tin chung</p>
                     </div>
-                </div>
+                </div> */}
                 <div className="w-full px-2 mb-4">
                     <div className="relative overflow-x-auto shadow-md">
                         <div className="flex justify-between">
@@ -173,20 +173,8 @@ const InventoryReceptReturnDetail = () => {
                                 <FaKey className="" />
                             </div>)}
                     </div>
-                    <input type="text" disabled value={receptionDetail?.approve === 'APPROVED' ? receptionDetail?.username : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
-                    <input type="text" disabled value={receptionDetail?.approve === 'APPROVED' ? `${receptionDetail?.actionTime?.split('.')[0]?.split('T')[0]} ${receptionDetail?.actionTime?.split('.')[0]?.split('T')[1]}` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
-                </div>
-                <div className="flex flex-col gap-3">
-                    <div className="flex items-center justify-between ">
-                        <span>Từ chối bởi</span>
-                        {receptionDetail && receptionDetail?.approve === 'REJECTED' && (
-                            <div className="flex items-center gap-2 px-4 py-1 rounded-md bg-red ">
-                                <span>Đã từ chối</span>
-                                <FaKey className="" />
-                            </div>)}
-                    </div>
-                    <input type="text" disabled value={receptionDetail?.approve === 'REJECTED' ? receptionDetail?.username : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
-                    <input type="text" disabled value={receptionDetail?.approve === 'REJECTED' ? `${receptionDetail?.actionTime?.split('.')[0]?.split('T')[0]} ${receptionDetail?.actionTime?.split('.')[0]?.split('T')[1]}` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
+                    <input type="text" disabled value={receptionDetail?.employee?.name} className='w-full px-4 py-1 text-right border border-gray-500' />
+                    <input type="text" disabled value={formatDateTime(receptionDetail?.createAtDateTime)} className='w-full px-4 py-1 text-right border border-gray-500' />
                 </div>
             </div>
 
