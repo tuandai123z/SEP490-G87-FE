@@ -187,6 +187,7 @@ const CategoryManagement = () => {
 
                 </tbody>
             </table>
+            <div className="pl-3 pr-3">
             <Pagination
                 totalPages={listCategories?.totalElements}
                 size={size}
@@ -194,6 +195,7 @@ const CategoryManagement = () => {
                 onPageChange={setCurrentPage}
                 content={'danh mục'}
             />
+            </div>
             {isOpenModalCreate && <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50 animate-fadeIn">
                 <div className="relative z-50 w-full max-w-2xl max-h-screen overflow-y-auto bg-white rounded-lg shadow-lg">
                     <div className="flex items-center justify-between p-4 border-b border-gray-200 rounded-t md:p-5 dark:border-gray-600">

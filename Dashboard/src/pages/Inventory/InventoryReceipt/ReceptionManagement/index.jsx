@@ -120,7 +120,7 @@ const ReceptionManagement = () => {
                 <div className="w-full p-2.5 grid grid-cols-4 gap-4 border-2 border-gray-400 relative">
                     <div className="grid grid-cols-3 col-span-3 gap-4">
                         <div className="flex items-center w-full col-span-1">
-                            <label htmlFor="code" className="block mb-2 text-sm font-normal pr-2 text-gray-900 dark:text-white w-[25%] text-right ">Mã phiếu</label>
+                            <label htmlFor="code" className="block mb-2 text-sm font-normal pr-2 text-gray-900 dark:text-white w-[25%]">Mã phiếu</label>
                             <input type="text" id="code" value={orderCode} onChange={e => setOrderCode(e.target.value)} className="block w-[75%] p-1 text-sm text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                         </div>
                         <div className="flex items-center w-full col-span-2 gap ">
