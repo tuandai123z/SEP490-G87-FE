@@ -43,10 +43,10 @@ export const clearOrderReturn = () => {
   };
 };
 
-export const changeStatusReturn = (code, newStatus) => {
+export const changeStatusReturn = payload => {
   return {
     type: 'CHANGE_STATUS_RETURN',
-    payload: { code, newStatus },
+    payload: payload,
   };
 };
 
