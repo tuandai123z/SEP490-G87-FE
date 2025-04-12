@@ -168,7 +168,11 @@ const SidebarInventory = () => {
     return (
         <div className="bg-primary px-[25px] h-screen max-w-[15%] fixed top-0 left-0 overflow-y-auto scrollbar-hide hide-scrollbar ">
             <div className="py-4 px-2 flex items-center justify-center border-b-[1px] border-[#EDEDED]/[0.3]">
-                <h1 className="text-white text-base uppercase leading-[24px] font-extrabold cursor-pointer">Thiết bị điện hải Phòng</h1>
+            <img
+          src="/logoThietBi.png"
+          alt="Thiết Bị"
+          className="h-fit cursor-pointer"
+        />
             </div>
             <div className="flex items-center gap-[15px] py-[20px] border-b-[1px] transition ease-in-out duration-300 rounded pl-4 hover:bg-secondary border-[#EDEDED]/[0.3] cursor-pointer "
                 onClick={() => handleNavigate('/inventory/statistic')}>

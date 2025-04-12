@@ -335,18 +335,18 @@ const ProductsManagement = () => {
                             </button>
                         </div>
                         <div className="grid w-full grid-cols-2 gap-2 px-2">
-                            <div className="flex flex-col col-span-1">
+                            <div className="flex flex-col col-span-1 w-[90%]">
                                 <label htmlFor="first_name" className="block w-full pr-2 mb-2 text-sm font-semibold text-left text-gray-900 dark:text-white">Tên thiết bị</label>
                                 <input type="text" value={query} onChange={e => setQuery(e.target.value)} id="small-input" className="block w-full p-2 text-xs text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Tên thiết bị điện" />
                             </div>
-                            <div className="flex flex-col col-span-1">
+                            <div className="flex flex-col col-span-1 w-[90%]">
                                 <label htmlFor="first_name" className="block w-full pr-2 mb-2 text-sm font-semibold text-left text-gray-900 dark:text-white">Thương hiệu</label>
                                 <select value={brandFilter} onChange={e => setBrandFilter(e.target.value)} id="jobRank" className="block w-full p-2 text-xs text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     <option value={""}>---Chọn thương hiệu---</option>
                                     {listBrands?.map((item, index) => <option value={item.code} key={index}>{item?.name}</option>)}
                                 </select>
                             </div>
-                            <div className="flex flex-col col-span-1">
+                            <div className="flex flex-col col-span-1 w-[90%]">
                                 <label htmlFor="first_name" className="block w-full pr-2 mb-2 text-sm font-semibold text-left text-gray-900 dark:text-white">Danh mục</label>
                                 <select value={categoryFilter} onChange={e => setCategoryFilter(e.target.value)} id="jobRank" className="block w-full p-2 text-xs text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     <option value={''}>---Chọn danh mục---</option>
@@ -395,7 +395,7 @@ const ProductsManagement = () => {
                                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     {item?.name}
                                 </th>
-                                <th scope="row" className="flex justify-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                <th scope="row" className="flex justify-start items-start px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     <img src={item?.imagePath} alt={item?.name} className='object-cover rounded-lg h-[50px] w-28' />
                                 </th>
                                 <td className="px-6 py-4">
@@ -435,6 +435,7 @@ const ProductsManagement = () => {
                     }
                 </tbody>
             </table>
+            <div className="pl-3 pr-3">
             <Pagination
                 totalPages={listProducts?.totalElements}
                 size={size}
@@ -442,7 +443,8 @@ const ProductsManagement = () => {
                 onPageChange={setCurrentPage}
                 content={'thiết bị'}
             />
-
+            </div>
+           
             {isOpenModalCreate && <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50 animate-fadeIn">
                 <div className="relative z-50 w-full max-w-2xl max-h-screen overflow-y-auto bg-white rounded-lg shadow-lg">
                     <div className="flex items-center justify-between p-4 border-b border-gray-200 rounded-t md:p-5 dark:border-gray-600">
@@ -460,7 +462,7 @@ const ProductsManagement = () => {
                         <div className="grid grid-cols-2 gap-4 mb-4">
                             <div className="col-span-2 ">
                                 <label htmlFor="fullName" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tên thiết bị</label>
-                                <input type="text" value={productName} onChange={(e) => setProductName(e.target.value)} name="fullName" id="fullName" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Nhập tên thiết bị" required="" />
+                                <input type="text" value={productName} onChange={(e) => setProductName(e.target.value)} name="fullName" id="fullName" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 " placeholder="Nhập tên thiết bị" required="" />
                             </div>
                             <div className="col-span-2 sm:col-span-1">
                                 <label htmlFor="unit" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Đơn vị</label>

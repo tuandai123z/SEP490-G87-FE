@@ -188,7 +188,7 @@ const UnitsManagement = () => {
                                     {item?.name}
                                 </th>
                                 <td className="px-6 py-4 ">
-                                    <a className="mr-4 font-medium cursor-pointer text-green dark:text-blue-500 hover:underline" onClick={() => handleOpenModalEdit(item)}>Chỉnh sửa</a>
+                                    <a className="mr-4 font-medium cursor-pointer text-blue-600 dark:text-blue-500 hover:underline" onClick={() => handleOpenModalEdit(item)}>Chỉnh sửa</a>
                                 </td>
                                 <td className="px-6 py-4 ">
                                     <a className="font-medium cursor-pointer text-red dark:text-blue-500 hover:underline" onClick={() => handleOpenDelete(item)}>Xoá</a>
@@ -210,6 +210,7 @@ const UnitsManagement = () => {
 
                 </tbody>
             </table>
+            <div className="pl-3 pr-3">
             {listUnits?.content?.length !== 0 && <Pagination
                 totalPages={listUnits?.totalElements}
                 size={size}
@@ -217,6 +218,7 @@ const UnitsManagement = () => {
                 onPageChange={setCurrentPage}
                 content={'đơn vị tính'}
             />}
+            </div>
             {isOpenModal && <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50 animate-fadeIn">
                 <div className="relative z-50 w-full max-w-2xl max-h-screen overflow-y-auto bg-white rounded-lg shadow-lg">
                     <div className="flex items-center justify-between p-4 border-b border-gray-200 rounded-t md:p-5 dark:border-gray-600">

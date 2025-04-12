@@ -349,6 +349,7 @@ const StaffManagement = () => {
 
                     </tbody>
                 </table>
+                <div className="pl-3 pr-3">
                 <Pagination
                     totalPages={listStaff?.totalElements}
                     size={size}
@@ -356,6 +357,7 @@ const StaffManagement = () => {
                     onPageChange={setCurrentPage}
                     content={'nhân viên'}
                 />
+            </div>
             </div>
 
             {isOpen && <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50 animate-fadeIn">
