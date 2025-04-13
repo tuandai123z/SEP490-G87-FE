@@ -58,7 +58,7 @@ const EditReturnForm = () => {
             .put(`/return-form/${slug}/${statusChange === 'APPROVED' ? 'approve' : 'reject'}`)
             .then(res => {
                 const contentStatus = statusChange === 'APPROVED' ? "Duyệt" : 'Huỷ ';
-                toast.success(`${contentStatus} phiếu bán hàng thành công!`);
+                toast.success(`${contentStatus} phiếu xuất kho thành công!`);
                 getReturnDetail();
                 setIsOpenModalConfirm(false);
             })
