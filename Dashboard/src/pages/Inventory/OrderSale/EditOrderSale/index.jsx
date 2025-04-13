@@ -300,7 +300,7 @@ const EditOrderSale = () => {
                         <span>Duyệt bởi</span>
                         {orderSaleDetail && (orderSaleDetail?.approveStatus === 'WAITING') && (
                             <div
-                                onClick={() => handleOpenChange('APPROVED', 'Duyệt phiếu mua hàng', 'Bạn chắc chắn duyệt phiếu mua hàng này?', 'Xác nhận')}
+                                onClick={() => handleOpenChange('APPROVED', 'Duyệt phiếu bán hàng', 'Bạn chắc chắn duyệt phiếu bán hàng này?', 'Xác nhận')}
                                 className="flex items-center gap-2 px-4 py-1 transition-all duration-150 bg-orange-400 rounded-md cursor-pointer hover:bg-orange-600">
                                 <span>Duyệt</span>
                                 <FaKey className="" />
@@ -319,7 +319,7 @@ const EditOrderSale = () => {
                         <span>Từ chối bởi</span>
                         {orderSaleDetail && (orderSaleDetail?.approveStatus === 'WAITING') && (
                             <div
-                                onClick={() => handleOpenChange('REJECTED', 'Huỷ phiếu mua hàng', 'Bạn chắc chắn huỷ phiếu mua hàng này?', 'Xác nhận')}
+                                onClick={() => handleOpenChange('REJECTED', 'Huỷ phiếu bán hàng', 'Bạn chắc chắn huỷ phiếu bán hàng này?', 'Xác nhận')}
                                 className="flex items-center gap-2 px-4 py-1 transition-all duration-150 rounded-md cursor-pointer bg-red hover:bg-rose-500">
                                 <span>Từ chối</span>
                                 <FaKey className="" />
@@ -338,7 +338,7 @@ const EditOrderSale = () => {
                         <span>Đã giao bởi</span>
                         {orderSaleDetail && (orderSaleDetail?.deliveryStatus === "WAITING_DELIVERY") && (orderSaleDetail?.approveStatus !== 'WAITING') && (
                             <div
-                                onClick={() => handleOpenChange('delivery-success', 'Xác nhận phiếu mua hàng', 'Bạn chắc chắn đã giao thành công phiếu mua hàng này?', 'Xác nhận')}
+                                onClick={() => handleOpenChange('delivery-success', 'Xác nhận phiếu bán hàng', 'Bạn chắc chắn đã giao thành công phiếu bán hàng này?', 'Xác nhận')}
                                 className="flex items-center gap-2 px-4 py-1 transition-all duration-150 bg-blue-400 rounded-md cursor-pointer hover:bg-blue-700">
                                 <span>Giao hàng</span>
                                 <FaKey className="" />
