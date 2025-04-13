@@ -184,9 +184,9 @@ const BrandProducts = () => {
                             </ul>
                         </div>
                     </div>
-                    <div className="flex flex-wrap col-span-3 gap-5 px-4">
+                    <div className="grid grid-cols-4 col-span-3 gap-5 px-4">
                         {listProducts?.content?.map((item, index) => (
-                            <CardItem key={index} item={item} />
+                            <div className='min-w-0 col-span-1' key={index}><CardItem item={item} /></div>
                         ))}
                         {!totalPages && <p >Không tìm thấy sản phẩm nào khớp với lựa chọn của bạn.</p>}
                     </div>

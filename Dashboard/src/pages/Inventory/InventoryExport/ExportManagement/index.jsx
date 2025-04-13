@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import Pagination from "../../../../components/common/Pagination";
 import { LIST_STATUS_FILTER_ORDER } from "../../OrderMangement/const";
 import { formatVND } from "../../../../utils/format";
-import html2canvas from "html2canvas";
+import html2canvas from "html2canvas-pro";
 import jsPDF from "jspdf";
 import InvoicePDF from "../component/InvoicePDF";
 import { NumericFormat } from "react-number-format";
@@ -149,14 +149,19 @@ const ExportManagement = () => {
 
     const generatePDF = () => {
         const input = contentRef.current;
-        html2canvas(input, { scale: 2 }).then((canvas) => {
+        html2canvas(input, {
+            scale: 2,
+            useCORS: true,
+            backgroundColor: '#ffffff',
+        }).then((canvas) => {
             const imgData = canvas.toDataURL("image/png");
             const pdf = new jsPDF("p", "mm", "a4");
             const imgWidth = 210;
             const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
+            const fileName = `phieuxuatkho${currentDataPDF?.code}`;
             pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
-            pdf.save(`invoice.pdf`);
+            console.log(fileName);
+            pdf.save(`${fileName}.pdf`);
         });
     };
 
@@ -167,7 +172,11 @@ const ExportManagement = () => {
 
     const generatePDFView = () => {
         const input = contentRef.current;
-        html2canvas(input, { scale: 2 }).then((canvas) => {
+        html2canvas(input, {
+            scale: 2,
+            useCORS: true,
+            backgroundColor: '#ffffff',
+        }).then((canvas) => {
             const imgData = canvas.toDataURL("image/png");
             const pdf = new jsPDF("p", "mm", "a4");
             pdf.addImage(imgData, "PNG", 0, 0, 210, 297);

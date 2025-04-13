@@ -8,7 +8,7 @@ import { formatVND } from "../../../../utils/format";
 import { FaFileExport, FaKey } from "react-icons/fa";
 import ModalAlertConfirm from "../../../../components/common/ModalAlerConfirm";
 import { IoMdArrowRoundBack } from "react-icons/io";
-import html2canvas from "html2canvas";
+import html2canvas from "html2canvas-pro";
 import jsPDF from "jspdf";
 import InvoicePDF from "../component/InvoicePDF";
 
@@ -67,14 +67,18 @@ const ViewReturnForm = () => {
 
     const generatePDF = () => {
         const input = contentRef.current;
-        html2canvas(input, { scale: 2 }).then((canvas) => {
+        html2canvas(input, {
+            scale: 2,
+            useCORS: true,
+            backgroundColor: '#ffffff',
+        }).then((canvas) => {
             const imgData = canvas.toDataURL("image/png");
             const pdf = new jsPDF("p", "mm", "a4");
             const imgWidth = 210;
             const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
             pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
-            pdf.save(`invoice.pdf`);
+            pdf.save(`phieuhoanhang${slug}.pdf`);
         });
     };
 
