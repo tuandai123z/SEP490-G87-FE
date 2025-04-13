@@ -136,6 +136,8 @@ const CreateOrderSale = () => {
         if (ref.current) return;
         ref.current = true;
         getListCustomer();
+        const action = clearOrderSale();
+        dispatch(action);
     }, [])
 
     const onChangeShowAdd = () => {

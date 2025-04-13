@@ -336,7 +336,7 @@ const EditOrderSale = () => {
                 <div className="flex flex-col gap-3">
                     <div className="flex items-center justify-between ">
                         <span>Đã giao bởi</span>
-                        {orderSaleDetail && (orderSaleDetail?.deliveryStatus === "WAITING_DELIVERY") && (
+                        {orderSaleDetail && (orderSaleDetail?.deliveryStatus === "WAITING_DELIVERY") && (orderSaleDetail?.approveStatus !== 'WAITING') && (
                             <div
                                 onClick={() => handleOpenChange('delivery-success', 'Xác nhận phiếu mua hàng', 'Bạn chắc chắn đã giao thành công phiếu mua hàng này?', 'Xác nhận')}
                                 className="flex items-center gap-2 px-4 py-1 transition-all duration-150 bg-blue-400 rounded-md cursor-pointer hover:bg-blue-700">

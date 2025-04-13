@@ -8,6 +8,7 @@ import { formatVND } from "../../../../utils/format";
 import { FaKey } from "react-icons/fa";
 import ModalAlertConfirm from "../../../../components/common/ModalAlerConfirm";
 import { IoMdArrowRoundBack } from "react-icons/io";
+import { clearOrderSale } from "../../../../actions/saleActions";
 
 const EditExportDelivery = () => {
     const [listOrderProducts, setListOrderProducts] = useState([]);
@@ -19,6 +20,7 @@ const EditExportDelivery = () => {
     const [isOpenModalConfirm, setIsOpenModalConfirm] = useState(false);
     const totalCost = listOrderProducts && listOrderProducts?.reduce((sum, product) => sum + Number(product?.exportQuantity * product?.priceExport), Number(0));
     const ref = useRef(false);
+    const dispath = useDispatch();
     const { slug } = useParams();
     const navigate = useNavigate();
 
@@ -140,7 +142,7 @@ const EditExportDelivery = () => {
                                             </th>
                                             <td className="px-6 py-4 border border-blue-300">{item?.product?.code}</td>
                                             <td className="px-6 py-4 border border-blue-300">{item?.product?.name}</td>
-                                            <td className="px-6 py-4 border border-blue-300">{item?.product?.unit}</td>
+                                            <td className="px-6 py-4 border border-blue-300">{item?.product?.unitName}</td>
                                             <td className="px-6 py-4 border border-blue-300">{item?.exportQuantity}</td>
                                             <td className="px-6 py-4 border border-blue-300">{formatVND(item?.priceExport)}</td>
                                         </tr>
@@ -235,7 +237,7 @@ const EditExportDelivery = () => {
                     <input type="text" disabled value={orderDetail?.approveStatus === 'REJECTED' ? orderDetail?.approveBy : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
                     <input type="text" disabled value={orderDetail?.approveStatus === 'REJECTED' ? `${formatDate(orderDetail?.approveDate)} ` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
                 </div>
-                <div className="flex flex-col gap-3">
+                {/* <div className="flex flex-col gap-3">
                     <div className="flex items-center justify-between ">
                         <span>Đã nhập bởi</span>
                         {orderDetail && orderDetail?.deliveryStatus === 'RECEIVE_DELIVERY' && <div className="flex items-center gap-2 px-4 py-1 bg-blue-400 rounded-md ">
@@ -245,7 +247,7 @@ const EditExportDelivery = () => {
                     </div>
                     <input type="text" disabled value={''} className='w-full px-4 py-1 text-right border border-gray-500' />
                     <input type="text" disabled value={orderDetail?.deliveryStatus === 'RECEIVE_DELIVERY' ? `${formatDate(orderDetail?.actionTime)} ` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
-                </div>
+                </div> */}
             </div>
             {isOpenModalConfirm && <ModalAlertConfirm
                 title={titleModalConfirm}
