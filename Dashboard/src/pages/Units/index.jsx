@@ -188,7 +188,7 @@ const UnitsManagement = () => {
                                     {item?.name}
                                 </th>
                                 <td className="px-6 py-4 ">
-                                    <a className="mr-4 font-medium cursor-pointer text-blue-600 dark:text-blue-500 hover:underline" onClick={() => handleOpenModalEdit(item)}>Chỉnh sửa</a>
+                                    <a className="mr-4 font-medium text-blue-600 cursor-pointer dark:text-blue-500 hover:underline" onClick={() => handleOpenModalEdit(item)}>Chỉnh sửa</a>
                                 </td>
                                 <td className="px-6 py-4 ">
                                     <a className="font-medium cursor-pointer text-red dark:text-blue-500 hover:underline" onClick={() => handleOpenDelete(item)}>Xoá</a>
@@ -235,7 +235,7 @@ const UnitsManagement = () => {
                     <div className="p-4 md:p-5 ">
                         <div className="grid grid-cols-2 gap-4 mb-4">
                             <div className="col-span-2 ">
-                                <label htmlFor="fullName" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tên thiết bị</label>
+                                <label htmlFor="fullName" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tên đơn vị tính</label>
                                 <input type="text" value={unitName} onChange={(e) => setUnitName(e.target.value)} name="fullName" id="fullName" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Nhập tên thiết bị" required="" />
                             </div>
                         </div>

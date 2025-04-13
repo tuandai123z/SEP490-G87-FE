@@ -119,7 +119,7 @@ const ViewReturnForm = () => {
                             <div className="flex gap-2">
                                 <div className={`px-4 py-1 flex gap-3 items-center uppercase border-t-2 border-l-2 cursor-pointer transition-all duration-100 bg-orange-200 font-medium`} onClick={() => handleExportPDF()} >
                                     <FaFileExport />
-                                    <span>Xuất Excel</span>
+                                    <span>Xuất PDF</span>
                                 </div>
                             </div>
                         </div>
