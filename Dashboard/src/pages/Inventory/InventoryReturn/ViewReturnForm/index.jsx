@@ -5,19 +5,19 @@ import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { axiosInstance } from "../../../../utils/axiosInstant";
 import { formatVND } from "../../../../utils/format";
-import { FaKey } from "react-icons/fa";
+import { FaFileExport, FaKey } from "react-icons/fa";
 import ModalAlertConfirm from "../../../../components/common/ModalAlerConfirm";
 import { IoMdArrowRoundBack } from "react-icons/io";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
+import InvoicePDF from "../component/InvoicePDF";
 
 const ViewReturnForm = () => {
     const [listOrderProducts, setListOrderProducts] = useState([]);
     const [returnDetail, setReturnDetail] = useState({});
     const [returnOverview, setReturnOverview] = useState({});
-    const [statusChange, setStatusChange] = useState('');
-    const [titleModalConfirm, setTitleModalConfirm] = useState('');
-    const [contentModalConfirm, setContentModalConfirm] = useState('');
-    const [titleModalBtnConfirm, setTitleModalBtnConfirm] = useState('');
-    const [isOpenModalConfirm, setIsOpenModalConfirm] = useState(false);
+    const contentRef = useRef();
+    const [currentDataPDF, setCurrentDataPDF] = useState({});
     const totalCost = listOrderProducts && listOrderProducts?.reduce((sum, product) => sum + Number(product?.quantityReturn * (1 - (product?.discount / 100)) * product?.productInformation?.sellingPrice), Number(0));
     const ref = useRef(false);
     const { slug } = useParams();
@@ -45,35 +45,6 @@ const ViewReturnForm = () => {
             });
     }
 
-    const handleOpenChange = (status, title, content, titleBtnConfirm) => {
-        setStatusChange(status);
-        setTitleModalConfirm(title);
-        setContentModalConfirm(content);
-        setTitleModalBtnConfirm(titleBtnConfirm);
-        setIsOpenModalConfirm(true);
-    }
-
-    const handleChangeStatus = () => {
-        axiosInstance
-            .put(`/return-form/${slug}/${statusChange === 'APPROVED' ? 'approve' : 'reject'}`)
-            .then(res => {
-                const contentStatus = statusChange === 'APPROVED' ? "Duyệt" : 'Huỷ ';
-                toast.success(`${contentStatus} phiếu bán hàng thành công!`);
-                getReturnDetail();
-                setIsOpenModalConfirm(false);
-            })
-            .catch((err) => {
-                if (err.response) {
-                    const errorRes = err.response.data;
-                    toast.error(errorRes.message);
-                } else if (err.request) {
-                    toast.error(err.request);
-                } else {
-                    toast.error(err.message);
-                }
-            });
-    }
-
     useEffect(() => {
         if (ref.current) return;
         ref.current = true;
@@ -83,6 +54,29 @@ const ViewReturnForm = () => {
     const formatDate = (date) => {
         return `${date?.split('.')[0]?.split('T')[0]} ${date?.split('.')[0]?.split('T')[1]}`;
     }
+
+    const handleExportPDF = () => {
+        const data = {
+            createAt: returnDetail?.createAt,
+            customer: returnOverview?.customer,
+            products: listOrderProducts
+        }
+        setCurrentDataPDF(data);
+        setTimeout(generatePDF, 200);
+    }
+
+    const generatePDF = () => {
+        const input = contentRef.current;
+        html2canvas(input, { scale: 2 }).then((canvas) => {
+            const imgData = canvas.toDataURL("image/png");
+            const pdf = new jsPDF("p", "mm", "a4");
+            const imgWidth = 210;
+            const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+            pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+            pdf.save(`invoice.pdf`);
+        });
+    };
 
     return (
         <div className="relative grid grid-cols-4 gap-2 pr-2 overflow-x-auto">
@@ -118,6 +112,12 @@ const ViewReturnForm = () => {
                                     <span>Quay lại</span>
                                 </div>
                             </div>
+                            <div className="flex gap-2">
+                                <div className={`px-4 py-1 flex gap-3 items-center uppercase border-t-2 border-l-2 cursor-pointer transition-all duration-100 bg-orange-200 font-medium`} onClick={() => handleExportPDF()} >
+                                    <FaFileExport />
+                                    <span>Xuất Excel</span>
+                                </div>
+                            </div>
                         </div>
                         <table className="w-full text-sm text-left text-blue-100 border border-blue-400 rtl:text-right dark:text-blue-100">
                             <thead className="text-xs text-white uppercase bg-blue-400 border border-blue-400 dark:text-white">
@@ -143,7 +143,7 @@ const ViewReturnForm = () => {
                                             <td className="px-6 py-4 border border-blue-300">{item?.productInformation?.unitName}</td>
                                             <td className="px-6 py-4 border border-blue-300">{item?.quantityReturn}</td>
                                             <td className="px-6 py-4 border border-blue-300">{item?.reason}</td>
-                                            <td className="px-6 py-4 border border-blue-300">{formatVND(item?.quantityReturn * (1 - (item?.discount / 100)) * item?.productInformation?.sellingPrice)}</td>
+                                            <td className="px-6 py-4 border border-blue-300">{formatVND(item?.quantityReturn * (1 - (item?.discount)) * item?.productInformation?.sellingPrice)}</td>
                                         </tr>
                                     )
                                 })}
@@ -228,7 +228,9 @@ const ViewReturnForm = () => {
                     <input type="text" disabled value={returnDetail?.deliveryStatus === 'RECEIVE_DELIVERY' ? `${formatDate(returnDetail?.actionTime)} ` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
                 </div>
             </div>
-
+            <div className="absolute -left-[9999px]">
+                <InvoicePDF className='' ref={contentRef} data={currentDataPDF} />
+            </div>
         </div>
     )
 }

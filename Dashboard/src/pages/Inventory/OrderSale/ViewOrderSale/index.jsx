@@ -3,28 +3,23 @@ import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import ModalConfirmCreate from "../../../../components/common/ModalConfirmCreate";
 import { axiosInstance } from "../../../../utils/axiosInstant";
 import { IoMdArrowRoundBack } from "react-icons/io";
-import AddProductSale from "../AddProductSale";
 import { formatVND } from "../../../../utils/format";
 import { clearOrderSale, importOrderSale } from "../../../../actions/saleActions";
-import { FaKey } from "react-icons/fa";
-import ModalAlertConfirm from "../../../../components/common/ModalAlerConfirm";
+import { FaFileExport, FaKey } from "react-icons/fa";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
+import InvoicePDF from "../component/InvoicePDF";
 
 const ViewOrderSale = () => {
-    const [isOpenAdd, setIsOpenAdd] = useState(false);
-    const [isOpenModal, setIsOpenModal] = useState(false);
     const [orderSaleDetail, setOrderSaleDetail] = useState('');
     const order = useSelector(state => state.sale);
     const user = useSelector(state => state.user);
     const [listProductSale, setListProductSale] = useState(order);
+    const [currentDataPDF, setCurrentDataPDF] = useState({});
     const [currentCustomer, setCurrentCustomer] = useState({});
-    const [statusChange, setStatusChange] = useState('');
-    const [titleModalConfirm, setTitleModalConfirm] = useState('');
-    const [contentModalConfirm, setContentModalConfirm] = useState('');
-    const [titleModalBtnConfirm, setTitleModalBtnConfirm] = useState('');
-    const [isOpenModalConfirm, setIsOpenModalConfirm] = useState(false);
+    const contentRef = useRef();
     const { slug } = useParams();
     const totalCost = listProductSale && listProductSale?.reduce((sum, product) => sum + Number(product?.quantity * product?.sellingPrice * (100 - product?.discount) / 100), Number(0));
     const ref = useRef(false);
@@ -81,6 +76,29 @@ const ViewOrderSale = () => {
         setCurrentCustomer(orderSaleDetail?.customer)
     }, [orderSaleDetail])
 
+    const handleExportPDF = () => {
+        const data = {
+            createAt: orderSaleDetail?.createAt,
+            customer: currentCustomer,
+            products: listProductSale
+        }
+        setCurrentDataPDF(data);
+        setTimeout(generatePDF, 200);
+    }
+
+    const generatePDF = () => {
+        const input = contentRef.current;
+        html2canvas(input, { scale: 2 }).then((canvas) => {
+            const imgData = canvas.toDataURL("image/png");
+            const pdf = new jsPDF("p", "mm", "a4");
+            const imgWidth = 210;
+            const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+            pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+            pdf.save(`invoice.pdf`);
+        });
+    };
+
     return (
         <div className="relative grid grid-cols-4 gap-2 pr-2 overflow-x-auto">
             <div className="col-span-3">
@@ -111,6 +129,12 @@ const ViewOrderSale = () => {
                                 <div className={`px-4 py-1 flex gap-3 items-center uppercase border-t-2 border-l-2 cursor-pointer transition-all duration-100 bg-orange-200 font-medium`} onClick={() => handleBack()}>
                                     <IoMdArrowRoundBack />
                                     <span>Quay lại</span>
+                                </div>
+                            </div>
+                            <div className="flex gap-2">
+                                <div className={`px-4 py-1 flex gap-3 items-center uppercase border-t-2 border-l-2 cursor-pointer transition-all duration-100 bg-orange-200 font-medium`} onClick={() => handleExportPDF()} >
+                                    <FaFileExport />
+                                    <span>Xuất Excel</span>
                                 </div>
                             </div>
                         </div>
@@ -212,6 +236,9 @@ const ViewOrderSale = () => {
                     <input type="text" disabled value={''} className='w-full px-4 py-1 text-right border border-gray-500' />
                     <input type="text" disabled value={orderSaleDetail?.deliveryStatus === 'RECEIVE_DELIVERY' ? `${formatDate(orderSaleDetail?.actionTime)} ` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
                 </div>
+            </div>
+            <div className="absolute -left-[9999px]">
+                <InvoicePDF className='' ref={contentRef} data={currentDataPDF} />
             </div>
         </div>
     )
