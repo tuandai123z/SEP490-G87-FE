@@ -147,43 +147,6 @@ const ReturnManagement = () => {
         return `${date?.split('.')[0]?.split('T')[0]} ${date?.split('.')[0]?.split('T')[1]}`
     }
 
-    const generatePDF = () => {
-        const input = contentRef.current;
-        html2canvas(input, { scale: 2 }).then((canvas) => {
-            const imgData = canvas.toDataURL("image/png");
-            const pdf = new jsPDF("p", "mm", "a4");
-            const imgWidth = 210;
-            const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-            pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
-            pdf.save(`invoice.pdf`);
-        });
-    };
-
-    const handleExportPDF = (data) => {
-        setCurrentDataPDF(data);
-        setTimeout(generatePDF, 200);
-    }
-
-    const generatePDFView = () => {
-        const input = contentRef.current;
-        html2canvas(input, { scale: 2 }).then((canvas) => {
-            const imgData = canvas.toDataURL("image/png");
-            const pdf = new jsPDF("p", "mm", "a4");
-            pdf.addImage(imgData, "PNG", 0, 0, 210, 297);
-
-            // Chuyển đổi PDF thành Blob URL
-            const pdfBlob = pdf.output("blob");
-            const pdfURL = URL.createObjectURL(pdfBlob);
-            setPdfUrl(pdfURL);
-        });
-    };
-
-    const handleViewPDF = (data) => {
-        setCurrentDataPDF(data);
-        setTimeout(generatePDFView, 100);
-    }
-
     const handleFromDateChange = (e) => {
         const newFromDate = e.target.value;
         if (toDate && new Date(newFromDate) > new Date(toDate)) {
