@@ -185,7 +185,7 @@ const OrderSaleManagement = () => {
                         <div
                             className={`px-6 py-2 border-t-2 border-l-2 cursor-pointer transition-all duration-100 bg-blue-400  text-white font-semibold`}
                             onClick={() => { navigate('/inventory/orderSale/create') }}>
-                            <span className="uppercase" >Tạo phiếu mua hàng</span>
+                            <span className="uppercase" >Tạo phiếu bán hàng</span>
                         </div>
                     </div>
                     <table className="w-full text-sm text-left text-blue-100 border border-blue-400 shadow-sm rtl:text-right dark:text-blue-100">
@@ -214,7 +214,7 @@ const OrderSaleManagement = () => {
                                         <td className="px-6 py-2 text-right border border-blue-400">{formatDate(order?.createAt)}</td>
                                         <td className="px-6 py-2 text-right border border-blue-400">{formatVND(order?.totalAmount)}</td>
                                         <td className="px-6 py-2 text-center border border-blue-400">
-                                            {order?.approveStatus === 'WAITING' && <span className="px-4 py-1 font-medium uppercase bg-orange-300 rounded-lg">CHỜ DUYỆT</span>}
+                                            {order?.approveStatus === 'WAITING' && order?.deliveryStatus === 'WAITING_DELIVERY' && <span className="px-4 py-1 font-medium uppercase bg-orange-300 rounded-lg">CHỜ DUYỆT</span>}
                                             {order?.approveStatus === 'REJECTED' && <span className="px-4 py-1 font-medium uppercase rounded-lg bg-red">TỪ CHỐI</span>}
                                             {(order?.approveStatus === 'APPROVED' && order?.deliveryStatus === 'WAITING_DELIVERY') && <span className="px-4 py-1 font-medium uppercase rounded-lg bg-green">CHỜ GIAO HÀNG</span>}
                                             {order?.deliveryStatus !== 'WAITING_DELIVERY' && <span className="px-4 py-1 font-medium uppercase bg-blue-600 rounded-lg">ĐÃ GIAO HÀNG</span>}

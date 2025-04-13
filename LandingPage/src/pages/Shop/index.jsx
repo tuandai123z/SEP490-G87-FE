@@ -132,6 +132,7 @@ const Shop = () => {
         const data = res.data;
         setTotalPages(data?.totalPages);
         setListProducts(data);
+        console.log(data?.content);
       })
       .catch(err => {
         if (err.response) {
@@ -198,9 +199,9 @@ const Shop = () => {
               </ul>
             </div>
           </div>
-          <div className="flex flex-wrap col-span-3 gap-5 px-4">
+          <div className="grid grid-cols-4 col-span-3 gap-5 px-4">
             {listProducts?.content?.map((item, index) => (
-              <CardItem key={index} item={item} />
+              <div className='min-w-0 col-span-1' key={index}><CardItem item={item} /></div>
             ))}
           </div>
         </div>
