@@ -16,8 +16,11 @@ const StaffManagement = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [fullname, setFullname] = useState('');
+    const [newPassword, setNewPassword] = useState('');
+    const [confirmNewPassword, setConfirmNewPassword] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [roleAccount, setRoleAccount] = useState('-1');
+    const [isOpenChangePassword, setIsOpenChangePassword] = useState(false);
     const [currentStaff, setCurrentStaff] = useState(undefined);
     const [isLoading, setIsLoading] = useState(false);
     const [statusModal, setStatusModal] = useState(false)
@@ -40,6 +43,7 @@ const StaffManagement = () => {
                 const data = res.data;
                 setListStaff(data);
                 setIsLoading(true);
+                console.log(data);
             })
             .catch((err) => {
                 if (err.response) {
@@ -104,6 +108,12 @@ const StaffManagement = () => {
         setIsOpen(true);
     }
 
+    const handleOpenModalChangePassword = (staff) => {
+        setStatusModal(true);
+        setCurrentStaff(staff);
+        setIsOpenChangePassword(true);
+    }
+
     useEffect(() => {
         setEmployeeCode(currentStaff?.code)
         setFullname(currentStaff?.name);
@@ -114,6 +124,7 @@ const StaffManagement = () => {
 
     const handleCloseModal = () => {
         setIsOpen(false);
+        setIsOpenChangePassword(false);
         setCurrentStaff(undefined)
         setEmployeeCode('')
     }
@@ -215,6 +226,45 @@ const StaffManagement = () => {
 
     }
 
+    const handleChangePassword = () => {
+        if (!newPassword || !confirmNewPassword) {
+            toast.warn("Vui lòng điền mật khẩu");
+            return
+        }
+        if (newPassword?.length < 6 || confirmNewPassword < 6) {
+            toast.warn("Mật khẩu phải nhiều hơn 6 ký tự");
+            return
+        }
+        if (newPassword !== confirmNewPassword) {
+            toast.warn("Xác nhận mật khẩu không đúng");
+            return;
+        }
+
+        const requestData = {
+            newPassword: newPassword,
+        }
+
+        axiosInstance
+            .put(`/employees/update-password/${employeeCode}`, requestData)
+            .then(res => {
+                toast.success(`Cập nhật thông tin nhân viên ${fullname} thành công!`)
+                setIsOpenChangePassword(false);
+                getListStaff();
+                setCurrentStaff(undefined);
+                resetDataForm();
+            })
+            .catch(err => {
+                if (err.response) {
+                    const errorRes = err.response.data;
+                    toast.error(errorRes.message);
+                } else if (err.request) {
+                    toast.error(err.request);
+                } else {
+                    toast.error(err.message);
+                }
+            })
+    }
+
     const handleOpenUserBlock = (user) => {
         setEmployeeCode(user?.code)
         setIsOpenBlock(true);
@@ -245,6 +295,14 @@ const StaffManagement = () => {
     useEffect(() => {
         getListStaff();
     }, [isBlockFilter, currentPage])
+
+    const getRoleName = (role) => {
+        if (role == 'EMPLOYEE') return 'NHÂN VIÊN KHO'
+        if (role == 'ADMIN') return 'ADMIN'
+        if (role == 'MANAGER') return 'QUẢN LÝ'
+        if (role == 'SALE') return 'NHÂN VIÊN BÁN HÀNG'
+        return
+    }
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
@@ -301,7 +359,8 @@ const StaffManagement = () => {
                                 Trạng thái
                             </th>
                             <th scope="col" className="px-6 py-3">
-                                <span className="sr-only">Edit</span>
+                                {/* <span className="sr-only">Chỉnh sửa</span>
+                                <span className="sr-only">Đổi mật khẩu</span> */}
                             </th>
                         </tr>
                     </thead>
@@ -322,8 +381,9 @@ const StaffManagement = () => {
                                         <p onClick={() => handleOpenUserBlock(staff)}>{!staff?.isBlock ? <FaUserCheck className="text-lg transition-all duration-100 text-green hover:text-gray-600" /> : <FaLock className="text-lg transition-all duration-100 text-red hover:text-rose-600" />
                                         }</p>
                                     </td>
-                                    <td className="px-6 py-4 ">
-                                        <a onClick={() => handleOpenModalEdit(staff)} className="font-medium text-blue-600 cursor-pointer dark:text-blue-500 hover:underline">Edit</a>
+                                    <td className="px-0 py-4 ">
+                                        <a onClick={() => handleOpenModalEdit(staff)} className="mr-4 font-medium text-blue-600 cursor-pointer dark:text-blue-500 hover:underline">Chỉnh sửa</a>
+                                        <a onClick={() => handleOpenModalChangePassword(staff)} className="font-medium text-black cursor-pointer dark:text-blue-500 hover:underline">Đổi mật khẩu</a>
                                     </td>
                                 </tr>)
                         })}
@@ -373,7 +433,6 @@ const StaffManagement = () => {
                             <span className="sr-only">Close modal</span>
                         </button>
                     </div>
-                    {/* <form className="p-4 md:p-5 "> */}
                     <div className="grid grid-cols-2 gap-4 p-4 mb-4 md:p-5">
                         <div className={`col-span-2 ${currentStaff ?? "sm:col-span-1"}`}>
                             <label htmlFor="username" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tên đăng nhập</label>
@@ -398,7 +457,7 @@ const StaffManagement = () => {
                                 <option value={'-1'}>---Chọn chức vụ------</option>
                                 {listRole?.map((role, index) => {
                                     if (role?.name === 'ADMIN') return
-                                    return <option value={role?.code} key={index}>{role?.name}</option>
+                                    return <option value={role?.code} key={index}>{getRoleName(role?.name)}</option>
                                 })}
                             </select>
                         </div>
@@ -407,7 +466,35 @@ const StaffManagement = () => {
                             {employeeCode ? 'Xác nhận' : 'Thêm nhân viên'}
                         </button>
                     </div>
-                    {/* </form> */}
+                </div>
+            </div >}
+            {isOpenChangePassword && <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50 animate-fadeIn">
+                <div className="relative z-50 w-full max-w-2xl max-h-screen overflow-y-auto bg-white rounded-lg shadow-lg">
+                    <div className="flex items-center justify-between p-4 border-b border-gray-200 rounded-t md:p-5 dark:border-gray-600">
+                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                            Đổi mật khẩu nhân viên {username}
+                        </h3>
+                        <button type="button" onClick={handleCloseModal} className="inline-flex items-center justify-center w-8 h-8 text-sm text-gray-400 bg-transparent rounded-lg hover:bg-gray-200 hover:text-gray-900 ms-auto dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="crud-modal">
+                            <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                            </svg>
+                            <span className="sr-only">Close modal</span>
+                        </button>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4 p-4 mb-4 md:p-5">
+                        <div className={`col-span-2 `}>
+                            <label htmlFor="newPassword" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Mật khẩu mới</label>
+                            <input type="password" name="newPassword" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} id="username" className={`bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 `} placeholder="Nhập mật khẩu mới" required="" />
+                        </div>
+                        <div className="col-span-2 ">
+                            <label htmlFor="confirmNewPassword" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Xác nhận mật khẩu mới</label>
+                            <input type="password" name="confirmNewPassword" value={confirmNewPassword} onChange={(e) => setConfirmNewPassword(e.target.value)} id="fullName" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Xác nhận mật khẩu mới" required="" />
+                        </div>
+
+                        <button type="submit" onClick={handleChangePassword} className="text-white  w-[40%] text-center items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-6">
+                            Đổi mật khẩu
+                        </button>
+                    </div>
                 </div>
             </div >}
             {isOpenBlock && <div id="popup-delete" className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50 animate-fadeIn">

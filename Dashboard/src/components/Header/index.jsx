@@ -1,21 +1,23 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
+import { clearUser } from '../../actions/userActions';
 
 const Header = () => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const dataUser = useSelector(state => state.user);
+  const dispatch = useDispatch();
   const routerLadingPage = `http://localhost:4000/`
 
   const showProfile = () => {
-    // alert("helloo")
     setOpen(!open);
   };
 
   const handleLogout = () => {
+    // const action = clearUser();
+    // dispatch(action);
     localStorage.removeItem('token');
-    // localStorage.removeItem('user');
     navigate('/');
   };
 
@@ -32,7 +34,7 @@ const Header = () => {
             </div>
 
             {open && (
-              <div className="bg-white border h-[150px] w-[180px] absolute bottom-[-135px] z-20 right-0 pt-[15px] pl-[15px] space-y-[10px]">
+              <div className="bg-white border h-[180px] w-[180px] absolute bottom-[-165px] z-20 right-0 pt-[15px] pl-[15px] space-y-[10px]">
                 <p className="cursor-pointer hover:text-[blue] font-semibold" onClick={() => navigate('/admin/dashboard')}>
                   Tổng quan
                 </p>
@@ -41,6 +43,9 @@ const Header = () => {
                 </p>
                 <p className="cursor-pointer hover:text-[blue] font-semibold"onClick={() => {window.location.href = `${routerLadingPage}`}}>
                 Website 
+                </p>
+                <p className="cursor-pointer hover:text-[blue] font-semibold" onClick={() => navigate(`/changePassword`)}>
+                  Đổi mật khẩu
                 </p>
                 <p className="cursor-pointer hover:text-[blue] font-semibold" onClick={() => handleLogout()}>
                   Đăng xuất

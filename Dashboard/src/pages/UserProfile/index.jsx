@@ -23,7 +23,7 @@ const UserProfile = () => {
         axiosInstance
             .get(`/employees/${dataUser?.employee_code}`)
             .then(res => {
-                const data = res.data.result;
+                const data = res.data;
                 setUserDetail(data);
             })
             .catch((err) => {

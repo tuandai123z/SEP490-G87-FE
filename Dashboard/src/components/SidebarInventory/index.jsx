@@ -4,6 +4,8 @@ import { MdInventory, } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import { IoIosArrowUp } from 'react-icons/io';
 import { motion, AnimatePresence } from 'framer-motion';
+import { ADMIN_ROLE, INVENTORY_ROLE, MANAGER_ROLE, SALE_ROLE } from '../../utils/constants';
+import { useSelector } from 'react-redux';
 
 const Categories = ({ content, Icon, pages }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -58,6 +60,8 @@ const Categories = ({ content, Icon, pages }) => {
 
 const SidebarInventory = () => {
     const navigate = useNavigate();
+    const dataUser = useSelector(state => state.user);
+    const roleUser = dataUser.role;
     const listPages = [
         // {
         //     content: "Phiếu nhập kho hoàn hàng",
@@ -89,6 +93,9 @@ const SidebarInventory = () => {
                     icon: FaFileImport,
                     url: '/inventory/return/create'
                 }
+            ],
+            roles: [
+                ADMIN_ROLE, SALE_ROLE, MANAGER_ROLE
             ]
         },
         {
@@ -105,6 +112,9 @@ const SidebarInventory = () => {
                     icon: FaFileImport,
                     url: '/inventory/export/create'
                 }
+            ],
+            roles: [
+                ADMIN_ROLE, INVENTORY_ROLE, MANAGER_ROLE
             ]
         },
         {
@@ -121,6 +131,9 @@ const SidebarInventory = () => {
                     icon: FaFileImport,
                     url: '/inventory/orderSale/create'
                 }
+            ],
+            roles: [
+                ADMIN_ROLE, SALE_ROLE, MANAGER_ROLE
             ]
         },
         {
@@ -142,6 +155,9 @@ const SidebarInventory = () => {
                     icon: FaFileImport,
                     url: '/inventory/receipt-return/create'
                 }
+            ],
+            roles: [
+                ADMIN_ROLE, INVENTORY_ROLE, MANAGER_ROLE
             ]
         },
         {
@@ -158,10 +174,14 @@ const SidebarInventory = () => {
                     icon: FaFileImport,
                     url: '/inventory/order/create'
                 }
+            ],
+            roles: [
+                ADMIN_ROLE, MANAGER_ROLE
             ]
         },
     ]
     const handleNavigate = (url) => {
+        if (roleUser !== ADMIN_ROLE && roleUser !== MANAGER_ROLE) return
         navigate(url)
     }
 
@@ -171,15 +191,17 @@ const SidebarInventory = () => {
             <img
           src="/logoThietBi.png"
           alt="Thiết Bị"
-          className="h-fit cursor-pointer"
+                    className="cursor-pointer h-fit"
         />
             </div>
-            <div className="flex items-center gap-[15px] py-[20px] border-b-[1px] transition ease-in-out duration-300 rounded pl-4 hover:bg-secondary border-[#EDEDED]/[0.3] cursor-pointer "
+            <div className={`flex items-center gap-[15px] py-[20px] border-b-[1px] rounded pl-4 ${(roleUser === ADMIN_ROLE || roleUser === MANAGER_ROLE) ? ' transition ease-in-out duration-300 hover:bg-secondary border-[#EDEDED]/[0.3] cursor-pointer' : "cursor-default"}`}
                 onClick={() => handleNavigate('/inventory/statistic')}>
                 <MdInventory color="white" />
                 <p className="text-[14px] leading-[20px] font-bold text-white ">Báo cáo kho</p>
             </div>
             {listPages?.map(((page, index) => {
+                const isDisplay = page?.roles?.includes(roleUser);
+                if (!isDisplay) return
                 return (
                     <Categories
                         content={page?.content}

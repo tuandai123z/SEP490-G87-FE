@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import { useSelector } from 'react-redux';
+import React from "react";
 import {
   FaBoxOpen,
   FaClipboardList,
@@ -13,6 +14,7 @@ import { MdDashboard, MdInventory } from "react-icons/md";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
+  const dataUser = useSelector(state => state.user);
   const navigate = useNavigate();
 
   const handleNavigate = (url) => {
@@ -24,11 +26,11 @@ const Sidebar = () => {
 
   return (
     <div className="bg-primary px-[25px] h-full w-[15%] fixed top-0 left-0">
-      <div className="py-4 px-2 flex items-center justify-center">
+      <div className="flex items-center justify-center px-2 py-4">
         <img
           src="/logoThietBi.png"
           alt="Thiết Bị"
-          className="h-fit cursor-pointer"
+          className="cursor-pointer h-fit"
         />
       </div>
       <div
@@ -76,18 +78,20 @@ const Sidebar = () => {
             </p>
           </div>
         </div>
-        <div
-          className={`flex items-center justify-between gap-[10px] py-[15px] cursor-pointer transition ease-in-out duration-300 rounded-full pl-4 
+        {dataUser?.role === 'ADMIN' && (
+          <div
+            className={`flex items-center justify-between gap-[10px] py-[15px] cursor-pointer transition ease-in-out duration-300 rounded-full pl-4 
           ${currentPath === "/admin/management/staffs" ? "bg-white" : ""}`}
-          onClick={() => handleNavigate("/admin/management/staffs")}
-        >
-          <div className="flex items-center gap-[10px]">
-            <FaUsers  className={`${currentPath === "/admin/management/staffs" ? "text-primary" : "text-white"}`} />
-            <p className={`text-[14px] leading-[20px] font-normal  ${currentPath === "/admin/management/staffs" ? "text-primary" : "text-white"}`}>
-              Nhân viên
-            </p>
+            onClick={() => handleNavigate("/admin/management/staffs")}
+          >
+            <div className="flex items-center gap-[10px]">
+              <FaUsers className={`${currentPath === "/admin/management/staffs" ? "text-primary" : "text-white"}`} />
+              <p className={`text-[14px] leading-[20px] font-normal  ${currentPath === "/admin/management/staffs" ? "text-primary" : "text-white"}`}>
+                Nhân viên
+              </p>
+            </div>
           </div>
-        </div>
+        )}
         <div
           className={`flex items-center justify-between gap-[10px] py-[15px] cursor-pointer transition ease-in-out duration-300 rounded-full pl-4 
           ${currentPath === "/inventory/supplier" ? "bg-white" : ""}`}

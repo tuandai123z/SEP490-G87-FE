@@ -5,6 +5,7 @@ import { jwtDecode } from 'jwt-decode';
 import { toast } from 'react-toastify';
 import { saveUser } from '../../actions/userActions';
 import { useDispatch, useSelector } from 'react-redux';
+import { ADMIN_ROLE, INVENTORY_ROLE, MANAGER_ROLE, SALE_ROLE } from '../../utils/constants';
 
 const Login = () => {
   const [typeLogin, setTypeLogin] = useState(true);
@@ -44,8 +45,22 @@ const Login = () => {
         const action = saveUser(userStorage);
         dispatch(action);
         toast.success("Đăng nhập thành công!")
-        navigate('/admin/dashboard');
-
+        const roleUser = user.role_code;
+        switch (roleUser) {
+          case ADMIN_ROLE:
+            navigate('/admin/dashboard');
+            break;
+          case MANAGER_ROLE:
+            navigate('/inventory/statistic');
+            break;
+          case SALE_ROLE:
+            navigate('/inventory/orderSale/management');
+            break;
+          case INVENTORY_ROLE:
+            navigate('/inventory/statistic')
+            break;
+          default: break;
+        }
       })
       .catch((err) => {
         if (err.response) {
