@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import { toast } from "react-toastify";
+import ModalAlert from "../../../components/common/ModalAlert";
 import Pagination from "../../../components/common/Pagination";
 import { axiosInstance } from "../../../utils/axiosInstant";
 
@@ -14,6 +15,7 @@ const CategoryManagement = () => {
     const size = 6;
     const inputRef = useRef(null);
     const [currentCategory, setCurrentCategory] = useState('');
+    const [isOpenModalDelete, setIsOpenModalDelete] = useState(false);
 
     const getListCategory = () => {
         axiosInstance
@@ -56,6 +58,37 @@ const CategoryManagement = () => {
 
     const handleCloseModalCreate = () => {
         setIsOpenModalCreate(false);
+    }
+
+    const handleOpenModalDelete = (category) => {
+        setCurrentCategory(category);
+        setIsOpenModalDelete(true);
+    }
+
+    const handleCloseModalDelete = () => {
+        setIsOpenModalDelete(false);
+    }
+
+    const handleDeleteCategory = () => {
+        axiosInstance
+            .delete(`/category/delete/${currentCategory?.code}`)
+            .then(res => {
+                toast.success(`Xoá danh mục ${currentCategory?.name} thành công!`)
+                setCurrentCategory({});
+                handleCloseModalDelete()
+                getListCategory();
+            })
+            .catch((err) => {
+                if (err.response) {
+                    const errorRes = err.response.data;
+                    toast.error(errorRes.message);
+                } else if (err.request) {
+                    toast.error(err.request);
+                } else {
+                    toast.error(err.message);
+                }
+                setIsLoading(false);
+            });
     }
 
     const handleSubmitForm = () => {
@@ -169,6 +202,8 @@ const CategoryManagement = () => {
                         <th scope="col" className="px-6 py-3">
                             Hành động
                         </th>
+                        <th scope="col" className="px-6 py-3">
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -180,6 +215,9 @@ const CategoryManagement = () => {
                                 </th>
                                 <td className="px-6 py-4">
                                     <a onClick={() => handleOpenModalEdit(item)} className="font-medium text-blue-600 cursor-pointer dark:text-blue-500 hover:underline">Chỉnh sửa</a>
+                                </td>
+                                <td className="px-6 py-4">
+                                    <a onClick={() => handleOpenModalDelete(item)} className="font-medium cursor-pointer text-red dark:text-blue-500 hover:underline">Xoá</a>
                                 </td>
                             </tr>
                         )
@@ -223,6 +261,13 @@ const CategoryManagement = () => {
                     </div>
                 </div>
             </div >}
+            {isOpenModalDelete && (
+                <ModalAlert
+                    handleClose={handleCloseModalDelete}
+                    handleDelete={handleDeleteCategory}
+                    name={currentCategory?.name}
+                />
+            )}
             <style jsx>{`
                 @keyframes fadeIn {
                     from {
