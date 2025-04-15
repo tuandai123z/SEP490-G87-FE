@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import { toast } from "react-toastify";
+import ModalAlert from "../../../components/common/ModalAlert";
 import Pagination from "../../../components/common/Pagination";
 import { axiosInstance } from "../../../utils/axiosInstant";
 
@@ -11,6 +12,7 @@ const BranchManagement = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [listBranch, setListBranch] = useState();
     const [currentBranch, setCurrentBranch] = useState('');
+    const [isOpenDelete, setIsOpenDelete] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const size = 6;
     const inputRef = useRef(null);
@@ -56,6 +58,36 @@ const BranchManagement = () => {
 
     const handleCloseModalCreate = () => {
         setIsOpenModalCreate(false);
+    }
+
+    const handleOpenModalDelete = (branch) => {
+        setCurrentBranch(branch);
+        setIsOpenDelete(true);
+    }
+
+    const handleCloseModalDelete = () => {
+        setCurrentBranch({});
+        setIsOpenDelete(false);
+    }
+
+    const handleDeleteBranch = () => {
+        axiosInstance
+            .get(`/brand/delete/${currentBranch?.code}`)
+            .then(res => {
+                toast.success(`Xoá thươNg hiệu ${currentBranch?.name} thành công!`)
+                handleCloseModalDelete();
+                getListBranch();
+            })
+            .catch((err) => {
+                if (err.response) {
+                    const errorRes = err.response.data;
+                    toast.error(errorRes.message);
+                } else if (err.request) {
+                    toast.error(err.request);
+                } else {
+                    toast.error(err.message);
+                }
+            });
     }
 
     const handleSubmitForm = () => {
@@ -169,6 +201,8 @@ const BranchManagement = () => {
                         <th scope="col" className="px-6 py-3">
                             Hành động
                         </th>
+                        <th scope="col" className="px-6 py-3">
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -180,6 +214,9 @@ const BranchManagement = () => {
                                 </th>
                                 <td className="px-6 py-4">
                                     <a onClick={() => handleOpenModalEdit(item)} className="font-medium text-blue-600 cursor-pointer dark:text-blue-500 hover:underline">Chỉnh sửa</a>
+                                </td>
+                                <td className="px-6 py-4">
+                                    <a onClick={() => handleOpenModalDelete(item)} className="font-medium cursor-pointer text-red dark:text-blue-500 hover:underline">Xoá</a>
                                 </td>
                             </tr>
                         )
@@ -223,6 +260,14 @@ const BranchManagement = () => {
                     </div>
                 </div>
             </div >}
+
+            {isOpenDelete && (
+                <ModalAlert
+                    handleClose={handleCloseModalDelete}
+                    handleDelete={handleDeleteBranch}
+                    name={currentBranch?.name}
+                />
+            )}
             <style jsx>{`
                 @keyframes fadeIn {
                     from {

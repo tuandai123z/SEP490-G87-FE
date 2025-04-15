@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Pagination from "../../../../components/common/Pagination";
-import { LIST_STATUS_FILTER_ORDER } from "../../OrderMangement/const";
+import { LIST_STATUS_FILTER_RECEIPT } from "../../OrderMangement/const";
 import { formatVND } from "../../../../utils/format";
 
 
@@ -29,7 +29,7 @@ const ReceptionManagement = () => {
         axiosInstance
             .get(`/inventory-receipt/find`, {
                 params: {
-                    ...(currentStatusOrder && currentStatusOrder !== 'RECEIVE_DELIVERY' ? { approveStatus: currentStatusOrder } : { deliveryStatus: currentStatusOrder }),
+                    ...(currentStatusOrder && { approve: currentStatusOrder }),
                     ...(fromDate ? { fromDate: fromDate } : {}),
                     ...(toDate ? { toDate: toDate } : {}),
                     code: `${orderCode}`,
@@ -136,7 +136,7 @@ const ReceptionManagement = () => {
                             <label htmlFor="first_name" className="block mb-2 text-sm font-normal pr-2 text-right text-gray-900 dark:text-white w-[25%]">Tình trạng</label>
                             <select id="statusOrder" value={currentStatusOrder} onChange={e => setCurrentStatusOrder(e.target.value)} className="bg-gray-50 w-[80%] border border-gray-300 text-gray-900 text-sm focus:ring-primary-500 focus:border-primary-500 block p-1.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                 <option value={""}>-----Chọn trạng thái-------</option>
-                                {LIST_STATUS_FILTER_ORDER?.map((status, index) => {
+                                {LIST_STATUS_FILTER_RECEIPT?.map((status, index) => {
                                     return <option value={status?.approveStatus} key={index}>{status?.title}</option>
                                 })}
                             </select>
