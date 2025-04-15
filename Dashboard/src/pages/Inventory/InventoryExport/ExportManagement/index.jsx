@@ -54,6 +54,7 @@ const ExportManagement = () => {
                 const data = res.data;
                 setListExport(data.content)
                 setPaginationInformation(data);
+                console.log(data);
             })
             .catch((err) => {
                 if (err.response) {
@@ -318,7 +319,7 @@ const ExportManagement = () => {
                                             <td className="px-6 py-2 text-right border border-blue-400">{item?.code}</td>
                                             <td className="px-6 py-2 text-right border border-blue-400">{item?.customer.name}</td>
                                             <td className="px-6 py-2 text-right border border-blue-400">{item?.customer.phoneNumber}</td>
-                                            <td className="px-6 py-2 text-right border border-blue-400">{formatVND(item?.totalAmount)}</td>
+                                            <td className="px-6 py-2 text-right border border-blue-400">{item?.deliveryType !== 'DELIVERY_RETURN' ? formatVND(item?.totalAmount) : 'Hoàn hàng'}</td>
                                             <td className="px-6 py-2 text-right border border-blue-400">{`${formatDate(item?.createAt)}`}</td>
                                             <td className="px-6 py-2 text-center border border-blue-400">
                                                 {item?.approveStatus === 'WAITING' && <span className="px-4 py-1 font-medium uppercase bg-orange-300 rounded-lg">CHỜ DUYỆT</span>}
@@ -326,7 +327,7 @@ const ExportManagement = () => {
                                                 {item?.approveStatus === 'APPROVED' && <span className="px-4 py-1 font-medium uppercase rounded-lg bg-green">ĐÃ DUYỆT</span>}
                                             </td>
                                             <td className="flex items-center justify-center gap-3 px-6 py-2 border-blue-400 ">
-                                                {item?.approveStatus === 'WAITING' && <MdModeEditOutline className="text-lg font-bold text-blue-700 transition-all duration-500 shadow-sm cursor-pointer hover:scale-[140%] " onClick={() => navigate(`/inventory/export/edit/${item?.code}`)} />}
+                                                {item?.approveStatus === 'WAITING' && <MdModeEditOutline className="text-lg font-bold text-blue-700 transition-all duration-500 shadow-sm cursor-pointer hover:scale-[140%] " onClick={() => navigate(`/inventory/${item?.deliveryType === "DELIVERY_RETURN" ? 'export-return' : 'export'}/edit/${item?.code}`)} />}
                                                 {item?.approveStatus === 'APPROVED' && <TbEyeSearch className="text-lg font-bold text-blue-700 transition-all duration-500 shadow-sm cursor-pointer hover:scale-[140%] " onClick={() => handleViewPDF(item)} />}
                                                 {item?.approveStatus === 'APPROVED' && <FaFileExport className="text-lg font-bold text-blue-700 transition-all duration-500 shadow-sm cursor-pointer hover:scale-[140%] " onClick={() => handleExportPDF(item)} />}
                                                 {/* <FaTrashAlt className="text-lg font-bold transition-all duration-150 shadow-sm cursor-pointer hover:scale-[140%] text-red" /> */}

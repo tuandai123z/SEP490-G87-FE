@@ -1,4 +1,4 @@
-import { TbEyeSearch } from "react-icons/tb";
+import { TbEyeSearch, TbPackageExport } from "react-icons/tb";
 import { MdModeEditOutline } from "react-icons/md";
 import { FaFileExport, FaSearch } from "react-icons/fa";
 import { useRef, useState } from "react"
@@ -281,6 +281,7 @@ const ReturnManagement = () => {
                                             <td className="flex items-center justify-center gap-3 px-6 py-2 border-blue-400 ">
                                                 {item?.returnForm?.approveStatus === 'WAITING' && <MdModeEditOutline className="text-lg font-bold text-blue-700 transition-all duration-500 shadow-sm cursor-pointer hover:scale-[140%] " onClick={() => navigate(`/inventory/return/edit/${item?.returnForm?.code}`)} />}
                                                 {item?.returnForm?.approveStatus === 'APPROVED' && <TbEyeSearch className="text-lg font-bold text-blue-700 transition-all duration-500 shadow-sm cursor-pointer hover:scale-[140%] " onClick={() => navigate(`/inventory/return/view/${item?.returnForm?.code}`)} />}
+                                                {item?.returnForm?.approveStatus === 'APPROVED' && <TbPackageExport className="text-lg font-bold text-blue-700 transition-all duration-500 shadow-sm cursor-pointer hover:scale-[140%] " onClick={() => navigate(`/inventory/export/create/${item?.returnForm?.code}`)} />}
                                             </td>
                                         </tr>
                                     )
