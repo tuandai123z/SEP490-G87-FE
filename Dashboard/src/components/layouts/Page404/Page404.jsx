@@ -11,7 +11,7 @@ function Page404() {
             <h1 className="text-6xl font-semibold text-gray-700 dark:text-gray-200">404</h1>
             <p className="text-gray-700 dark:text-gray-300">
                 Page not found. Check the address or{' '}
-                <span className="text-purple-600 cursor-pointer hover:underline dark:text-purple-300" onClick={() => navigate('/')} >
+                <span className="text-purple-600 cursor-pointer hover:underline dark:text-purple-300" onClick={() => navigate(-1)} >
                     go back
                 </span>
                 .

@@ -8,9 +8,8 @@ import { formatVND } from "../../../../utils/format";
 import { FaKey } from "react-icons/fa";
 import ModalAlertConfirm from "../../../../components/common/ModalAlerConfirm";
 import { IoMdArrowRoundBack } from "react-icons/io";
-import { clearOrderSale } from "../../../../actions/saleActions";
 
-const EditExportDelivery = () => {
+const EditExportReturn = () => {
     const [listOrderProducts, setListOrderProducts] = useState([]);
     const [orderDetail, setOrderDetail] = useState({});
     const [statusChange, setStatusChange] = useState('');
@@ -31,7 +30,7 @@ const EditExportDelivery = () => {
                 const data = res.data;
                 setOrderDetail(data);
                 setListOrderProducts(data?.products)
-                console.log(data);  
+                console.log(data);
             })
             .catch((err) => {
                 if (err.response) {
@@ -88,26 +87,26 @@ const EditExportDelivery = () => {
         <div className="relative grid grid-cols-4 gap-2 pr-2 overflow-x-auto">
             <div className="col-span-3">
                 <div className="flex items-center w-full h-auto gap-4 px-2 py-4">
-                    <h3 className="text-xl font-semibold uppercase">Phiếu xuất kho</h3>
+                    <h3 className="text-xl font-semibold uppercase">Phiếu xuất kho hoàn hàng</h3>
                 </div>
                 <div className="flex w-full gap-4 px-2 mb-2">
                     <div className="w-full p-2.5 gap-4 border-2 border-gray-400 relative">
                         <div className="grid grid-cols-2 gap-4">
                             <div className="flex flex-col items-start w-full">
-                                <label htmlFor="phoneNumber" className="block w-full mb-2 text-sm font-normal text-gray-900 dark:text-white">Số điện thoại</label>
-                                <input type="text" id="phoneNumber" value={orderDetail?.customer?.phoneNumber} disabled className="block w-full p-1 text-sm text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                                <label htmlFor="customerName" className="block w-full mb-2 text-sm font-normal text-gray-900 dark:text-white">Mã phiếu xuất kho</label>
+                                <input type="text" id="customerName" value={slug} disabled className="block w-full p-1 text-sm text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                             </div>
                             <div className="flex flex-col items-start w-full">
                                 <label htmlFor="customerName" className="block w-full mb-2 text-sm font-normal text-gray-900 dark:text-white">Tên khách hàng</label>
                                 <input type="text" id="customerName" value={orderDetail?.customer?.name} disabled className="block w-full p-1 text-sm text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                             </div>
                             <div className="flex flex-col items-start w-full">
-                                <label htmlFor="address" className="block mb-2 text-sm font-normal text-gray-900 dark:text-white ">Địa chỉ</label>
-                                <input type="text" id="address" value={orderDetail?.customer?.address} disabled className="block w-full p-1 text-sm text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                                <label htmlFor="phoneNumber" className="block w-full mb-2 text-sm font-normal text-gray-900 dark:text-white">Số điện thoại</label>
+                                <input type="text" id="phoneNumber" value={orderDetail?.customer?.phoneNumber} disabled className="block w-full p-1 text-sm text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                             </div>
                             <div className="flex flex-col items-start w-full">
-                                <label htmlFor="taxNumber" className="block mb-2 text-sm font-normal text-gray-900 dark:text-white ">Mã số thuế</label>
-                                <input type="text" id="taxNumber" value={orderDetail?.taxNumber} disabled className="block w-full p-1 text-sm text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                                <label htmlFor="address" className="block mb-2 text-sm font-normal text-gray-900 dark:text-white ">Địa chỉ</label>
+                                <input type="text" id="address" value={orderDetail?.customer?.address} disabled className="block w-full p-1 text-sm text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                             </div>
                         </div>
                         <p className="absolute text-gray-900 top-[-16px] bg-white font-semibold">Thông tin khách hàng</p>
@@ -131,7 +130,6 @@ const EditExportDelivery = () => {
                                     <th scope="col" className="px-6 py-3 border border-blue-300">Tên hàng</th>
                                     <th scope="col" className="px-6 py-3 border border-blue-300">ĐVT</th>
                                     <th scope="col" className="px-6 py-3 border border-blue-300">Số lượng</th>
-                                    <th scope="col" className="px-6 py-3 border border-blue-300">Thành tiền</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -145,49 +143,9 @@ const EditExportDelivery = () => {
                                             <td className="px-6 py-4 border border-blue-300">{item?.product?.name}</td>
                                             <td className="px-6 py-4 border border-blue-300">{item?.product?.unitName}</td>
                                             <td className="px-6 py-4 border border-blue-300">{item?.exportQuantity}</td>
-                                            <td className="px-6 py-4 border border-blue-300">{formatVND(item?.priceExport)}</td>
                                         </tr>
                                     )
                                 })}
-                                {listOrderProducts?.length !== 0 && (
-                                    <>
-                                        <tr className="text-black border border-b border-blue-400" >
-                                            <th scope="row" className="px-6 py-4 font-medium text-black border border-l-0 border-r-0 border-blue-300 whitespace-nowrap">Cộng tiền hàng:</th>
-                                            <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
-                                            <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
-                                            <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
-                                            <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
-                                            <td className="px-6 py-4 border border-r-0 border-blue-300">{formatVND(orderDetail?.totalAmount)}</td>
-                                        </tr>
-                                        <tr className="text-black border border-b border-blue-400" >
-                                            <th scope="row" className="px-6 py-4 font-medium text-black border border-l-0 border-r-0 border-blue-300 whitespace-nowrap">Thuế GTGT:</th>
-                                            <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300">{`${orderDetail?.taxExportGtGt * 100} %`}</td>
-                                            <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
-                                            <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
-                                            <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
-                                            <td className="px-6 py-4 border border-r-0 border-blue-300">{formatVND(orderDetail?.totalAmount * orderDetail?.taxExportGtGt)}</td>
-                                        </tr>
-                                        <tr className="text-black border border-b border-blue-400" >
-                                            <th scope="row" className="px-6 py-4 font-medium text-black border border-l-0 border-r-0 border-blue-300 whitespace-nowrap">Tổng tiền thanh toán:</th>
-                                            <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
-                                            <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
-                                            <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
-                                            <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
-                                            <td className="px-6 py-4 border border-r-0 border-blue-300">{formatVND(orderDetail?.totalAmount * (orderDetail?.taxExportGtGt + 1))}</td>
-                                        </tr>
-                                    </>
-                                )}
-                                {listOrderProducts?.length === 0 && (
-                                    <tr className="text-black border border-b border-blue-400" >
-                                        <th scope="row" className="px-6 py-4 font-medium text-black border border-blue-300 whitespace-nowrap">Chưa có thiết bị nào được chọn</th>
-                                        <td className="px-6 py-4 border border-blue-300"></td>
-                                        <td className="px-6 py-4 border border-blue-300"></td>
-                                        <td className="px-6 py-4 border border-blue-300"></td>
-                                        <td className="px-6 py-4 border border-blue-300"></td>
-                                        <td className="px-4 py-4 border border-blue-300"></td>
-                                        <td className="px-6 py-4 border border-blue-300"></td>
-                                    </tr>
-                                )}
                             </tbody>
                         </table>
                     </div>
@@ -205,7 +163,7 @@ const EditExportDelivery = () => {
                         <span>Duyệt bởi</span>
                         {orderDetail && (orderDetail?.approveStatus === 'WAITING') && (
                             <div
-                                onClick={() => handleOpenChange('APPROVED', 'Duyệt phiếu xuất kho', 'Bạn chắc chắn duyệt phiếu xuất kho này?', 'Xác nhận')}
+                                onClick={() => handleOpenChange('APPROVED', 'Duyệt phiếu xuất kho hoàn hàng', 'Bạn chắc chắn duyệt phiếu xuất kho hoàn hàng này?', 'Xác nhận')}
                                 className="flex items-center gap-2 px-4 py-1 transition-all duration-150 bg-orange-400 rounded-md cursor-pointer hover:bg-orange-600">
                                 <span>Duyệt</span>
                                 <FaKey className="" />
@@ -224,7 +182,7 @@ const EditExportDelivery = () => {
                         <span>Từ chối bởi</span>
                         {orderDetail && (orderDetail?.approveStatus === 'WAITING') && (
                             <div
-                                onClick={() => handleOpenChange('REJECTED', 'Huỷ phiếu xuất kho ', 'Bạn chắc chắn huỷ phiếu xuất kho  này?', 'Xác nhận')}
+                                onClick={() => handleOpenChange('REJECTED', 'Huỷ phiếu xuất kho hoàn hàng ', 'Bạn chắc chắn huỷ phiếu xuất kho hoàn hàng  này?', 'Xác nhận')}
                                 className="flex items-center gap-2 px-4 py-1 transition-all duration-150 rounded-md cursor-pointer bg-red hover:bg-rose-500">
                                 <span>Từ chối</span>
                                 <FaKey className="" />
@@ -238,17 +196,6 @@ const EditExportDelivery = () => {
                     <input type="text" disabled value={orderDetail?.approveStatus === 'REJECTED' ? orderDetail?.approveBy : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
                     <input type="text" disabled value={orderDetail?.approveStatus === 'REJECTED' ? `${formatDate(orderDetail?.approveDate)} ` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
                 </div>
-                {/* <div className="flex flex-col gap-3">
-                    <div className="flex items-center justify-between ">
-                        <span>Đã nhập bởi</span>
-                        {orderDetail && orderDetail?.deliveryStatus === 'RECEIVE_DELIVERY' && <div className="flex items-center gap-2 px-4 py-1 bg-blue-400 rounded-md ">
-                            <span>Đã nhập</span>
-                            <FaKey className="" />
-                        </div>}
-                    </div>
-                    <input type="text" disabled value={''} className='w-full px-4 py-1 text-right border border-gray-500' />
-                    <input type="text" disabled value={orderDetail?.deliveryStatus === 'RECEIVE_DELIVERY' ? `${formatDate(orderDetail?.actionTime)} ` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
-                </div> */}
             </div>
             {isOpenModalConfirm && <ModalAlertConfirm
                 title={titleModalConfirm}
@@ -289,4 +236,4 @@ const EditExportDelivery = () => {
     )
 }
 
-export default EditExportDelivery
+export default EditExportReturn

@@ -79,7 +79,7 @@ const InvoicePDF = React.forwardRef(({ data }, ref) => {
                 <h1 className="text-sm ">Số 2/60/191 Đường Đà Nẵng, Phường Cầu Tre, Quận Ngô Quyền, Hải Phòng</h1>
             </div>
             <div className='flex flex-col gap-1 '>
-                <h1 className="mb-2 text-xl font-bold text-center">PHIẾU XUẤT KHO BÁN HÀNG</h1>
+                <h1 className="mb-2 text-xl font-bold text-center">PHIẾU XUẤT KHO {data?.deliveryType !== 'DELIVERY_RETURN' ? 'BÁN HÀNG' : 'HOÀN HÀNG'}</h1>
                 <p className="text-center">{convertDate(data?.createAt)}</p>
             </div>
 
@@ -88,7 +88,7 @@ const InvoicePDF = React.forwardRef(({ data }, ref) => {
                 <p className='flex gap-1'><strong>Tên khách hàng:</strong> {data?.customer?.name}</p>
                 <p className='flex gap-1'><strong>Địa chỉ:</strong> {data?.customer?.address}</p>
                 <p className='flex gap-1'><strong>Điện thoại:</strong> {data?.customer?.phoneNumber}</p>
-                <p className='flex gap-1'><strong>Mã số thuế:</strong> {data?.taxNumber || '________________________________________'}</p>
+                {data?.deliveryType !== 'DELIVERY_RETURN' && <p className='flex gap-1'><strong>Mã số thuế:</strong> {data?.taxNumber || '________________________________________'}</p>}
                 <p className='flex gap-1'><strong>Diễn giải:</strong> Bán hàng {data?.customer?.name}</p>
             </div>
 
@@ -100,8 +100,8 @@ const InvoicePDF = React.forwardRef(({ data }, ref) => {
                         <th className="px-4 py-2 border border-gray-300">Tên hàng</th>
                         <th className="px-4 py-2 border border-gray-300">Đơn vị tính</th>
                         <th className="px-4 py-2 border border-gray-300">Số lượng</th>
-                        <th className="px-4 py-2 border border-gray-300">Đơn giá</th>
-                        <th className="px-4 py-2 border border-gray-300">Thành tiền</th>
+                        {data?.deliveryType !== 'DELIVERY_RETURN' && <th className="px-4 py-2 border border-gray-300">Đơn giá</th>}
+                        {data?.deliveryType !== 'DELIVERY_RETURN' && <th className="px-4 py-2 border border-gray-300">Thành tiền</th>}
                     </tr>
                 </thead>
                 <tbody>
@@ -111,29 +111,33 @@ const InvoicePDF = React.forwardRef(({ data }, ref) => {
                                 <td className="px-6 py-2 text-center align-middle border border-gray-300">{index + 1}</td>
                                 <td className="px-6 py-2 text-center align-middle border border-gray-300">{p?.product?.code}</td>
                                 <td className="px-6 py-2 align-middle border border-gray-300">{p?.product?.name}</td>
-                                <td className="px-6 py-2 text-center align-middle border border-gray-300">{p?.product?.unit}</td>
+                                <td className="px-6 py-2 text-center align-middle border border-gray-300">{p?.product?.unitName}</td>
                                 <td className="px-6 py-2 text-center align-middle border border-gray-300">{p?.exportQuantity}</td>
-                                <td className="px-6 py-2 text-center align-middle border border-gray-300">{formatVND(p?.product.sellingPrice)}</td>
-                                <td className="px-6 py-2 text-center align-middle border border-gray-300">{formatVND(p?.priceExport)}</td>
+                                {data?.deliveryType !== 'DELIVERY_RETURN' && <td className="px-6 py-2 text-center align-middle border border-gray-300">{formatVND(p?.product.sellingPrice)}</td>}
+                                {data?.deliveryType !== 'DELIVERY_RETURN' && <td className="px-6 py-2 text-center align-middle border border-gray-300">{formatVND(p?.priceExport)}</td>}
                             </tr>)
                     })}
-                    <tr>
-                        <td colSpan="6" className="px-6 py-2 text-right border border-gray-300">Cộng tiền hàng:</td>
-                        <td className="text-center border border-gray-300">{formatVND(totalCost)}</td>
-                    </tr>
-                    <tr>
-                        <td colSpan="6" className="px-6 py-2 text-right border border-gray-300">Tiền thuế GTGT:</td>
-                        <td className="text-center border border-gray-300">{formatVND(totalCost * VAT)}</td>
-                    </tr>
-                    <tr>
-                        <td colSpan="6" className="px-6 py-2 font-bold text-right border border-gray-300">Tổng tiền thanh toán:</td>
-                        <td className="font-bold text-center border border-gray-300">{formatVND(totalCost * (1 + VAT))}</td>
-                    </tr>
+                    {data?.deliveryType !== 'DELIVERY_RETURN' && (
+                        <>
+                            <tr>
+                                <td colSpan="6" className="px-6 py-2 text-right border border-gray-300">Cộng tiền hàng:</td>
+                                <td className="text-center border border-gray-300">{formatVND(totalCost)}</td>
+                            </tr>
+                            <tr>
+                                <td colSpan="6" className="px-6 py-2 text-right border border-gray-300">Tiền thuế GTGT:</td>
+                                <td className="text-center border border-gray-300">{formatVND(totalCost * VAT)}</td>
+                            </tr>
+                            <tr>
+                                <td colSpan="6" className="px-6 py-2 font-bold text-right border border-gray-300">Tổng tiền thanh toán:</td>
+                                <td className="font-bold text-center border border-gray-300">{formatVND(totalCost * (1 + VAT))}</td>
+                            </tr>
+                        </>
+                    )}
                 </tbody>
             </table>
 
             <div className="flex flex-col mt-3 mb-12">
-                <p className="flex gap-3 ml-4">Số tiền bằng chữ: <span className='font-semibold'>{numberToWords(totalCost * (1 + VAT))}</span></p>
+                {data?.deliveryType !== 'DELIVERY_RETURN' && <p className="flex gap-3 ml-4">Số tiền bằng chữ: <span className='font-semibold'>{numberToWords(totalCost * (1 + VAT))}</span></p>}
                 <p className="mt-6 mr-10 text-sm italic text-right">Ngày ..... tháng ..... năm ........</p>
                 <div className='flex justify-around mx-4 mt-1'>
                     <p className='font-semibold'>Người mua hàng</p>

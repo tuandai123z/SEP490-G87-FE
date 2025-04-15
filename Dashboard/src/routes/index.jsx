@@ -36,6 +36,8 @@ import UnitsManagement from '../pages/Units';
 import ViewReturnForm from '../pages/Inventory/InventoryReturn/ViewReturnForm';
 import InventoryReceptReturnDetail from '../pages/Inventory/ReceiptReturn/InventoryReceptReturnDetail';
 import ChangePassword from '../pages/ChangePassword';
+import CreateExportReturn from '../pages/Inventory/InventoryExport/CreateExportReturn';
+import EditExportReturn from '../pages/Inventory/InventoryExport/EditExportReturn';
 
 const publicRoutes = [
   { path: '/changePassword', component: ChangePassword, layout: DefaultLayout },
@@ -66,7 +68,9 @@ const publicRoutes = [
   { path: '/inventory/orderSale/view/:slug', component: ViewOrderSale, layout: InventoryLayout },
   { path: '/inventory/export/management', component: ExportManagement, layout: InventoryLayout },
   { path: '/inventory/export/create', component: CreateExportDelivery, layout: InventoryLayout },
+  { path: '/inventory/export/create/:slug', component: CreateExportReturn, layout: InventoryLayout },
   { path: '/inventory/export/edit/:slug', component: EditExportDelivery, layout: InventoryLayout },
+  { path: '/inventory/export-return/edit/:slug', component: EditExportReturn, layout: InventoryLayout },
   { path: '/inventory/return/management', component: ReturnManagement, layout: InventoryLayout },
   { path: '/inventory/return/create', component: CreateReturnForm, layout: InventoryLayout },
   { path: '/inventory/return/edit/:slug', component: EditReturnForm, layout: InventoryLayout },
