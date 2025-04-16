@@ -198,14 +198,11 @@ const CreateReturnForm = () => {
             </div>
             <div className="w-full px-2 mb-4">
                 <div className="relative overflow-x-auto shadow-md">
-                    <div className="flex justify-between">
-                        <div className={`px-4 py-1 uppercase border-t-2 border-l-2 cursor-pointer transition-all duration-100 bg-orange-200 font-medium`} onClick={() => handleOpenModal()}>
-                            <span>Tạo phiếu</span>
-                        </div>
-                        <div className={`px-4 py-1 uppercase border-t-2 border-l-2 cursor-pointer transition-all duration-100 bg-orange-200 font-medium`} onClick={() => onChangeShowAdd()}>
+                  <div className="flex justify-end pb-3 pt-2">
+                        <div className={`px-4 py-1 w-[170px] justify-end uppercase border-t-2 border-l-2 cursor-pointer transition-all duration-100 bg-orange-200 font-medium`} onClick={() => onChangeShowAdd()}>
                             <span>Thêm sản phẩm</span>
                         </div>
-                    </div>
+                        </div>
                     <table className="w-full text-sm text-left text-blue-100 border border-blue-400 rtl:text-right dark:text-blue-100">
                         <thead className="text-xs text-white uppercase bg-blue-400 border border-blue-400 dark:text-white">
                             <tr>
@@ -290,6 +287,11 @@ const CreateReturnForm = () => {
                         </tbody>
                     </table>
                 </div>
+                    <div className="flex justify-end pt-3">
+                    <div className={`px-4 py-1 text-center w-[170px] uppercase border-t-2 border-l-2 cursor-pointer transition-all duration-100 bg-orange-200 font-medium`} onClick={() => handleOpenModal()}>
+                            <span>Tạo phiếu</span>
+                        </div>
+                    </div>
             </div>
             {isLoading && <Loading />}
             {isOpenModal && <ModalConfirmCreate

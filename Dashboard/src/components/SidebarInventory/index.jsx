@@ -23,7 +23,7 @@ const Categories = ({ content, Icon, pages }) => {
                 transition={{ duration: 0.3, ease: 'easeOut' }}
             >
                 <li className="py-[8px] text-[#334862] flex justify-between items-center border-b  border-gray-300 last:border-0 cursor-pointer relative list-none" onClick={() => setIsOpen(!isOpen)}>
-                    <p className="text-[15px] font-bold leading-[16px] text-white">{content}</p>
+                    <p className="text-[18px] font-bold leading-[16px] text-white">{content}</p>
 
                     <motion.div
                         className=""
@@ -47,7 +47,7 @@ const Categories = ({ content, Icon, pages }) => {
                                 key={index}
                             >
                                 <div className="flex items-center gap-[10px]" >
-                                    {p?.icon && <p.icon color="white" />}<p className="text-[14px] leading-[20px] font-normal text-white">{p?.content}</p>
+                                    {p?.icon && <p.icon color="white" />}<p className="text-[14px] leading-[20px] font-medium text-white">{p?.content}</p>
                                 </div>
                             </motion.li>
                         )
@@ -197,7 +197,7 @@ const SidebarInventory = () => {
             <div className={`flex items-center gap-[15px] py-[20px] border-b-[1px] rounded pl-4 ${(roleUser === ADMIN_ROLE || roleUser === MANAGER_ROLE) ? ' transition ease-in-out duration-300 hover:bg-secondary border-[#EDEDED]/[0.3] cursor-pointer' : "cursor-default"}`}
                 onClick={() => handleNavigate('/inventory/statistic')}>
                 <MdInventory color="white" />
-                <p className="text-[14px] leading-[20px] font-bold text-white ">Báo cáo kho</p>
+                <p className="text-[18px] leading-[20px] font-bold text-white ">Báo cáo kho</p>
             </div>
             {listPages?.map(((page, index) => {
                 const isDisplay = page?.roles?.includes(roleUser);

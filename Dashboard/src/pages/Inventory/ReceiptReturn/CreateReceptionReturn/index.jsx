@@ -200,7 +200,7 @@ const CreateReceptionReturn = () => {
             </div>
             <div className="w-full px-2 mb-4">
                 <div className="relative overflow-x-auto shadow-md">
-                    <div className="flex justify-between">
+                    <div className="flex justify-end pb-3">
                         <div className={`px-4 py-1 uppercase border-t-2 border-l-2 cursor-pointer transition-all duration-100 bg-orange-200 font-medium`} onClick={() => handleOpenModal()}>
                             <span>Tạo phiếu</span>
                         </div>
