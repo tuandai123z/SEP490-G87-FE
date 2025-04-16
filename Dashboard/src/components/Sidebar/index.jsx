@@ -1,4 +1,3 @@
-import { useSelector } from 'react-redux';
 import React from "react";
 import {
   FaBoxOpen,
@@ -6,11 +5,11 @@ import {
   FaCube,
   FaGlobe,
   FaListAlt,
-  FaRegSun,
-  FaUsers,
+  FaUsers
 } from "react-icons/fa";
 import { FaArrowRightToBracket } from "react-icons/fa6";
 import { MdDashboard, MdInventory } from "react-icons/md";
+import { useSelector } from 'react-redux';
 import { useLocation, useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
@@ -41,7 +40,7 @@ const Sidebar = () => {
           className={`${currentPath === "/admin/dashboard" ? "text-primary" : "text-white"}`}
         />
         <p
-          className={`text-[14px] leading-[20px] font-bold ${currentPath === "/admin/dashboard" ? "text-primary" : "text-white"}`}
+          className={`text-[18px] leading-[20px] font-bold ${currentPath === "/admin/dashboard" ? "text-primary" : "text-white"}`}
         >
           Dashboard
         </p>
@@ -60,7 +59,7 @@ const Sidebar = () => {
               className={`${currentPath === "/admin/management/products" ? "text-primary" : "text-white"}`}
             />
             <p
-              className={`text-[14px] leading-[20px] font-normal ${currentPath === "/admin/management/products" ? "text-primary" : "text-white"}`}
+              className={`text-[16px] leading-[20px] font-normal ${currentPath === "/admin/management/products" ? "text-primary" : "text-white"}`}
             >
               Thiết bị
             </p>
@@ -73,7 +72,7 @@ const Sidebar = () => {
         >
           <div className="flex items-center gap-[10px]">
             <FaClipboardList  className={`${currentPath === "/admin/management/units" ? "text-primary" : "text-white"}`} />
-            <p  className={`text-[14px] leading-[20px] font-normal  ${currentPath === "/admin/management/units" ? "text-primary" : "text-white"}`}>
+            <p  className={`text-[16px] leading-[20px] font-normal  ${currentPath === "/admin/management/units" ? "text-primary" : "text-white"}`}>
               Đơn vị tính
             </p>
           </div>
@@ -86,7 +85,7 @@ const Sidebar = () => {
           >
             <div className="flex items-center gap-[10px]">
               <FaUsers className={`${currentPath === "/admin/management/staffs" ? "text-primary" : "text-white"}`} />
-              <p className={`text-[14px] leading-[20px] font-normal  ${currentPath === "/admin/management/staffs" ? "text-primary" : "text-white"}`}>
+              <p className={`text-[16px] leading-[20px] font-normal  ${currentPath === "/admin/management/staffs" ? "text-primary" : "text-white"}`}>
                 Nhân viên
               </p>
             </div>
@@ -99,7 +98,7 @@ const Sidebar = () => {
         >
           <div className="flex items-center gap-[10px]">
             <FaBoxOpen  className={`${currentPath === "/inventory/supplier" ? "text-primary" : "text-white"}`} />
-            <p className={`text-[14px] leading-[20px] font-normal  ${currentPath === "/inventory/supplier" ? "text-primary" : "text-white"}`}>
+            <p className={`text-[16px] leading-[20px] font-normal  ${currentPath === "/inventory/supplier" ? "text-primary" : "text-white"}`}>
               Nhà cung cấp
             </p>
           </div>
@@ -111,7 +110,7 @@ const Sidebar = () => {
         >
           <div className="flex items-center gap-[10px]">
             <FaGlobe  className={`${currentPath === "/admin/management/branch" ? "text-primary" : "text-white"}`} />
-            <p className={`text-[14px] leading-[20px] font-normal  ${currentPath === "/admin/management/branch" ? "text-primary" : "text-white"}`}>
+            <p className={`text-[16px] leading-[20px] font-normal  ${currentPath === "/admin/management/branch" ? "text-primary" : "text-white"}`}>
               Thương hiệu
             </p>
           </div>
@@ -123,7 +122,7 @@ const Sidebar = () => {
         >
           <div className="flex items-center gap-[10px]">
             <FaListAlt  className={`${currentPath === "/admin/management/category" ? "text-primary" : "text-white"}`} />
-            <p className={`text-[14px] leading-[20px] font-normal ${currentPath === "/admin/management/category" ? "text-primary" : "text-white"}`}>
+            <p className={`text-[15px] leading-[20px] font-normal ${currentPath === "/admin/management/category" ? "text-primary" : "text-white"}`}>
               Danh mục sản phẩm
             </p>
           </div>
@@ -139,7 +138,7 @@ const Sidebar = () => {
         >
           <div className="flex items-center gap-[10px]">
             <MdInventory  className={`${currentPath === "/inventory/statistic" ? "text-primary" : "text-white"}`} />
-            <p className="text-[14px] leading-[20px] font-normal text-white">
+            <p className="text-[16px] leading-[20px] font-normal text-white">
               Kho
             </p>
           </div>

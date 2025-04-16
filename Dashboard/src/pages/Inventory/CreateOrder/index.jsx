@@ -180,10 +180,7 @@ const CreateOrder = () => {
             </div>
             <div className="w-full px-2 mb-4">
                 <div className="relative overflow-x-auto shadow-md">
-                    <div className="flex justify-between">
-                        <div className={`px-4 py-1 uppercase border-t-2 border-l-2 cursor-pointer transition-all duration-100 bg-orange-200 font-medium`} onClick={() => handleOpenModal()}>
-                            <span>Tạo phiếu</span>
-                        </div>
+                    <div className="flex justify-end pb-3">
                         <div className={`px-4 py-1 uppercase border-t-2 border-l-2 cursor-pointer transition-all duration-100 bg-orange-200 font-medium`} onClick={() => onChangeShowAdd()}>
                             <span>Thêm thiết bị</span>
                         </div>
@@ -214,6 +211,11 @@ const CreateOrder = () => {
                             })}
                         </tbody>
                     </table>
+                </div>
+                <div className="flex justify-end pt-3">
+                <div className={`px-4 py-1 uppercase text-center w-[140px] border-t-2 border-l-2 cursor-pointer transition-all duration-100 bg-orange-200 font-medium`} onClick={() => handleOpenModal()}>
+                            <span>Tạo phiếu</span>
+                        </div>
                 </div>
             </div>
             {isOpenAdd && <AddProduct onChangeShowAdd={onChangeShowAdd} />}
