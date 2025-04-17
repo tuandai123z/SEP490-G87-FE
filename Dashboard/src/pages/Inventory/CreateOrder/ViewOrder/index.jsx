@@ -58,6 +58,7 @@ const ViewOrder = () => {
                 dispatch(actionClear);
                 dispatch(actionImport);
                 setOrderDetail(data);
+                console.log(data);
             })
             .catch((err) => {
                 if (err.response) {
@@ -167,40 +168,33 @@ const ViewOrder = () => {
                 </div>
                 <div className="flex flex-col gap-3">
                     <div className="flex items-center justify-between ">
-                        <span>Duyệt bởi</span>
+                        {orderDetail?.approve !== 'WAITING' && <span>{orderDetail?.approve === 'APPROVED' ? 'Duyệt bởi' : 'Từ chối bởi'} </span>}
 
                         {orderDetail && orderDetail?.approve === 'APPROVED' && (
                             <div className="flex items-center gap-2 px-4 py-1 bg-orange-400 rounded-md ">
                                 <span>Đã duyệt</span>
                                 <FaKey className="" />
                             </div>)}
-                    </div>
-                    <input type="text" disabled value={orderDetail?.approve === 'APPROVED' ? orderDetail?.employee?.name : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
-                    <input type="text" disabled value={orderDetail?.approve === 'APPROVED' ? `${orderDetail?.actionTime?.split('.')[0]?.split('T')[0]} ${orderDetail?.actionTime?.split('.')[0]?.split('T')[1]}` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
-                </div>
-                <div className="flex flex-col gap-3">
-                    <div className="flex items-center justify-between ">
-                        <span>Từ chối bởi</span>
-                        {orderDetail && orderDetail?.approve === 'REJECT' && (
+                        {orderDetail && orderDetail?.approve === 'REJECTED' && (
                             <div className="flex items-center gap-2 px-4 py-1 rounded-md bg-red ">
                                 <span>Đã từ chối</span>
                                 <FaKey className="" />
                             </div>)}
                     </div>
-                    <input type="text" disabled value={orderDetail?.approve === 'REJECT' ? orderDetail?.username : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
-                    <input type="text" disabled value={orderDetail?.approve === 'REJECT' ? `${orderDetail?.actionTime?.split('.')[0]?.split('T')[0]} ${orderDetail?.actionTime?.split('.')[0]?.split('T')[1]}` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
+                    <input type="text" disabled value={orderDetail?.approve !== 'WAITING' ? orderDetail?.employee?.name : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
+                    <input type="text" disabled value={orderDetail?.approve !== 'WAITING' ? `${orderDetail?.actionTime?.split('.')[0]?.split('T')[0]} ${orderDetail?.actionTime?.split('.')[0]?.split('T')[1]}` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
                 </div>
-                <div className="flex flex-col gap-3">
+                {orderDetail?.approve !== 'REJECTED' && < div className="flex flex-col gap-3">
                     <div className="flex items-center justify-between ">
                         <span>Đã nhập bởi</span>
-                        {orderDetail && orderDetail?.deliveryStatus === 'RECEIVE_DELIVERY' && <div className="flex items-center gap-2 px-4 py-1 bg-blue-400 rounded-md ">
+                        {orderDetail && orderDetail?.deliveryStatus === "IMPORT_SUCCESS" && <div className="flex items-center gap-2 px-4 py-1 bg-blue-400 rounded-md ">
                             <span>Đã nhập</span>
                             <FaKey className="" />
                         </div>}
                     </div>
-                    <input type="text" disabled value={''} className='w-full px-4 py-1 text-right border border-gray-500' />
-                    <input type="text" disabled value={orderDetail?.deliveryStatus === 'RECEIVE_DELIVERY' ? `${orderDetail?.actionTime?.split('.')[0]?.split('T')[0]} ${orderDetail?.actionTime?.split('.')[0]?.split('T')[1]}` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
-                </div>
+                    {/* <input type="text" disabled value={''} className='w-full px-4 py-1 text-right border border-gray-500' /> */}
+                    <input type="text" disabled value={orderDetail?.deliveryStatus === 'IMPORT_SUCCESS' ? `${orderDetail?.deliveryDate}` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
+                </div>}
             </div>
         </div>
     )

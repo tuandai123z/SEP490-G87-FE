@@ -13,7 +13,7 @@ const EditReturnForm = () => {
     const [listOrderProducts, setListOrderProducts] = useState([]);
     const [returnDetail, setReturnDetail] = useState({});
     const [returnOverview, setReturnOverview] = useState('');
-    const [statusChange, setStatusChange] = useState('');
+    const [statusChange, setStatusChange] = useState('APPROVED');
     const [titleModalConfirm, setTitleModalConfirm] = useState('');
     const [contentModalConfirm, setContentModalConfirm] = useState('');
     const [titleModalBtnConfirm, setTitleModalBtnConfirm] = useState('');
@@ -45,8 +45,10 @@ const EditReturnForm = () => {
             });
     }
 
-    const handleOpenChange = (status, title, content, titleBtnConfirm) => {
-        setStatusChange(status);
+    const handleOpenChange = () => {
+        const title = statusChange === 'REJECTED' ? 'Huỷ phiếu hoàn hàng' : 'Duyệt phiếu hoàn hàng';
+        const content = statusChange === 'REJECTED' ? 'Bạn chắc chắn huỷ phiếu hoàn hàng này?' : 'Bạn chắc chắn duyệt phiếu hoàn hàng này?';
+        const titleBtnConfirm = 'Xác nhận';
         setTitleModalConfirm(title);
         setContentModalConfirm(content);
         setTitleModalBtnConfirm(titleBtnConfirm);
@@ -196,31 +198,35 @@ const EditReturnForm = () => {
                 </div>
                 <div className="flex flex-col gap-3">
                     <div className="flex items-center justify-between ">
-                        <span>Duyệt bởi</span>
-                        {returnDetail && (returnDetail?.approveStatus === 'WAITING') && (
-                            <div
-                                onClick={() => handleOpenChange('APPROVED', 'Duyệt phiếu hoàn hàng', 'Bạn chắc chắn duyệt phiếu hoàn hàng này?', 'Xác nhận')}
-                                className="flex items-center gap-2 px-4 py-1 transition-all duration-150 bg-orange-400 rounded-md cursor-pointer hover:bg-orange-600">
-                                <span>Duyệt</span>
-                                <FaKey className="" />
-                            </div>)}
+                        {returnDetail?.approveStatus !== 'WAITING' && <span>{returnDetail?.approveStatus === 'APPROVED' ? "Duyệt bởi" : 'Từ chối bởi'}</span>}
+                        {returnDetail?.approveStatus === 'WAITING' && <div className="flex justify-between w-full ">
+                            <label className="flex items-center gap-2 cursor-pointer">
+                                <input
+                                    type="radio"
+                                    name="approval"
+                                    value="REJECTED"
+                                    checked={statusChange === 'REJECTED'}
+                                    onChange={() => setStatusChange('REJECTED')}
+                                    className="scale-150 accent-rose-500"
+                                />
+                                <span className="text-black">Từ chối</span>
+                            </label>
+
+                            <label className="flex items-center gap-2 cursor-pointer">
+                                <input
+                                    type="radio"
+                                    name="approval"
+                                    value="APPROVED"
+                                    checked={statusChange === 'APPROVED'}
+                                    onChange={() => setStatusChange('APPROVED')}
+                                    className="scale-150 accent-orange-500"
+                                />
+                                <span className="text-black">Duyệt</span>
+                            </label>
+                        </div>}
                         {returnDetail && returnDetail?.approveStatus === 'APPROVED' && (
                             <div className="flex items-center gap-2 px-4 py-1 bg-orange-400 rounded-md ">
                                 <span>Đã duyệt</span>
-                                <FaKey className="" />
-                            </div>)}
-                    </div>
-                    <input type="text" disabled value={returnDetail?.approveStatus === 'APPROVED' ? returnDetail?.approveBy : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
-                    <input type="text" disabled value={returnDetail?.approveStatus === 'APPROVED' ? `${formatDate(returnDetail?.approveDate)} ` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
-                </div>
-                <div className="flex flex-col gap-3">
-                    <div className="flex items-center justify-between ">
-                        <span>Từ chối bởi</span>
-                        {returnDetail && (returnDetail?.approveStatus === 'WAITING') && (
-                            <div
-                                onClick={() => handleOpenChange('REJECTED', 'Huỷ phiếu hoàn hàng ', 'Bạn chắc chắn huỷ phiếu hoàn hàng  này?', 'Xác nhận')}
-                                className="flex items-center gap-2 px-4 py-1 transition-all duration-150 rounded-md cursor-pointer bg-red hover:bg-rose-500">
-                                <span>Từ chối</span>
                                 <FaKey className="" />
                             </div>)}
                         {returnDetail && returnDetail?.approveStatus === 'REJECTED' && (
@@ -229,10 +235,10 @@ const EditReturnForm = () => {
                                 <FaKey className="" />
                             </div>)}
                     </div>
-                    <input type="text" disabled value={returnDetail?.approveStatus === 'REJECTED' ? returnDetail?.approveBy : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
-                    <input type="text" disabled value={returnDetail?.approveStatus === 'REJECTED' ? `${formatDate(returnDetail?.approveDate)} ` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
+                    <input type="text" disabled value={returnDetail?.approveStatus !== 'WAITING' ? returnDetail?.approveBy : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
+                    <input type="text" disabled value={returnDetail?.approveStatus !== 'WAITING' ? `${formatDate(returnDetail?.approveDate)} ` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
                 </div>
-                <div className="flex flex-col gap-3">
+                {returnDetail?.approveStatus !== 'REJECTED' && <div className="flex flex-col gap-3">
                     <div className="flex items-center justify-between ">
                         <span>Đã nhập bởi</span>
                         {returnDetail && returnDetail?.deliveryStatus === 'RECEIVE_DELIVERY' && <div className="flex items-center gap-2 px-4 py-1 bg-blue-400 rounded-md ">
@@ -242,7 +248,14 @@ const EditReturnForm = () => {
                     </div>
                     <input type="text" disabled value={''} className='w-full px-4 py-1 text-right border border-gray-500' />
                     <input type="text" disabled value={returnDetail?.deliveryStatus === 'RECEIVE_DELIVERY' ? `${formatDate(returnDetail?.actionTime)} ` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
-                </div>
+                </div>}
+                {returnDetail?.approveStatus === 'WAITING' && <div className="flex justify-end">
+                    <div
+                        onClick={() => handleOpenChange()}
+                        className="flex items-center justify-center px-2 py-1 transition-all duration-150 bg-blue-400 rounded-md cursor-pointer font-semibold w-[40%] hover:bg-blue-600">
+                        <span>Xác nhận</span>
+                    </div>
+                </div>}
             </div>
             {isOpenModalConfirm && <ModalAlertConfirm
                 title={titleModalConfirm}

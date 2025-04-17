@@ -26,7 +26,7 @@ const EditOrder = () => {
     const [titleModalConfirm, setTitleModalConfirm] = useState('');
     const [contentModalConfirm, setContentModalConfirm] = useState('');
     const [titleModalBtnConfirm, setTitleModalBtnConfirm] = useState('');
-    const [statusChange, setStatusChange] = useState('');
+    const [statusChange, setStatusChange] = useState('APPROVED');
     const ref = useRef(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -149,8 +149,10 @@ const EditOrder = () => {
             });
     }
 
-    const handleOpenChange = (status, title, content, titleBtnConfirm) => {
-        setStatusChange(status);
+    const handleOpenChange = () => {
+        const title = statusChange === 'REJECTED' ? 'Huỷ phiếu mua hàng' : 'Duyệt phiếu mua hàng';
+        const content = statusChange === 'REJECTED' ? 'Bạn chắc chắn huỷ phiếu mua hàng này?' : 'Bạn chắc chắn duyệt phiếu mua hàng này?';
+        const titleBtnConfirm = 'Xác nhận';
         setTitleModalConfirm(title);
         setContentModalConfirm(content);
         setTitleModalBtnConfirm(titleBtnConfirm);
@@ -240,17 +242,17 @@ const EditOrder = () => {
                     <div className="relative overflow-x-auto shadow-md">
                         <div className="flex justify-between">
                             <div className="flex gap-2">
-                                <div className={`px-4 py-1 uppercase border-t-2 border-l-2 cursor-pointer transition-all duration-100 bg-orange-200 font-medium`} onClick={() => handleOpenModalEdit()}>
+                                {orderDetail?.approve === 'WAITING' && <div className={`px-4 py-1 uppercase border-t-2 border-l-2 cursor-pointer transition-all duration-100 bg-orange-200 font-medium`} onClick={() => handleOpenModalEdit()}>
                                     <span>Lưu</span>
-                                </div>
+                                </div>}
                                 <div className={`px-4 py-1 flex gap-3 items-center uppercase border-t-2 border-l-2 cursor-pointer transition-all duration-100 bg-orange-200 font-medium`} onClick={() => handleBack()}>
                                     <IoMdArrowRoundBack />
                                     <span>Quay lại</span>
                                 </div>
                             </div>
-                            <div className={`px-4 py-1 uppercase border-t-2 border-l-2 cursor-pointer transition-all duration-100 bg-orange-200 font-medium`} onClick={() => onChangeShowAdd()}>
+                            {orderDetail?.approve === 'WAITING' && <div className={`px-4 py-1 uppercase border-t-2 border-l-2 cursor-pointer transition-all duration-100 bg-orange-200 font-medium`} onClick={() => onChangeShowAdd()}>
                                 <span>Thêm sản phẩm</span>
-                            </div>
+                            </div>}
                         </div>
                         <table className="w-full text-sm text-left text-blue-100 border border-blue-400 rtl:text-right dark:text-blue-100">
                             <thead className="text-xs text-white uppercase bg-blue-400 border border-blue-400 dark:text-white">
@@ -290,31 +292,36 @@ const EditOrder = () => {
                 </div>
                 <div className="flex flex-col gap-3">
                     <div className="flex items-center justify-between ">
-                        <span>Duyệt bởi</span>
+                        {orderDetail?.approve !== 'WAITING' && <span>{orderDetail?.approve === 'APPROVED' ? 'Duyệt bởi' : 'Từ chối bởi'} </span>}
                         {orderDetail && (orderDetail?.approve === 'WAITING') && (
-                            <div
-                                onClick={() => handleOpenChange('APPROVED', 'Duyệt phiếu mua hàng', 'Bạn chắc chắn duyệt phiếu mua hàng này?', 'Xác nhận')}
-                                className="flex items-center gap-2 px-4 py-1 transition-all duration-150 bg-orange-400 rounded-md cursor-pointer hover:bg-orange-600">
-                                <span>Duyệt</span>
-                                <FaKey className="" />
+                            <div className="flex justify-between w-full ">
+                                <label className="flex items-center gap-2 cursor-pointer">
+                                    <input
+                                        type="radio"
+                                        name="approval"
+                                        value="REJECTED"
+                                        checked={statusChange === 'REJECTED'}
+                                        onChange={() => setStatusChange('REJECTED')}
+                                        className="scale-150 accent-rose-500"
+                                    />
+                                    <span className="text-black">Từ chối</span>
+                                </label>
+
+                                <label className="flex items-center gap-2 cursor-pointer">
+                                    <input
+                                        type="radio"
+                                        name="approval"
+                                        value="APPROVED"
+                                        checked={statusChange === 'APPROVED'}
+                                        onChange={() => setStatusChange('APPROVED')}
+                                        className="scale-150 accent-orange-500"
+                                    />
+                                    <span className="text-black">Duyệt</span>
+                                </label>
                             </div>)}
                         {orderDetail && orderDetail?.approve === 'APPROVED' && (
                             <div className="flex items-center gap-2 px-4 py-1 bg-orange-400 rounded-md ">
                                 <span>Đã duyệt</span>
-                                <FaKey className="" />
-                            </div>)}
-                    </div>
-                    <input type="text" disabled value={orderDetail?.approve === 'APPROVED' ? orderDetail?.username : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
-                    <input type="text" disabled value={orderDetail?.approve === 'APPROVED' ? `${orderDetail?.actionTime?.split('.')[0]?.split('T')[0]} ${orderDetail?.actionTime?.split('.')[0]?.split('T')[1]}` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
-                </div>
-                <div className="flex flex-col gap-3">
-                    <div className="flex items-center justify-between ">
-                        <span>Từ chối bởi</span>
-                        {orderDetail && (orderDetail?.approve === 'WAITING') && (
-                            <div
-                                onClick={() => handleOpenChange('REJECTED', 'Huỷ phiếu mua hàng', 'Bạn chắc chắn huỷ phiếu mua hàng này?', 'Xác nhận')}
-                                className="flex items-center gap-2 px-4 py-1 transition-all duration-150 rounded-md cursor-pointer bg-red hover:bg-rose-500">
-                                <span>Từ chối</span>
                                 <FaKey className="" />
                             </div>)}
                         {orderDetail && orderDetail?.approve === 'REJECTED' && (
@@ -323,10 +330,10 @@ const EditOrder = () => {
                                 <FaKey className="" />
                             </div>)}
                     </div>
-                    <input type="text" disabled value={orderDetail?.approve === 'REJECTED' ? orderDetail?.username : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
-                    <input type="text" disabled value={orderDetail?.approve === 'REJECTED' ? `${orderDetail?.actionTime?.split('.')[0]?.split('T')[0]} ${orderDetail?.actionTime?.split('.')[0]?.split('T')[1]}` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
+                    <input type="text" disabled value={orderDetail?.approve !== 'WAITING' ? orderDetail?.username : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
+                    <input type="text" disabled value={orderDetail?.approve !== 'WAITING' ? `${orderDetail?.actionTime?.split('.')[0]?.split('T')[0]} ${orderDetail?.actionTime?.split('.')[0]?.split('T')[1]}` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
                 </div>
-                <div className="flex flex-col gap-3">
+                {orderDetail?.approve !== 'REJECTED' && <div className="flex flex-col gap-3">
                     <div className="flex items-center justify-between ">
                         <span>Đã nhập bởi</span>
                         {orderDetail && orderDetail?.deliveryStatus === 'RECEIVE_DELIVERY' && <div className="flex items-center gap-2 px-4 py-1 bg-blue-400 rounded-md ">
@@ -336,7 +343,14 @@ const EditOrder = () => {
                     </div>
                     <input type="text" disabled value={''} className='w-full px-4 py-1 text-right border border-gray-500' />
                     <input type="text" disabled value={orderDetail?.deliveryStatus === 'RECEIVE_DELIVERY' ? `${orderDetail?.actionTime?.split('.')[0]?.split('T')[0]} ${orderDetail?.actionTime?.split('.')[0]?.split('T')[1]}` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
-                </div>
+                </div>}
+                {orderDetail?.approve === 'WAITING' && <div className="flex justify-end">
+                    <div
+                        onClick={() => handleOpenChange()}
+                        className="flex items-center justify-center px-2 py-1 transition-all duration-150 bg-blue-400 rounded-md cursor-pointer font-semibold w-[40%] hover:bg-blue-600">
+                        <span>Xác nhận</span>
+                    </div>
+                </div>}
             </div>
             {isOpenAdd && <AddProduct onChangeShowAdd={onChangeShowAdd} />}
             {isOpenModalEdit && <ModalConfirmCreate

@@ -220,8 +220,9 @@ const OrderSaleManagement = () => {
                                             {order?.deliveryStatus !== 'WAITING_DELIVERY' && <span className="px-4 py-1 font-medium uppercase bg-blue-600 rounded-lg">ĐÃ GIAO HÀNG</span>}
                                         </td>
                                         <td className="flex items-center justify-center gap-3 px-6 py-2 border-blue-400 ">
-                                            {order?.deliveryStatus === 'WAITING_DELIVERY' && <MdModeEditOutline className="text-lg font-bold text-blue-700 transition-all duration-500 shadow-sm cursor-pointer hover:scale-[140%] " onClick={() => navigate((`/inventory/orderSale/edit/${order?.code}`))} />}
-                                            {order?.deliveryStatus !== 'WAITING_DELIVERY' && <TbEyeSearch className="text-lg font-bold text-blue-700 transition-all duration-500 shadow-sm cursor-pointer hover:scale-[140%] " onClick={() => navigate((`/inventory/orderSale/view/${order?.code}`))} />}
+                                            {order?.deliveryStatus === 'WAITING_DELIVERY' && order?.approveStatus !== 'REJECTED' && <MdModeEditOutline className="text-lg font-bold text-blue-700 transition-all duration-500 shadow-sm cursor-pointer hover:scale-[140%] " onClick={() => navigate((`/inventory/orderSale/edit/${order?.code}`))} />}
+                                            {order?.deliveryStatus !== 'WAITING_DELIVERY' && order?.approveStatus !== 'REJECTED' && <TbEyeSearch className="text-lg font-bold text-blue-700 transition-all duration-500 shadow-sm cursor-pointer hover:scale-[140%] " onClick={() => navigate((`/inventory/orderSale/view/${order?.code}`))} />}
+                                            {order?.approveStatus === 'REJECTED' && <TbEyeSearch className="text-lg font-bold text-blue-700 transition-all duration-500 shadow-sm cursor-pointer hover:scale-[140%] " onClick={() => navigate((`/inventory/orderSale/view/${order?.code}`))} />}
                                         </td>
                                     </tr>
                                 )
