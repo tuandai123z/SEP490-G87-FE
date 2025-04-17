@@ -48,7 +48,7 @@ const CreateExportReturn = () => {
             .then(res => {
                 toast.success(`Tạo phiếu xuất kho cho phiếu hoàn hàng ${slug} thành công`)
                 setIsOpenModal(false);
-                navigate(`/inventory/return/management`);
+                navigate(`/inventory/export/management`);
             })
             .catch((err) => {
                 if (err.response) {

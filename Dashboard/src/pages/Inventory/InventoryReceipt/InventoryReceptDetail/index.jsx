@@ -181,27 +181,20 @@ const InventoryReceptDetail = () => {
                 </div>
                 <div className="flex flex-col gap-3">
                     <div className="flex items-center justify-between ">
-                        <span>Duyệt bởi</span>
+                        {receptionDetail?.approve !== 'WAITING' && <span>{receptionDetail?.approve === 'APPROVED' ? 'Duyệt bởi' : 'Từ chối bởi'}</span>}
                         {receptionDetail && receptionDetail?.approve === 'APPROVED' && (
                             <div className="flex items-center gap-2 px-4 py-1 bg-orange-400 rounded-md ">
                                 <span>Đã duyệt</span>
                                 <FaKey className="" />
                             </div>)}
-                    </div>
-                    <input type="text" disabled value={receptionDetail?.approve === 'APPROVED' ? receptionDetail?.username : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
-                    <input type="text" disabled value={receptionDetail?.approve === 'APPROVED' ? `${receptionDetail?.actionTime?.split('.')[0]?.split('T')[0]} ${receptionDetail?.actionTime?.split('.')[0]?.split('T')[1]}` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
-                </div>
-                <div className="flex flex-col gap-3">
-                    <div className="flex items-center justify-between ">
-                        <span>Từ chối bởi</span>
                         {receptionDetail && receptionDetail?.approve === 'REJECTED' && (
                             <div className="flex items-center gap-2 px-4 py-1 rounded-md bg-red ">
                                 <span>Đã từ chối</span>
                                 <FaKey className="" />
                             </div>)}
                     </div>
-                    <input type="text" disabled value={receptionDetail?.approve === 'REJECTED' ? receptionDetail?.username : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
-                    <input type="text" disabled value={receptionDetail?.approve === 'REJECTED' ? `${receptionDetail?.actionTime?.split('.')[0]?.split('T')[0]} ${receptionDetail?.actionTime?.split('.')[0]?.split('T')[1]}` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
+                    <input type="text" disabled value={receptionDetail?.approve !== 'WAITING' ? receptionDetail?.username : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
+                    <input type="text" disabled value={receptionDetail?.approve !== 'WAITING' ? `${receptionDetail?.actionTime?.split('.')[0]?.split('T')[0]} ${receptionDetail?.actionTime?.split('.')[0]?.split('T')[1]}` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
                 </div>
             </div>
 

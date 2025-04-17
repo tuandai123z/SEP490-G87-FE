@@ -22,7 +22,7 @@ const EditReception = () => {
     const [titleModalConfirm, setTitleModalConfirm] = useState('');
     const [contentModalConfirm, setContentModalConfirm] = useState('');
     const [titleModalBtnConfirm, setTitleModalBtnConfirm] = useState('');
-    const [statusChange, setStatusChange] = useState('');
+    const [statusChange, setStatusChange] = useState('APPROVE');
     const totalCost = listProducts && listProducts?.reduce((sum, product) => sum + Number(product?.unitPrice) * Number(product?.quantityShipped), Number(0));
     const ref = useRef(false);
     const dispatch = useDispatch();
@@ -36,6 +36,7 @@ const EditReception = () => {
                 const data = res.data;
                 setReceptionDetail(data);
                 setListProducts(data.items)
+                console.log(data);
             })
             .catch((err) => {
                 if (err.response) {
@@ -145,11 +146,12 @@ const EditReception = () => {
                     toast.error(err.message);
                 }
             });
-
     }
 
-    const handleOpenChange = (status, title, content, titleBtnConfirm) => {
-        setStatusChange(status);
+    const handleOpenChange = () => {
+        const title = statusChange === 'REJECTED' ? 'Huỷ phiếu nhập kho' : 'Duyệt phiếu nhập kho';
+        const content = statusChange === 'REJECTED' ? 'Bạn chắc chắn huỷ phiếu nhập kho này?' : 'Bạn chắc chắn duyệt phiếu nhập kho này?';
+        const titleBtnConfirm = 'Xác nhận';
         setTitleModalConfirm(title);
         setContentModalConfirm(content);
         setTitleModalBtnConfirm(titleBtnConfirm);
@@ -222,9 +224,9 @@ const EditReception = () => {
                     <div className="relative overflow-x-auto shadow-md">
                         <div className="flex justify-between">
                             <div className="flex gap-2">
-                                <div className={`px-4 py-1 uppercase border-t-2 border-l-2 cursor-pointer transition-all duration-100 bg-orange-200 font-medium`} onClick={() => handleOpenModalEdit()}>
+                                {receptionDetail?.approve === 'WAITING' && <div className={`px-4 py-1 uppercase border-t-2 border-l-2 cursor-pointer transition-all duration-100 bg-orange-200 font-medium`} onClick={() => handleOpenModalEdit()}>
                                     <span>Lưu</span>
-                                </div>
+                                </div>}
                                 <div className={`px-4 py-1 flex gap-3 items-center uppercase border-t-2 border-l-2 cursor-pointer transition-all duration-100 bg-orange-200 font-medium`} onClick={() => handleBack()}>
                                     <IoMdArrowRoundBack />
                                     <span>Quay lại</span>
@@ -314,24 +316,47 @@ const EditReception = () => {
                 </div>
                 <div className="flex flex-col gap-3">
                     <div className="flex items-center justify-between ">
-                        <span>Duyệt bởi</span>
-                        {receptionDetail && (receptionDetail?.approve === 'WAITING') && (
-                            <div
-                                onClick={() => handleOpenChange('APPROVE', 'Duyệt phiếu nhập kho', 'Bạn chắc chắn duyệt phiếu nhập kho này?', 'Xác nhận')}
-                                className="flex items-center gap-2 px-4 py-1 transition-all duration-150 bg-orange-400 rounded-md cursor-pointer hover:bg-orange-600">
-                                <span>Duyệt</span>
-                                <FaKey className="" />
-                            </div>)}
+                        {receptionDetail?.approve !== 'WAITING' && <span>{receptionDetail?.approve === 'APPROVED' ? 'Duyệt bởi' : 'Từ chối bởi'}</span>}
+                        {receptionDetail?.approve === 'WAITING' && <div className="flex justify-between w-full ">
+                            <label className="flex items-center gap-2 cursor-pointer">
+                                <input
+                                    type="radio"
+                                    name="approval"
+                                    value="REJECT"
+                                    checked={statusChange === 'REJECT'}
+                                    onChange={() => setStatusChange('REJECT')}
+                                    className="scale-150 accent-rose-500"
+                                />
+                                <span className="text-black">Từ chối</span>
+                            </label>
+
+                            <label className="flex items-center gap-2 cursor-pointer">
+                                <input
+                                    type="radio"
+                                    name="approval"
+                                    value="APPROVE"
+                                    checked={statusChange === 'APPROVE'}
+                                    onChange={() => setStatusChange('APPROVE')}
+                                    className="scale-150 accent-orange-500"
+                                />
+                                <span className="text-black">Duyệt</span>
+                            </label>
+                        </div>}
                         {receptionDetail && receptionDetail?.approve === 'APPROVED' && (
                             <div className="flex items-center gap-2 px-4 py-1 bg-orange-400 rounded-md ">
                                 <span>Đã duyệt</span>
+                                <FaKey className="" />
+                            </div>)}
+                        {receptionDetail && receptionDetail?.approve === 'REJECTED' && (
+                            <div className="flex items-center gap-2 px-4 py-1 rounded-md bg-red ">
+                                <span>Đã từ chối</span>
                                 <FaKey className="" />
                             </div>)}
                     </div>
                     <input type="text" disabled value={receptionDetail?.approve === 'APPROVED' ? receptionDetail?.username : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
                     <input type="text" disabled value={receptionDetail?.approve === 'APPROVED' ? `${receptionDetail?.actionTime?.split('.')[0]?.split('T')[0]} ${receptionDetail?.actionTime?.split('.')[0]?.split('T')[1]}` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
                 </div>
-                <div className="flex flex-col gap-3">
+                {/* <div className="flex flex-col gap-3">
                     <div className="flex items-center justify-between ">
                         <span>Từ chối bởi</span>
                         {receptionDetail && (receptionDetail?.approve === 'WAITING') && (
@@ -349,7 +374,14 @@ const EditReception = () => {
                     </div>
                     <input type="text" disabled value={receptionDetail?.approve === 'REJECTED' ? receptionDetail?.username : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
                     <input type="text" disabled value={receptionDetail?.approve === 'REJECTED' ? `${receptionDetail?.actionTime?.split('.')[0]?.split('T')[0]} ${receptionDetail?.actionTime?.split('.')[0]?.split('T')[1]}` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
-                </div>
+                </div> */}
+                {receptionDetail?.approve === 'WAITING' && <div className="flex justify-end">
+                    <div
+                        onClick={() => handleOpenChange()}
+                        className="flex items-center justify-center px-2 py-1 transition-all duration-150 bg-blue-400 rounded-md cursor-pointer font-semibold w-[40%] hover:bg-blue-600">
+                        <span>Xác nhận</span>
+                    </div>
+                </div>}
             </div>
             {isOpenAdd && <AddProduct onChangeShowAdd={onChangeShowAdd} />}
             {isOpenModalEdit && <ModalConfirmCreate

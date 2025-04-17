@@ -200,17 +200,17 @@ const ViewReturnForm = () => {
                 </div>
                 <div className="flex flex-col gap-3">
                     <div className="flex items-center justify-between ">
-                        <span>Duyệt bởi</span>
+                        {returnDetail?.approveStatus !== 'WAITING' && <span>{returnDetail?.approveStatus === 'APPROVED' ? 'Duyệt bởi' : "Từ chối bởi"}</span>}
                         {returnDetail && returnDetail?.approveStatus === 'APPROVED' && (
                             <div className="flex items-center gap-2 px-4 py-1 bg-orange-400 rounded-md ">
                                 <span>Đã duyệt</span>
                                 <FaKey className="" />
                             </div>)}
                     </div>
-                    <input type="text" disabled value={returnDetail?.approveStatus === 'APPROVED' ? returnDetail?.approveBy : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
-                    <input type="text" disabled value={returnDetail?.approveStatus === 'APPROVED' ? `${formatDate(returnDetail?.approveDate)} ` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
+                    <input type="text" disabled value={returnDetail?.approveStatus !== 'WAITING' ? returnDetail?.approveBy : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
+                    <input type="text" disabled value={returnDetail?.approveStatus !== 'WAITING' ? `${formatDate(returnDetail?.approveDate)} ` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
                 </div>
-                <div className="flex flex-col gap-3">
+                {/* <div className="flex flex-col gap-3">
                     <div className="flex items-center justify-between ">
                         <span>Từ chối bởi</span>
                         {returnDetail && returnDetail?.approveStatus === 'REJECTED' && (
@@ -221,7 +221,7 @@ const ViewReturnForm = () => {
                     </div>
                     <input type="text" disabled value={returnDetail?.approveStatus === 'REJECTED' ? returnDetail?.approveBy : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
                     <input type="text" disabled value={returnDetail?.approveStatus === 'REJECTED' ? `${formatDate(returnDetail?.approveDate)} ` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
-                </div>
+                </div> */}
                 <div className="flex flex-col gap-3">
                     <div className="flex items-center justify-between ">
                         <span>Đã nhập bởi</span>

@@ -75,7 +75,7 @@ const EditReception = () => {
         axiosInstance
             .put(`/inventory-receipt/${slug}`, reception)
             .then(res => {
-                toast.success("Chỉnh sửa phiếu nhập kho thành công!");
+                toast.success("Chỉnh sửa phiếu nhập kho hoàn hàng thành công!");
                 navigate('/inventory/reception/management');
             })
             .catch((err) => {
@@ -180,7 +180,7 @@ const EditReception = () => {
         <div className="relative grid grid-cols-5 gap-2 pr-2 overflow-x-auto">
             <div className="col-span-4">
                 <div className="flex items-center w-full h-auto gap-4 px-2 py-4">
-                    <h3 className="text-xl font-semibold uppercase">Chỉnh sửa phiếu nhập kho</h3>
+                    <h3 className="text-xl font-semibold uppercase">Chỉnh sửa phiếu nhập kho hoàn hàng</h3>
                 </div>
                 <div className="flex w-full gap-4 px-2 mb-2">
                     <div className="w-[60%] p-2.5 grid grid-cols-6 gap-4 border-2 border-gray-400 relative">

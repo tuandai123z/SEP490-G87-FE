@@ -20,7 +20,7 @@ const EditOrderSale = () => {
     const user = useSelector(state => state.user);
     const [listProductSale, setListProductSale] = useState(order);
     const [currentCustomer, setCurrentCustomer] = useState({});
-    const [statusChange, setStatusChange] = useState('');
+    const [statusChange, setStatusChange] = useState('APPROVED');
     const [titleModalConfirm, setTitleModalConfirm] = useState('');
     const [contentModalConfirm, setContentModalConfirm] = useState('');
     const [titleModalBtnConfirm, setTitleModalBtnConfirm] = useState('');
@@ -43,6 +43,7 @@ const EditOrderSale = () => {
                 }));
                 const action = importOrderSale(dataImport);
                 dispatch(action);
+                console.log(data);
             })
             .catch((err) => {
                 if (err.response) {
@@ -116,7 +117,16 @@ const EditOrderSale = () => {
         setListProductSale(updatedProducts);
     }
 
-    const handleOpenChange = (status, title, content, titleBtnConfirm) => {
+    const handleOpenChange = () => {
+        const title = statusChange === 'REJECTED' ? 'Huỷ phiếu bán hàng' : 'Duyệt phiếu bán hàng';
+        const content = statusChange === 'REJECTED' ? 'Bạn chắc chắn huỷ phiếu bán hàng này?' : 'Bạn chắc chắn duyệt phiếu bán hàng này?';
+        const titleBtnConfirm = 'Xác nhận';
+        setTitleModalConfirm(title);
+        setContentModalConfirm(content);
+        setTitleModalBtnConfirm(titleBtnConfirm);
+        setIsOpenModalConfirm(true);
+    }
+    const handleOpenChangeDelivery = (status, title, content, titleBtnConfirm) => {
         setStatusChange(status);
         setTitleModalConfirm(title);
         setContentModalConfirm(content);
@@ -189,7 +199,7 @@ const EditOrderSale = () => {
         <div className="relative grid grid-cols-4 gap-2 pr-2 overflow-x-auto">
             <div className="col-span-3">
                 <div className="flex items-center w-full h-auto gap-4 px-2 py-4">
-                    <h3 className="text-xl font-semibold uppercase">Phiếu bán hàng</h3>
+                    <h3 className="text-xl font-semibold uppercase">Chỉnh sửa phiếu bán hàng</h3>
                 </div>
                 <div className="flex w-full gap-4 px-2 mb-2">
                     <div className="w-full p-2.5 grid grid-cols-2 gap-4 border-2 border-gray-400 relative">
@@ -212,7 +222,7 @@ const EditOrderSale = () => {
                     <div className="relative overflow-x-auto shadow-md">
                         <div className="flex justify-between">
                             <div className="flex gap-2">
-                                {orderSaleDetail?.approveStatus !== "APPROVED" && <div className={`px-4 py-1 uppercase border-t-2 border-l-2 cursor-pointer transition-all duration-100 bg-orange-200 font-medium`} onClick={() => handleOpenModal()}>
+                                {orderSaleDetail?.approveStatus === "WAITING" && <div className={`px-4 py-1 uppercase border-t-2 border-l-2 cursor-pointer transition-all duration-100 bg-orange-200 font-medium`} onClick={() => handleOpenModal()}>
                                     <span>Lưu</span>
                                 </div>}
                                 <div className={`px-4 py-1 flex gap-3 items-center uppercase border-t-2 border-l-2 cursor-pointer transition-all duration-100 bg-orange-200 font-medium`} onClick={() => handleBack()}>
@@ -220,7 +230,7 @@ const EditOrderSale = () => {
                                     <span>Quay lại</span>
                                 </div>
                             </div>
-                            {orderSaleDetail?.approveStatus !== "APPROVED" && <div className={`px-4 py-1 uppercase border-t-2 border-l-2 cursor-pointer transition-all duration-100 bg-orange-200 font-medium`} onClick={() => onChangeShowAdd()}>
+                            {orderSaleDetail?.approveStatus === "WAITING" && <div className={`px-4 py-1 uppercase border-t-2 border-l-2 cursor-pointer transition-all duration-100 bg-orange-200 font-medium`} onClick={() => onChangeShowAdd()}>
                                 <span>Thêm thiết bị</span>
                             </div>}
                         </div>
@@ -297,31 +307,35 @@ const EditOrderSale = () => {
                 </div>
                 <div className="flex flex-col gap-3">
                     <div className="flex items-center justify-between ">
-                        <span>Duyệt bởi</span>
-                        {orderSaleDetail && (orderSaleDetail?.approveStatus === 'WAITING') && (
-                            <div
-                                onClick={() => handleOpenChange('APPROVED', 'Duyệt phiếu bán hàng', 'Bạn chắc chắn duyệt phiếu bán hàng này?', 'Xác nhận')}
-                                className="flex items-center gap-2 px-4 py-1 transition-all duration-150 bg-orange-400 rounded-md cursor-pointer hover:bg-orange-600">
-                                <span>Duyệt</span>
-                                <FaKey className="" />
-                            </div>)}
+                        {orderSaleDetail?.approveStatus !== 'WAITING' && <span>{orderSaleDetail?.approveStatus === 'APPROVED' ? "Duyệt bởi" : "Từ chối bởi"}</span>}
+                        {orderSaleDetail?.approveStatus === 'WAITING' && <div className="flex justify-between w-full ">
+                            <label className="flex items-center gap-2 cursor-pointer">
+                                <input
+                                    type="radio"
+                                    name="approval"
+                                    value="REJECTED"
+                                    checked={statusChange === 'REJECTED'}
+                                    onChange={() => setStatusChange('REJECTED')}
+                                    className="scale-150 accent-rose-500"
+                                />
+                                <span className="text-black">Từ chối</span>
+                            </label>
+
+                            <label className="flex items-center gap-2 cursor-pointer">
+                                <input
+                                    type="radio"
+                                    name="approval"
+                                    value="APPROVED"
+                                    checked={statusChange === 'APPROVED'}
+                                    onChange={() => setStatusChange('APPROVED')}
+                                    className="scale-150 accent-orange-500"
+                                />
+                                <span className="text-black">Duyệt</span>
+                            </label>
+                        </div>}
                         {orderSaleDetail && orderSaleDetail?.approveStatus === 'APPROVED' && (
                             <div className="flex items-center gap-2 px-4 py-1 bg-orange-400 rounded-md ">
                                 <span>Đã duyệt</span>
-                                <FaKey className="" />
-                            </div>)}
-                    </div>
-                    <input type="text" disabled value={orderSaleDetail?.approveStatus === 'APPROVED' ? orderSaleDetail?.approveBy : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
-                    <input type="text" disabled value={orderSaleDetail?.approveStatus === 'APPROVED' ? `${formatDate(orderSaleDetail?.approveDate)} ` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
-                </div>
-                <div className="flex flex-col gap-3">
-                    <div className="flex items-center justify-between ">
-                        <span>Từ chối bởi</span>
-                        {orderSaleDetail && (orderSaleDetail?.approveStatus === 'WAITING') && (
-                            <div
-                                onClick={() => handleOpenChange('REJECTED', 'Huỷ phiếu bán hàng', 'Bạn chắc chắn huỷ phiếu bán hàng này?', 'Xác nhận')}
-                                className="flex items-center gap-2 px-4 py-1 transition-all duration-150 rounded-md cursor-pointer bg-red hover:bg-rose-500">
-                                <span>Từ chối</span>
                                 <FaKey className="" />
                             </div>)}
                         {orderSaleDetail && orderSaleDetail?.approveStatus === 'REJECTED' && (
@@ -330,15 +344,15 @@ const EditOrderSale = () => {
                                 <FaKey className="" />
                             </div>)}
                     </div>
-                    <input type="text" disabled value={orderSaleDetail?.approveStatus === 'REJECTED' ? orderSaleDetail?.approveBy : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
-                    <input type="text" disabled value={orderSaleDetail?.approveStatus === 'REJECTED' ? `${formatDate(orderSaleDetail?.approveDate)} ` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
+                    <input type="text" disabled value={orderSaleDetail?.approveStatus !== 'WAITING' ? orderSaleDetail?.approveBy : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
+                    <input type="text" disabled value={orderSaleDetail?.approveStatus !== 'WAITING' ? `${formatDate(orderSaleDetail?.approveDate)} ` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
                 </div>
-                <div className="flex flex-col gap-3">
+                {orderSaleDetail?.approveStatus !== 'REJECTED' && <div className="flex flex-col gap-3">
                     <div className="flex items-center justify-between ">
                         <span>Đã giao bởi</span>
                         {orderSaleDetail && (orderSaleDetail?.deliveryStatus === "WAITING_DELIVERY") && (orderSaleDetail?.approveStatus !== 'WAITING') && (
                             <div
-                                onClick={() => handleOpenChange('delivery-success', 'Xác nhận phiếu bán hàng', 'Bạn chắc chắn đã giao thành công phiếu bán hàng này?', 'Xác nhận')}
+                                onClick={() => handleOpenChangeDelivery('delivery-success', 'Xác nhận phiếu bán hàng', 'Bạn chắc chắn đã giao thành công phiếu bán hàng này?', 'Xác nhận')}
                                 className="flex items-center gap-2 px-4 py-1 transition-all duration-150 bg-blue-400 rounded-md cursor-pointer hover:bg-blue-700">
                                 <span>Giao hàng</span>
                                 <FaKey className="" />
@@ -348,9 +362,16 @@ const EditOrderSale = () => {
                             <FaKey className="" />
                         </div>}
                     </div>
-                    <input type="text" disabled value={''} className='w-full px-4 py-1 text-right border border-gray-500' />
-                    <input type="text" disabled value={orderSaleDetail?.deliveryStatus !== 'WAITING_DELIVERY' ? `${formatDate(orderSaleDetail?.actionTime)} ` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
-                </div>
+                    <input type="text" disabled value={orderSaleDetail?.deliveryStatus !== 'WAITING_DELIVERY' ? `${orderSaleDetail?.deliveryBy}` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
+                    <input type="text" disabled value={orderSaleDetail?.deliveryStatus !== 'WAITING_DELIVERY' ? `${formatDate(orderSaleDetail?.deliveryDate)} ` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
+                </div>}
+                {orderSaleDetail?.approveStatus === 'WAITING' && <div className="flex justify-end">
+                    <div
+                        onClick={() => handleOpenChange()}
+                        className="flex items-center justify-center px-2 py-1 transition-all duration-150 bg-blue-400 rounded-md cursor-pointer font-semibold w-[40%] hover:bg-blue-600">
+                        <span>Xác nhận</span>
+                    </div>
+                </div>}
             </div>
             {isOpenAdd && <AddProductSale onChangeShowAdd={onChangeShowAdd} />}
             {isOpenModal && <ModalConfirmCreate

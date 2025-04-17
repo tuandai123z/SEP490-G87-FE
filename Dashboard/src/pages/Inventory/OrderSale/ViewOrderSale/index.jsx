@@ -135,12 +135,12 @@ const ViewOrderSale = () => {
                                     <span>Quay lại</span>
                                 </div>
                             </div>
-                            <div className="flex gap-2">
+                            {orderSaleDetail?.approveStatus !== 'REJECTED' && <div className="flex gap-2">
                                 <div className={`px-4 py-1 flex gap-3 items-center uppercase border-t-2 border-l-2 cursor-pointer transition-all duration-100 bg-orange-200 font-medium`} onClick={() => handleExportPDF()} >
                                     <FaFileExport />
-                                    <span>Xuất Excel</span>
+                                    <span>Xuất PDF</span>
                                 </div>
-                            </div>
+                            </div>}
                         </div>
                         <table className="w-full text-sm text-left text-blue-100 border border-blue-400 rtl:text-right dark:text-blue-100">
                             <thead className="text-xs text-white uppercase bg-blue-400 border border-blue-400 dark:text-white">
@@ -207,29 +207,22 @@ const ViewOrderSale = () => {
                 </div>
                 <div className="flex flex-col gap-3">
                     <div className="flex items-center justify-between ">
-                        <span>Duyệt bởi</span>
+                        {orderSaleDetail?.approveStatus !== 'WAITING' && <span>{orderSaleDetail?.approveStatus === 'APPROVED' ? 'Duyệt bởi' : "Từ chối bởi"}</span>}
                         {orderSaleDetail && orderSaleDetail?.approveStatus === 'APPROVED' && (
                             <div className="flex items-center gap-2 px-4 py-1 bg-orange-400 rounded-md ">
                                 <span>Đã duyệt</span>
                                 <FaKey className="" />
                             </div>)}
-                    </div>
-                    <input type="text" disabled value={orderSaleDetail?.approveStatus === 'APPROVED' ? orderSaleDetail?.approveBy : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
-                    <input type="text" disabled value={orderSaleDetail?.approveStatus === 'APPROVED' ? `${formatDate(orderSaleDetail?.approveDate)} ` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
-                </div>
-                <div className="flex flex-col gap-3">
-                    <div className="flex items-center justify-between ">
-                        <span>Từ chối bởi</span>
                         {orderSaleDetail && orderSaleDetail?.approveStatus === 'REJECTED' && (
                             <div className="flex items-center gap-2 px-4 py-1 rounded-md bg-red ">
                                 <span>Đã từ chối</span>
                                 <FaKey className="" />
                             </div>)}
                     </div>
-                    <input type="text" disabled value={orderSaleDetail?.approveStatus === 'REJECTED' ? orderSaleDetail?.approveBy : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
-                    <input type="text" disabled value={orderSaleDetail?.approveStatus === 'REJECTED' ? `${formatDate(orderSaleDetail?.approveDate)} ` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
+                    <input type="text" disabled value={orderSaleDetail?.approveStatus !== 'WAITING' ? orderSaleDetail?.approveBy : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
+                    <input type="text" disabled value={orderSaleDetail?.approveStatus !== 'WAITING' ? `${formatDate(orderSaleDetail?.approveDate)} ` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
                 </div>
-                <div className="flex flex-col gap-3">
+                {orderSaleDetail?.approveStatus !== 'REJECTED' && <div className="flex flex-col gap-3">
                     <div className="flex items-center justify-between ">
                         <span>Đã nhập bởi</span>
                         {orderSaleDetail && orderSaleDetail?.deliveryStatus === 'RECEIVE_DELIVERY' && <div className="flex items-center gap-2 px-4 py-1 bg-blue-400 rounded-md ">
@@ -237,9 +230,9 @@ const ViewOrderSale = () => {
                             <FaKey className="" />
                         </div>}
                     </div>
-                    <input type="text" disabled value={''} className='w-full px-4 py-1 text-right border border-gray-500' />
-                    <input type="text" disabled value={orderSaleDetail?.deliveryStatus === 'RECEIVE_DELIVERY' ? `${formatDate(orderSaleDetail?.actionTime)} ` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
-                </div>
+                    <input type="text" disabled value={orderSaleDetail?.deliveryStatus !== 'WAITING_DELIVERY' ? `${orderSaleDetail?.deliveryBy}` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
+                    <input type="text" disabled value={orderSaleDetail?.deliveryStatus !== 'WAITING_DELIVERY' ? `${formatDate(orderSaleDetail?.deliveryDate)} ` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
+                </div>}
             </div>
             <div className="absolute -left-[9999px]">
                 <InvoicePDF className='' ref={contentRef} data={currentDataPDF} />
