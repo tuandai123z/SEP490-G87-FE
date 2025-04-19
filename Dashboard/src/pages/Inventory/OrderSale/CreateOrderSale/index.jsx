@@ -551,7 +551,7 @@ const CreateOrderSale = () => {
           animation: slideIn 0.3s ease-in-out;
         }
       `}</style>
-      <div className=" flex justify-end ">
+      <div className="flex justify-end mb-4">
         <div
           className={`px-4 py-1 text-center w-[150px] uppercase border-t-2 border-l-2 cursor-pointer transition-all duration-100 bg-orange-200 font-medium`}
           onClick={() => handleOpenModal()}
