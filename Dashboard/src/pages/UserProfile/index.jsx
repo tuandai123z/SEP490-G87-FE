@@ -117,7 +117,7 @@ const UserProfile = () => {
                     </div>
                     <div className="relative flex flex-col max-w-full gap-2 back">
                         <div className="pb-4 topBack" >
-                            <span className="homeIcon" onClick={() => navigate('/admin/dashboard')}>
+                            <span className="homeIcon" onClick={() => navigate(-1)}>
                                 {/* <HomeIcon /> */}
                                 <FaHome />
                             </span>
