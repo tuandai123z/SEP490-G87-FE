@@ -10,8 +10,6 @@ const AddProduct = ({ onChangeShowAdd, data }) => {
     const orderReturn = useSelector(state => state.orderReturn);
     const dispatch = useDispatch();
 
-    console.log(data, '-----------');
-
     const handleAddProduct = (product) => {
         const resultProduct = orderReturn?.filter(p => p.code === product.code);
         const totalQuantity = resultProduct.reduce((sum, product) => sum + Number(product?.currentQuantity), Number(0));

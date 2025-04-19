@@ -43,7 +43,6 @@ const orderReturnReducer = (state = [], action) => {
 
     case 'REDUCE_PRODUCT_QUANTITY_RETURN': {
       const products = [...state];
-      console.log(action.payload);
       const data = action.payload;
       const index = products.findIndex(product => {
         return product.code === data.code && product.statusReturn === data.statusReturn;

@@ -43,7 +43,6 @@ const EditOrderSale = () => {
                 }));
                 const action = importOrderSale(dataImport);
                 dispatch(action);
-                console.log(data);
             })
             .catch((err) => {
                 if (err.response) {

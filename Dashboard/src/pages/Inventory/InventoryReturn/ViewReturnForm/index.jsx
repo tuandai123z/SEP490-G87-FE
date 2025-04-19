@@ -31,7 +31,6 @@ const ViewReturnForm = () => {
                 setReturnDetail(data?.returnForm);
                 setReturnOverview(data)
                 setListOrderProducts(data?.returnProducts)
-                console.log(data);
             })
             .catch((err) => {
                 if (err.response) {

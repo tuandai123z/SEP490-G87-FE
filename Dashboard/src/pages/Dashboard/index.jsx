@@ -89,7 +89,6 @@ const Dashboard = () => {
             .then(res => {
                 const data = res.data;
                 setDataReceipt(data);
-                console.log(data);
             }).catch((err) => {
                 if (err.response) {
                     const errorRes = err.response.data;

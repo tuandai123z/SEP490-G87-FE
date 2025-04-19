@@ -43,7 +43,6 @@ const StaffManagement = () => {
                 const data = res.data;
                 setListStaff(data);
                 setIsLoading(true);
-                console.log(data);
             })
             .catch((err) => {
                 if (err.response) {

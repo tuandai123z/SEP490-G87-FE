@@ -36,7 +36,6 @@ const EditReception = () => {
                 const data = res.data;
                 setReceptionDetail(data);
                 setListProducts(data.items)
-                console.log(data);
             })
             .catch((err) => {
                 if (err.response) {

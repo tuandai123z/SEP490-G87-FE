@@ -53,7 +53,6 @@ const AddProductSale = ({ onChangeShowAdd }) => {
                 .then(res => {
                     const data = res.data.content;
                     setListProducts(data);
-                    console.log(data);
                 })
                 .catch((err) => {
                     if (err.response) {

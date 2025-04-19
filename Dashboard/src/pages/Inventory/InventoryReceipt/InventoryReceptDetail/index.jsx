@@ -23,7 +23,6 @@ const InventoryReceptDetail = () => {
             .get(`/inventory-receipt/${slug}`)
             .then(res => {
                 const data = res.data;
-                console.log(data, '===============');
                 setReceptionDetail(data);
                 setListProducts(data.items)
             })
