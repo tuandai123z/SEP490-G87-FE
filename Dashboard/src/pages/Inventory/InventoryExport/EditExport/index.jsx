@@ -31,7 +31,6 @@ const EditExportDelivery = () => {
                 const data = res.data;
                 setOrderDetail(data);
                 setListOrderProducts(data?.products)
-                console.log(data);  
             })
             .catch((err) => {
                 if (err.response) {

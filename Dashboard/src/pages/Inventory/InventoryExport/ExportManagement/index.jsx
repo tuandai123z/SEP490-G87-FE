@@ -21,6 +21,7 @@ const ExportManagement = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [paginationInformation, setPaginationInformation] = useState('');
     const [currentStatusOrder, setCurrentStatusOrder] = useState('')
+    const [currentDeliveryType, setCurrentDeliveryType] = useState('')
     const [fromDate, setFromDate] = useState('');
     const [toDate, setToDate] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
@@ -40,6 +41,7 @@ const ExportManagement = () => {
             .get('/inventory-delivery/find-all', {
                 params: {
                     ...(currentStatusOrder ? { approveStatus: currentStatusOrder } : {}),
+                    ...(currentDeliveryType ? { deliveryType: currentDeliveryType } : {}),
                     ...(fromDate ? { fromDate: fromDate } : {}),
                     ...(toDate ? { toDate: toDate } : {}),
                     ...(code ? { code: code } : {}),
@@ -54,7 +56,6 @@ const ExportManagement = () => {
                 const data = res.data;
                 setListExport(data.content)
                 setPaginationInformation(data);
-                console.log(data);
             })
             .catch((err) => {
                 if (err.response) {
@@ -219,39 +220,47 @@ const ExportManagement = () => {
                 <div className="flex w-full gap-4 px-2 mb-2">
                     <div className="w-full p-2.5 grid grid-cols-5 gap-4 border-2 border-gray-400 relative">
                         <div className="grid grid-cols-12 col-span-4 gap-4">
-                            <div className="flex items-center w-full col-span-4">
-                                <label htmlFor="code" className="block mb-2 text-sm font-normal pr-2 text-gray-900 dark:text-white w-[25%] ">Mã phiếu</label>
-                                <input type="text" id="code" value={code} onChange={e => setCode(e.target.value)} className="block w-[75%] p-1 text-sm text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                            <div className="flex items-center w-full col-span-3">
+                                <label htmlFor="code" className="block mb-2 text-sm font-normal pr-2 text-gray-900 dark:text-white w-[30%] ">Mã phiếu</label>
+                                <input type="text" id="code" value={code} onChange={e => setCode(e.target.value)} className="block w-[70%] p-1 text-sm text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                             </div>
-                            <div className="flex items-center w-full col-span-4">
-                                <label htmlFor="code" className="block mb-2 text-sm font-normal pr-2 text-gray-900 dark:text-white w-[25%] text-right ">Khách hàng</label>
+                            <div className="flex items-center w-full col-span-3">
+                                <label htmlFor="code" className="block mb-2 text-sm font-normal pr-2 text-gray-900 dark:text-white w-[30%] text-right ">Khách hàng</label>
                                 <Select
                                     value={phoneNumber}
                                     onChange={setPhoneNumber}
                                     options={listCustomer}
                                 />
                             </div>
-                            <div className="flex items-center w-full col-span-4 ">
-                                <label htmlFor="first_name" className="block mb-2 text-sm font-normal pr-2 text-right text-gray-900 dark:text-white w-[25%]">Tình trạng</label>
-                                <select id="statusOrder" value={currentStatusOrder} onChange={e => setCurrentStatusOrder(e.target.value)} className="bg-gray-50 w-[80%] border border-gray-300 text-gray-900 text-sm focus:ring-primary-500 focus:border-primary-500 block p-1.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                            <div className="flex items-center w-full col-span-3 ">
+                                <label htmlFor="first_name" className="block mb-2 text-sm font-normal pr-2 text-right text-gray-900 dark:text-white w-[30%]">Tình trạng</label>
+                                <select id="statusOrder" value={currentStatusOrder} onChange={e => setCurrentStatusOrder(e.target.value)} className="bg-gray-50 w-[70%] border border-gray-300 text-gray-900 text-sm focus:ring-primary-500 focus:border-primary-500 block p-1.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                     <option value={""}>-----Chọn trạng thái-------</option>
                                     <option value={"WAITING"} >Chờ duyệt</option>
                                     <option value={"APPROVED"} >Đã duyệt</option>
                                     <option value={"REJECTED"} >Từ chối</option>
                                 </select>
                             </div>
-                            <div className="flex items-center w-full col-span-3 gap">
-                                <label htmlFor="first_name" className="block mb-2 text-sm font-normal pr-2 text-right text-gray-900 dark:text-white w-[35%]">Từ ngày</label>
-                                <input type="date" id="first_name" value={fromDate} onChange={handleFromDateChange} className="block w-[65%] text-sm p-1 text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                            <div className="flex items-center w-full col-span-3 ">
+                                <label htmlFor="first_name" className="block mb-2 text-sm font-normal pr-2 text-right text-gray-900 dark:text-white w-[30%]">Loại phiếu </label>
+                                <select id="statusOrder" value={currentDeliveryType} onChange={e => setCurrentDeliveryType(e.target.value)} className="bg-gray-50 w-[70%] border border-gray-300 text-gray-900 text-sm focus:ring-primary-500 focus:border-primary-500 block p-1.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                    <option value={""}>-----Chọn loại phiếu-------</option>
+                                    <option value={"DELIVERY_ORDER"} >Bán hàng</option>
+                                    <option value={"DELIVERY_RETURN"} >Hoàn hàng</option>
+                                </select>
                             </div>
                             <div className="flex items-center w-full col-span-3 gap">
-                                <label htmlFor="first_name" className="block mb-2 text-sm font-normal pr-2 text-right text-gray-900 dark:text-white w-[35%]">Đến ngày</label>
-                                <input type="date" id="first_name" value={toDate} onChange={handleToDateChange} className="block w-[65%] text-sm p-1 text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                                <label htmlFor="first_name" className="block mb-2 text-sm font-normal pr-2 text-right text-gray-900 dark:text-white w-[30%]">Từ ngày</label>
+                                <input type="date" id="first_name" value={fromDate} onChange={handleFromDateChange} className="block w-[70%] text-sm p-1 text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                             </div>
                             <div className="flex items-center w-full col-span-3 gap">
-                                <label htmlFor="first_name" className="block mb-2 text-sm font-normal pr-2 text-right text-gray-900 dark:text-white w-[35%]">Giá từ</label>
+                                <label htmlFor="first_name" className="block mb-2 text-sm font-normal pr-2 text-right text-gray-900 dark:text-white w-[30%]">Đến ngày</label>
+                                <input type="date" id="first_name" value={toDate} onChange={handleToDateChange} className="block w-[70%] text-sm p-1 text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                            </div>
+                            <div className="flex items-center w-full col-span-3 gap">
+                                <label htmlFor="first_name" className="block mb-2 text-sm font-normal pr-2 text-right text-gray-900 dark:text-white w-[30%]">Giá từ</label>
                                 <NumericFormat type="text" name="price" id="price"
-                                    className="block w-[65%] text-sm p-1 text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    className="block w-[70%] text-sm p-1 text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     thousandSeparator=","
                                     displayType="input"
                                     placeholder="Giá từ"
@@ -264,9 +273,9 @@ const ExportManagement = () => {
                                 />
                             </div>
                             <div className="flex items-center w-full col-span-3 gap">
-                                <label htmlFor="first_name" className="block mb-2 text-sm font-normal pr-2 text-right text-gray-900 dark:text-white w-[35%]">Giá đến</label>
+                                <label htmlFor="first_name" className="block mb-2 text-sm font-normal pr-2 text-right text-gray-900 dark:text-white w-[30%]">Giá đến</label>
                                 <NumericFormat type="text" name="price" id="price"
-                                    className="block w-[65%] text-sm p-1 text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    className="block w-[70%] text-sm p-1 text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     thousandSeparator=","
                                     displayType="input"
                                     placeholder="Giá đến"

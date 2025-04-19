@@ -47,7 +47,7 @@ const Categories = ({ content, Icon, pages }) => {
                                 key={index}
                             >
                                 <div className="flex items-center gap-[10px]" >
-                                    {p?.icon && <p.icon color="white" />}<p className="text-[14px] leading-[20px] font-medium text-white">{p?.content}</p>
+                                    {p?.icon && <p.icon color="white " />}<p className="text-[14px] leading-[20px] font-medium text-white">{p?.content}</p>
                                 </div>
                             </motion.li>
                         )
@@ -111,6 +111,11 @@ const SidebarInventory = () => {
                     content: "Tạo phiếu xuất kho",
                     icon: FaFileImport,
                     url: '/inventory/export/create'
+                },
+                {
+                    content: "Xuất kho hoàn hàng",
+                    icon: FaFileImport,
+                    url: '/inventory/export-return/create'
                 }
             ],
             roles: [

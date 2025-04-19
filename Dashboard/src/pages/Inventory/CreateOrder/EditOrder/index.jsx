@@ -67,7 +67,6 @@ const EditOrder = () => {
                 dispatch(actionClear);
                 dispatch(actionImport);
                 setOrderDetail(data);
-                console.log(data);
             })
             .catch((err) => {
                 if (err.response) {

@@ -14,6 +14,8 @@ import jsPDF from "jspdf";
 import InvoicePDF from "../component/InvoicePDF";
 import { NumericFormat } from "react-number-format";
 import { Select } from "../../../../components/common/Select";
+import { useSelector } from "react-redux";
+import { SALE_ROLE } from "../../../../utils/constants";
 
 
 const ReturnManagement = () => {
@@ -31,6 +33,8 @@ const ReturnManagement = () => {
     const [maxPrice, setMaxPrice] = useState('');
     const [pdfUrl, setPdfUrl] = useState(null);
     const [currentDataPDF, setCurrentDataPDF] = useState('');
+    const dataUser = useSelector(state => state.user);
+    const roleUser = dataUser.role;
     const contentRef = useRef();
     const size = 8;
     const navigate = useNavigate();
@@ -281,7 +285,7 @@ const ReturnManagement = () => {
                                             <td className="flex items-center justify-center gap-3 px-6 py-2 border-blue-400 ">
                                                 {item?.returnForm?.approveStatus === 'WAITING' && <MdModeEditOutline className="text-lg font-bold text-blue-700 transition-all duration-500 shadow-sm cursor-pointer hover:scale-[140%] " onClick={() => navigate(`/inventory/return/edit/${item?.returnForm?.code}`)} />}
                                                 {item?.returnForm?.approveStatus === 'APPROVED' && <TbEyeSearch className="text-lg font-bold text-blue-700 transition-all duration-500 shadow-sm cursor-pointer hover:scale-[140%] " onClick={() => navigate(`/inventory/return/view/${item?.returnForm?.code}`)} />}
-                                                {item?.returnForm?.approveStatus === 'APPROVED' && <TbPackageExport className="text-lg font-bold text-blue-700 transition-all duration-500 shadow-sm cursor-pointer hover:scale-[140%] " onClick={() => navigate(`/inventory/export/create/${item?.returnForm?.code}`)} />}
+                                                {item?.returnForm?.approveStatus === 'APPROVED' && roleUser !== SALE_ROLE && <TbPackageExport className="text-lg font-bold text-blue-700 transition-all duration-500 shadow-sm cursor-pointer hover:scale-[140%] " onClick={() => navigate(`/inventory/export/create/${item?.returnForm?.code}`)} />}
                                             </td>
                                         </tr>
                                     )

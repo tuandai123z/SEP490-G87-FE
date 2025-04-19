@@ -17,7 +17,6 @@ const AddProduct = ({ onChangeShowAdd }) => {
     const ref = useRef(false);
     const order = useSelector(state => state.order);
     const dispatch = useDispatch();
-    console.log(order);
 
     const getListCategories = () => {
         axiosInstance

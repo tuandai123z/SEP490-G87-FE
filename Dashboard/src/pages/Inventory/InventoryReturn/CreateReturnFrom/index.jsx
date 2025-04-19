@@ -38,7 +38,6 @@ const CreateReturnForm = () => {
                 const data = res.data;
                 const resultListOrderCode = data?.content?.map(item => item?.code);
                 setListOrderSaleCode(resultListOrderCode);
-                console.log(data);
             })
             .catch((err) => {
                 if (err.response) {
@@ -58,7 +57,6 @@ const CreateReturnForm = () => {
             .then(res => {
                 const data = res.data;
                 setCurrentCustomer(data?.customer)
-                console.log(data);
                 const products = data?.orderProducts?.map(item => ({
                     ...item,
                     discount: item?.discount * 100,
@@ -93,7 +91,6 @@ const CreateReturnForm = () => {
             products: products,
             customerId: currentCustomer?.id
         }
-        console.log(data, '-----------');
         // setIsLoading(true);
         axiosInstance
             .post(`/return-form/create`, data)
@@ -198,7 +195,7 @@ const CreateReturnForm = () => {
             </div>
             <div className="w-full px-2 mb-4">
                 <div className="relative overflow-x-auto shadow-md">
-                  <div className="flex justify-end pb-3 pt-2">
+                  <div className="flex justify-end pt-2 pb-3">
                         <div className={`px-4 py-1 w-[170px] justify-end uppercase border-t-2 border-l-2 cursor-pointer transition-all duration-100 bg-orange-200 font-medium`} onClick={() => onChangeShowAdd()}>
                             <span>Thêm sản phẩm</span>
                         </div>

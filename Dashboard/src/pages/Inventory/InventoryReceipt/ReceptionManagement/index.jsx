@@ -42,7 +42,6 @@ const ReceptionManagement = () => {
                 const data = res.data;
                 setListReceptions(data.content)
                 setPaginationInformation(data);
-                console.log(data);
             })
             .catch((err) => {
                 if (err.response) {
