@@ -226,7 +226,7 @@ const CreateReceptionReturn = () => {
                                             {item?.productInformation?.code}
                                         </th>
                                         <td className="px-6 py-4 border border-blue-300">{item?.productInformation?.name}</td>
-                                        <td className="px-6 py-4 border border-blue-300">{item?.productInformation?.unit}</td>
+                                        <td className="px-6 py-4 border border-blue-300">{item?.productInformation?.unitName}</td>
                                         <td className="px-6 py-4 border border-blue-300">
                                             <input
                                                 type="date"

@@ -170,7 +170,7 @@ const CreateReturnForm = () => {
                 <div className="w-full p-2.5 gap-4 border-2 border-gray-400 relative">
                     <div className="grid grid-cols-2 gap-4">
                         <div className="flex flex-col items-start w-full col-span-1">
-                            <label htmlFor="first_name" className="block w-full mb-2 text-sm font-normal text-gray-900 dark:text-white">Phiếu xuất kho <span className="text-red">*</span></label>
+                            <label htmlFor="first_name" className="block w-full mb-2 text-sm font-normal text-gray-900 dark:text-white">Phiếu bán hàng <span className="text-red">*</span></label>
                             <Select
                                 value={orderCodeSearch}
                                 onChange={setOrderCodeSearch}

@@ -96,7 +96,7 @@ const UnitsManagement = () => {
         axiosInstance
             .delete(`/unit/${currentUnit?.code}/delete`)
             .then(res => {
-                toast.success(`Xoá nhà đơn vị tính ${currentUnit?.name} thành công!`);
+                toast.success(`Xoá đơn vị tính ${currentUnit?.name} thành công!`);
                 setIsOpenDelete(false);
                 setCurrentUnit({});
                 getListUnits();
