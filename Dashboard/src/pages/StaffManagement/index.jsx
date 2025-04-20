@@ -185,12 +185,16 @@ const StaffManagement = () => {
                     setIsLoading(false);
                 });
         } else {
-            if (fullname.trim() === '') {
-                toast.warn('Tên nhân viên không được để trống');
-                return
+            if (roleAccount === '-1') {
+                toast.warn('Vui lòng chọn chức vụ!')
+                return;
             }
             if (!validator.isMobilePhone(phoneNumber, 'vi-VN')) {
-                toast.warn("Số điện thoại không đúng định dạng!!")
+                toast.warn(WRONG_FORMAT_PHONE)
+                return
+            }
+            if (fullname.trim() === '') {
+                toast.warn('Tên nhân viên không được để trống');
                 return
             }
 
