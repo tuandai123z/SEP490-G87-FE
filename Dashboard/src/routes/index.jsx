@@ -41,7 +41,6 @@ import EditExportReturn from '../pages/Inventory/InventoryExport/EditExportRetur
 import CreateExportDeliveryReturn from '../pages/Inventory/InventoryExport/CreateExportReturnNoSlug';
 
 const publicRoutes = [
-  // { path: '/changePassword', component: ChangePassword, layout: DefaultLayout },
   // { path: '/', component: Login },
   // { path: '/admin/dashboard', component: Dashboard, layout: DefaultLayout },
   // { path: '/admin/management/staffs', component: StaffManagement, layout: DefaultLayout },
@@ -86,6 +85,7 @@ const publicRoutes = [
   { path: '/admin/management/inventory', component: Inventory, layout: DefaultLayout },
   { path: '/inventory', component: Inventory, layout: InventoryLayout },
   { path: '/profile', component: UserProfile },
+  { path: '/changePassword', component: ChangePassword, layout: DefaultLayout },
 ];
 
 const adminRoutes = [
