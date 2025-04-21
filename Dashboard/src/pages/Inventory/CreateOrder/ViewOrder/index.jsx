@@ -1,11 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { FaKey } from "react-icons/fa";
+import { FaFileExport, FaKey } from "react-icons/fa";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { axiosInstance } from "../../../../utils/axiosInstant";
 import { clearOrder, importOrder } from "../../../../actions/orderActions";
+import html2canvas from "html2canvas-pro";
+import jsPDF from "jspdf";
+import InvoicePDF from "../InvoicePDF";
 
 
 const ViewOrder = () => {
@@ -15,7 +18,8 @@ const ViewOrder = () => {
     const [expectedDateShipped, setExpectedDateShipped] = useState('');
     const [orderDetail, setOrderDetail] = useState('');
     const [listProducts, setListProducts] = useState([]);
-    const dataUser = useSelector(state => state.user);
+    const [currentDataPDF, setCurrentDataPDF] = useState({});
+    const contentRef = useRef();
     const dispatch = useDispatch();
     const products = useSelector(state => state.order);
     const ref = useRef(false);
@@ -32,7 +36,6 @@ const ViewOrder = () => {
             .then(res => {
                 const data = res.data.content;
                 setListSuppliers(data);
-
             })
             .catch((err) => {
                 if (err.response) {
@@ -86,7 +89,33 @@ const ViewOrder = () => {
         getOrder();
     }, [])
 
+    const handleExportPDF = () => {
+        const data = {
+            createAt: orderDetail?.createAt,
+            supplier: currentSupplier,
+            products: products,
+            expectedDateShipped: expectedDateShipped
+        }
+        setCurrentDataPDF(data);
+        setTimeout(generatePDF, 200);
+    }
 
+    const generatePDF = () => {
+        const input = contentRef.current;
+        html2canvas(input, {
+            scale: 2,
+            useCORS: true,
+            backgroundColor: '#ffffff',
+        }).then((canvas) => {
+            const imgData = canvas.toDataURL("image/png");
+            const pdf = new jsPDF("p", "mm", "a4");
+            const imgWidth = 210;
+            const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+            pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+            pdf.save(`phieumuahang${slug}.pdf`);
+        });
+    };
 
     return (
         <div className="relative grid grid-cols-4 gap-2 pr-2 overflow-x-auto">
@@ -128,6 +157,10 @@ const ViewOrder = () => {
                                 <IoMdArrowRoundBack />
                                 <span>Quay lại</span>
                             </div>
+                            {orderDetail?.approve !== 'REJECTED' && <div className={`px-4 py-1 flex gap-3 items-center uppercase border-t-2 border-l-2 cursor-pointer transition-all duration-100 bg-orange-200 font-medium`} onClick={() => handleExportPDF()}>
+                                <FaFileExport />
+                                <span>Xuất PDF</span>
+                            </div>}
                         </div>
                         <table className="w-full text-sm text-left text-blue-100 border border-blue-400 rtl:text-right dark:text-blue-100">
                             <thead className="text-xs text-white uppercase bg-blue-400 border border-blue-400 dark:text-white">
@@ -194,6 +227,9 @@ const ViewOrder = () => {
                     {/* <input type="text" disabled value={''} className='w-full px-4 py-1 text-right border border-gray-500' /> */}
                     <input type="text" disabled value={orderDetail?.deliveryStatus === 'IMPORT_SUCCESS' ? `${orderDetail?.deliveryDate}` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
                 </div>}
+            </div>
+            <div className="absolute -left-[9999px]">
+                <InvoicePDF className='' ref={contentRef} data={currentDataPDF} />
             </div>
         </div>
     )

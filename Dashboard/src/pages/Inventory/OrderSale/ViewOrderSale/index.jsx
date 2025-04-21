@@ -17,8 +17,8 @@ const ViewOrderSale = () => {
     const order = useSelector(state => state.sale);
     const user = useSelector(state => state.user);
     const [listProductSale, setListProductSale] = useState(order);
-    const [currentDataPDF, setCurrentDataPDF] = useState({});
     const [currentCustomer, setCurrentCustomer] = useState({});
+    const [currentDataPDF, setCurrentDataPDF] = useState({});
     const contentRef = useRef();
     const { slug } = useParams();
     const totalCost = listProductSale && listProductSale?.reduce((sum, product) => sum + Number(product?.quantity * product?.sellingPrice * (100 - product?.discount) / 100), Number(0));
