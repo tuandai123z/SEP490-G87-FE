@@ -8,8 +8,6 @@ const InvoicePDF = React.forwardRef(({ data }, ref) => {
         return ''
     }
 
-    const totalCost = data?.products && data?.products?.reduce((sum, product) => sum + Number(product?.sellingPrice * product?.quantity), Number(0));
-
     return (
         <div ref={ref} className="w-full p-5 mx-auto border border-gray-300 rounded-lg shadow-lg">
             <div className='flex flex-col gap-1 mb-3 ml-4'>
