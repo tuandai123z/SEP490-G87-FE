@@ -78,7 +78,7 @@ const EditOrderSale = () => {
         axiosInstance
             .put(`/order/${slug}/update`, requestData)
             .then(res => {
-                toast.success("Cập nhật thông tin phiếu mua thành công");
+                toast.success("Cập nhật thông tin phiếu bán hàng thành công");
                 navigate('/inventory/orderSale/management');
             })
             .catch((err) => {
