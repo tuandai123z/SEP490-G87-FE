@@ -24,7 +24,7 @@ const InvoicePDF = React.forwardRef(({ data }, ref) => {
                 <p className='flex gap-1'><strong>Nhà cung cấp:</strong> {data?.supplier?.name}</p>
                 <p className='flex gap-1'><strong>Địa chỉ:</strong> {data?.supplier?.address}</p>
                 <p className='flex gap-1'><strong>Điện thoại:</strong> {data?.supplier?.phoneNumber}</p>
-                <p className='flex gap-1'><strong>Ngày giao dự kiến:</strong>{data?.supplier?.name}</p>
+                <p className='flex gap-1'><strong>Ngày giao dự kiến:</strong>{data?.expectedDateShipped}</p>
             </div>
 
             <table className="w-[98%] mt-5 border border-gray-300 text-xs mx-4">

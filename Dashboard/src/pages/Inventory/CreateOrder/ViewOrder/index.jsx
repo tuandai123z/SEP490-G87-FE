@@ -93,7 +93,8 @@ const ViewOrder = () => {
         const data = {
             createAt: orderDetail?.createAt,
             supplier: currentSupplier,
-            products: products
+            products: products,
+            expectedDateShipped: expectedDateShipped
         }
         setCurrentDataPDF(data);
         setTimeout(generatePDF, 200);
