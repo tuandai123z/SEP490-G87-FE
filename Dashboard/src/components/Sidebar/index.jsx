@@ -59,7 +59,7 @@ const Sidebar = () => {
               className={`${currentPath === "/admin/management/products" ? "text-primary" : "text-white"}`}
             />
             <p
-              className={`text-[16px] leading-[20px] font-normal ${currentPath === "/admin/management/products" ? "text-primary" : "text-white"}`}
+              className={`text-[16px] leading-[20px] font-bold ${currentPath === "/admin/management/products" ? "text-primary" : "text-white"}`}
             >
               Thiết bị
             </p>
@@ -72,7 +72,7 @@ const Sidebar = () => {
         >
           <div className="flex items-center gap-[10px]">
             <FaClipboardList  className={`${currentPath === "/admin/management/units" ? "text-primary" : "text-white"}`} />
-            <p  className={`text-[16px] leading-[20px] font-normal  ${currentPath === "/admin/management/units" ? "text-primary" : "text-white"}`}>
+            <p className={`text-[16px] leading-[20px] font-bold  ${currentPath === "/admin/management/units" ? "text-primary" : "text-white"}`}>
               Đơn vị tính
             </p>
           </div>
@@ -85,7 +85,7 @@ const Sidebar = () => {
           >
             <div className="flex items-center gap-[10px]">
               <FaUsers className={`${currentPath === "/admin/management/staffs" ? "text-primary" : "text-white"}`} />
-              <p className={`text-[16px] leading-[20px] font-normal  ${currentPath === "/admin/management/staffs" ? "text-primary" : "text-white"}`}>
+              <p className={`text-[16px] leading-[20px] font-bold  ${currentPath === "/admin/management/staffs" ? "text-primary" : "text-white"}`}>
                 Nhân viên
               </p>
             </div>
@@ -98,7 +98,7 @@ const Sidebar = () => {
         >
           <div className="flex items-center gap-[10px]">
             <FaBoxOpen  className={`${currentPath === "/inventory/supplier" ? "text-primary" : "text-white"}`} />
-            <p className={`text-[16px] leading-[20px] font-normal  ${currentPath === "/inventory/supplier" ? "text-primary" : "text-white"}`}>
+            <p className={`text-[16px] leading-[20px] font-bold  ${currentPath === "/inventory/supplier" ? "text-primary" : "text-white"}`}>
               Nhà cung cấp
             </p>
           </div>
@@ -110,7 +110,7 @@ const Sidebar = () => {
         >
           <div className="flex items-center gap-[10px]">
             <FaGlobe  className={`${currentPath === "/admin/management/branch" ? "text-primary" : "text-white"}`} />
-            <p className={`text-[16px] leading-[20px] font-normal  ${currentPath === "/admin/management/branch" ? "text-primary" : "text-white"}`}>
+            <p className={`text-[16px] leading-[20px] font-bold  ${currentPath === "/admin/management/branch" ? "text-primary" : "text-white"}`}>
               Thương hiệu
             </p>
           </div>
@@ -122,7 +122,7 @@ const Sidebar = () => {
         >
           <div className="flex items-center gap-[10px]">
             <FaListAlt  className={`${currentPath === "/admin/management/category" ? "text-primary" : "text-white"}`} />
-            <p className={`text-[15px] leading-[20px] font-normal ${currentPath === "/admin/management/category" ? "text-primary" : "text-white"}`}>
+            <p className={`text-[15px] leading-[20px] font-bold ${currentPath === "/admin/management/category" ? "text-primary" : "text-white"}`}>
               Danh mục sản phẩm
             </p>
           </div>
@@ -130,7 +130,7 @@ const Sidebar = () => {
       </div>
 
       <div className="pt-[15px] ">
-        <p className="text-[10px] font-extranorfont-normal leading-[16px] text-white/[0.4]"></p>
+        <p className="text-[10px] font-extranorfont-bold leading-[16px] text-white/[0.4]"></p>
         <div
           className={`flex items-center justify-between gap-[10px] py-[15px] cursor-pointer transition ease-in-out duration-300 rounded-full pl-4 
           ${currentPath === "/inventory/statistic" ? "bg-white" : ""}`}
@@ -138,7 +138,7 @@ const Sidebar = () => {
         >
           <div className="flex items-center gap-[10px]">
             <MdInventory  className={`${currentPath === "/inventory/statistic" ? "text-primary" : "text-white"}`} />
-            <p className="text-[16px] leading-[20px] font-normal text-white">
+            <p className="text-[16px] leading-[20px] font-bold text-white">
               Kho
             </p>
           </div>

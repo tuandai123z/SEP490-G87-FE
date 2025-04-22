@@ -72,7 +72,7 @@ const CreateExportReturn = () => {
     return (
         <div className="relative overflow-x-auto ">
             <div className="flex items-center w-full h-auto gap-4 px-2 py-4">
-                <h3 className="text-xl font-semibold uppercase">Phiếu xuất kho</h3>
+                <h3 className="text-xl font-semibold uppercase">Phiếu xuất kho hoàn hàng</h3>
             </div>
             <div className="flex w-full gap-4 px-2 mb-2">
                 <div className="w-full p-2.5 gap-4 border-2 border-gray-400 relative">
