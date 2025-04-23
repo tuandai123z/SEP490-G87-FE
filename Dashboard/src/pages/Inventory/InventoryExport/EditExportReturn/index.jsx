@@ -58,7 +58,7 @@ const EditExportReturn = () => {
             .put(`/inventory-delivery/${slug}/${statusChange === 'APPROVED' ? 'approve' : 'reject'}`)
             .then(res => {
                 const contentStatus = statusChange === 'APPROVED' ? "Duyệt" : 'Huỷ ';
-                toast.success(`${contentStatus} phiếu bán hàng thành công!`);
+                toast.success(`${contentStatus} phiếu xuất kho thành công!`);
                 getOrderDetail();
                 setIsOpenModalConfirm(false);
             })

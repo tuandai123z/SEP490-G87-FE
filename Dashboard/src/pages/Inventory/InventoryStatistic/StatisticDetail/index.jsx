@@ -144,13 +144,13 @@ const StatisticDetail = () => {
                         <input type="text" id="fromDateSearch" value={slug} disabled className="block w-[70%] text-sm p-1 text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                     </div>
                     <div className="flex grid items-center w-full grid-cols-4 col-span-2 gap-2">
-                        <div className="flex items-center w-full col-span-3 gap-2">
-                            <label htmlFor="toDateSearch" className="block mb-2 text-sm font-normal pr-2 text-right text-gray-900 dark:text-white w-[25%]">Số lượng tối thiểu</label>
-                            <input type="text" id="toDateSearch" value={numberBase} onChange={e => handleChangeNumberBase(e.target.value)} className="block w-[70%] text-sm p-1 text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                        <div className="flex items-center w-full col-span-4 gap-2">
+                            <label htmlFor="toDateSearch" className="block mb-2 text-sm font-normal pr-2 text-right text-gray-900 dark:text-white w-[18.5%]">Số lượng tối thiểu</label>
+                            <input type="text" id="toDateSearch" value={numberBase} disabled className="block w-[76.5%] text-sm p-1 text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                         </div>
-                        <div className="flex items-center justify-center w-full col-span-1 gap-2" onClick={handleSearch}>
+                        {/* <div className="flex items-center justify-center w-full col-span-1 gap-2" onClick={handleSearch}>
                             <button className="px-4 py-1.5 font-semibold text-white bg-blue-400">Xác nhận</button>
-                        </div>
+                        </div> */}
                     </div>
 
                     <p className="absolute text-gray-900 top-[-16px] bg-white font-semibold">Thông tin chung</p>
@@ -188,7 +188,7 @@ const StatisticDetail = () => {
                         <tbody>
                             {listProduct && listProduct?.map((item, index) => {
                                 return (
-                                    <tr className={`text-black border border-b border-blue-400 ${item?.productStatus !== 'NEW' ? 'bg-gray-300' : ''} ${item?.totalInventoryQuantity <= 20 && item?.productStatus === 'NEW' ? 'bg-red' : ''}`} key={index}>
+                                    <tr className={`text-black border border-b border-blue-400 ${item?.productStatus !== 'NEW' ? 'bg-gray-300' : ''} `} key={index}>
                                         <td className="px-6 py-2 text-right border border-blue-400">{item?.productCode}</td>
                                         <td className="px-6 py-2 text-right border border-blue-400">{item?.productName}</td>
                                         <td className="px-6 py-2 text-right border border-blue-400">{item?.productUnit}</td>
@@ -202,7 +202,7 @@ const StatisticDetail = () => {
                                                 <div className="w-[50%] px-3 py-2 ">{formatVND(item?.exportTotalAmount)}</div>
                                             </div>}
                                         </td>
-                                        <td className="px-6 py-2 text-center border border-blue-400">{`${item?.totalInventoryQuantity} `}</td>
+                                        <td className={`px-6 py-2 text-center border font-bold border-blue-400 ${item?.totalInventoryQuantity <= 20 && item?.productStatus === 'NEW' ? 'text-red' : ''}`}>{`${item?.totalInventoryQuantity} `}</td>
                                         <td className="flex items-center justify-center gap-3 px-6 py-2 border-blue-400 ">
                                             {item?.productStatus === 'NEW' && 'MỚI'}
                                             {item?.productStatus === 'OLD' && 'Cũ'}

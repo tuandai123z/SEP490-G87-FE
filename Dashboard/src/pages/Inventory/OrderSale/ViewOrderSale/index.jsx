@@ -106,7 +106,7 @@ const ViewOrderSale = () => {
         <div className="relative grid grid-cols-4 gap-2 pr-2 overflow-x-auto">
             <div className="col-span-3">
                 <div className="flex items-center w-full h-auto gap-4 px-2 py-4">
-                    <h3 className="text-xl font-semibold uppercase">Phiếu bán hàng</h3>
+                    <h3 className="text-xl font-semibold uppercase">Thông tin phiếu bán hàng</h3>
                 </div>
                 <div className="flex w-full gap-4 px-2 mb-2">
                     <div className="w-full p-2.5 grid grid-cols-2 gap-4 border-2 border-gray-400 relative">

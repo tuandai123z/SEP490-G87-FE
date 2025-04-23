@@ -9,8 +9,11 @@ import { IoMdArrowRoundBack } from "react-icons/io";
 import AddProductSale from "../AddProductSale";
 import { formatVND } from "../../../../utils/format";
 import { clearOrderSale, importOrderSale } from "../../../../actions/saleActions";
-import { FaKey } from "react-icons/fa";
+import { FaFileExport, FaKey } from "react-icons/fa";
 import ModalAlertConfirm from "../../../../components/common/ModalAlerConfirm";
+import html2canvas from "html2canvas-pro";
+import jsPDF from "jspdf";
+import InvoicePDF from "../component/InvoicePDF";
 
 const EditOrderSale = () => {
     const [isOpenAdd, setIsOpenAdd] = useState(false);
@@ -25,6 +28,8 @@ const EditOrderSale = () => {
     const [contentModalConfirm, setContentModalConfirm] = useState('');
     const [titleModalBtnConfirm, setTitleModalBtnConfirm] = useState('');
     const [isOpenModalConfirm, setIsOpenModalConfirm] = useState(false);
+    const [currentDataPDF, setCurrentDataPDF] = useState({});
+    const contentRef = useRef();
     const { slug } = useParams();
     const totalCost = listProductSale && listProductSale?.reduce((sum, product) => sum + Number(product?.quantity * product?.sellingPrice * (100 - product?.discount) / 100), Number(0));
     const ref = useRef(false);
@@ -194,6 +199,33 @@ const EditOrderSale = () => {
         setCurrentCustomer(orderSaleDetail?.customer)
     }, [orderSaleDetail])
 
+    const handleExportPDF = () => {
+        const data = {
+            createAt: orderSaleDetail?.createAt,
+            customer: currentCustomer,
+            products: listProductSale
+        }
+        setCurrentDataPDF(data);
+        setTimeout(generatePDF, 200);
+    }
+
+    const generatePDF = () => {
+        const input = contentRef.current;
+        html2canvas(input, {
+            scale: 2,
+            useCORS: true,
+            backgroundColor: '#ffffff',
+        }).then((canvas) => {
+            const imgData = canvas.toDataURL("image/png");
+            const pdf = new jsPDF("p", "mm", "a4");
+            const imgWidth = 210;
+            const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+            pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+            pdf.save(`phieubanhang${slug}.pdf`);
+        });
+    };
+
     return (
         <div className="relative grid grid-cols-4 gap-2 pr-2 overflow-x-auto">
             <div className="col-span-3">
@@ -229,9 +261,19 @@ const EditOrderSale = () => {
                                     <span>Quay lại</span>
                                 </div>
                             </div>
-                            {orderSaleDetail?.approveStatus === "WAITING" && <div className={`px-4 py-1 uppercase border-t-2 border-l-2 cursor-pointer transition-all duration-100 bg-orange-200 font-medium`} onClick={() => onChangeShowAdd()}>
+                            <div className="flex gap-2">
+                                <div className="flex gap-2">
+                                    <div className={`px-4 py-1 flex gap-3 items-center uppercase border-t-2 border-l-2 cursor-pointer transition-all duration-100 bg-orange-200 font-medium`} onClick={() => handleExportPDF()} >
+                                        <FaFileExport />
+                                        <span>Xuất PDF</span>
+                                    </div>
+                                </div>
+                                {orderSaleDetail?.approveStatus === "WAITING" && <div className={`px-4 py-1 uppercase border-t-2 border-l-2 cursor-pointer transition-all duration-100 bg-orange-200 font-medium`} onClick={() => onChangeShowAdd()}>
                                 <span>Thêm thiết bị</span>
-                            </div>}
+                                </div>}
+
+                            </div>
+
                         </div>
                         <table className="w-full text-sm text-left text-blue-100 border border-blue-400 rtl:text-right dark:text-blue-100">
                             <thead className="text-xs text-white uppercase bg-blue-400 border border-blue-400 dark:text-white">
@@ -385,6 +427,9 @@ const EditOrderSale = () => {
                 handleConfirm={handleChangeStatus}
                 titleBtnConfirm={titleModalBtnConfirm}
             />}
+            <div className="absolute -left-[9999px]">
+                <InvoicePDF className='' ref={contentRef} data={currentDataPDF} />
+            </div>
         </div>
     )
 }
