@@ -191,7 +191,7 @@ const SidebarInventory = () => {
     }
 
     return (
-        <div className="bg-primary px-[25px] h-screen max-w-[15%] fixed top-0 left-0 overflow-y-auto scrollbar-hide hide-scrollbar ">
+        <div className="bg-primary px-[25px] h-screen max-w-[14%] fixed top-0 left-0 overflow-y-auto scrollbar-hide hide-scrollbar ">
             <div className="py-4 px-2 flex items-center justify-center border-b-[1px] border-[#EDEDED]/[0.3]">
             <img
           src="/logoThietBi.png"
