@@ -192,6 +192,8 @@ const inventoryRoutes = [
   { path: '/inventory/statisticDetail/:slug', component: StatisticDetail, layout: InventoryLayout },
   { path: '/inventory/export-return/create', component: CreateExportDeliveryReturn, layout: InventoryLayout },
   { path: '/inventory/export/create/:slug', component: CreateExportReturn, layout: InventoryLayout },
+  { path: '/admin/management/products', component: ProductsManagement, layout: DefaultLayout },
+  { path: '/inventory/management/products', component: ProductsManagement, layout: InventoryLayout },
 ]
 
 

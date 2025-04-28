@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaChevronLeft, FaFileImport, FaClipboardList } from 'react-icons/fa';
+import { FaChevronLeft, FaFileImport, FaClipboardList, FaCube } from 'react-icons/fa';
 import { MdInventory, } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import { IoIosArrowUp } from 'react-icons/io';
@@ -216,6 +216,32 @@ const SidebarInventory = () => {
                     />
                 )
             }))}
+            {roleUser === INVENTORY_ROLE && (
+                // <div
+                //     className={`flex items-center justify-between gap-[10px] py-[15px] cursor-pointer transition ease-in-out duration-300 rounded-full pl-4 `}
+                // // onClick={() => handleNavigate("/admin/management/products")}
+                // >
+                //     <div className="flex items-center gap-[10px]">
+                //         <FaCube
+                //         // className={`${currentPath === "/admin/management/products" ? "text-primary" : "text-white"}`}
+                //         />
+                //         <p
+                //         // className={`text-[16px] leading-[20px] font-bold ${currentPath === "/admin/management/products" ? "text-primary" : "text-white"}`}
+                //         >
+                //             Thiết bị
+                //         </p>
+                //     </div>
+                // </div>
+                <li className="py-[20px] text-[#334862] flex justify-between items-center border-b  border-gray-300 last:border-0 cursor-pointer relative list-none" >
+
+                    <div className="flex items-center gap-[10px] flex justify-between w-full"
+                        onClick={() => navigate("/inventory/management/products")}
+                    >
+                        <p className="text-[18px] font-bold leading-[16px] text-white">Thiết bị</p>
+                        <FaCube />
+                    </div>
+                </li>
+            )}
 
         </div>
     );

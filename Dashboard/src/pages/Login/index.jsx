@@ -93,19 +93,19 @@ const Login = () => {
   return (
     <div className="flex flex-col items-start w-full h-screen md:flex-row">
       <div className="relative flex flex-col w-full md:w-1/2 h-1/2 md:h-full">
-        <img className="object-cover w-full h-full" src="https://i.pinimg.com/736x/71/c1/4f/71c14fa9241a6a2a545b45eea59ed972.jpg" alt="" />
+        <img className="object-cover w-full h-full" src="http://res.cloudinary.com/dsvqh6h9t/image/upload/v1745852375/zkmemd7pg0vin6dulkk4.png" alt="" />
       </div>
-      <div className="w-full md:w-1/2 h-1/2 md:h-full bg-[#f5f5f5] flex flex-col p-8 md:p-20 gap-10 items-center">
+      <div className="w-full md:w-1/2 h-1/2 md:h-full bg-[#f5f5f5] flex flex-col p-8 md:p-20 gap-10 items-center ">
         <h1
-          className="text-xl text-[#060606] font-semibold"
+          className="text-xl text-[#060606] font-semibold bg-primary p-8 rounded-[100%]"
           onClick={() => {
             navigate('/');
           }}
         >
           <img
-            src={'https://i.pinimg.com/736x/4d/93/19/4d93191e73132d699835167521c5edad.jpg'}
+            src="http://res.cloudinary.com/dsvqh6h9t/image/upload/v1745772925/o2gbx7g2o7smb2ijxrbz.png"
             alt=""
-            className="w-28 max-w-[500px] cursor-pointer rounded-full"
+            className="w-28 max-w-[500px] cursor-pointer rounded-full "
           />
         </h1>
 

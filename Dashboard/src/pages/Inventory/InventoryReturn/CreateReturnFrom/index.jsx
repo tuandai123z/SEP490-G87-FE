@@ -117,7 +117,7 @@ const CreateReturnForm = () => {
 
     const handleOpenModal = () => {
         if (!orderCodeSearch) {
-            toast.warn("Bạn chưa chọn thông tin phiếu xuất kho");
+            toast.warn("Bạn chưa chọn thông tin phiếu bán hàng");
             return
         }
 
@@ -149,7 +149,7 @@ const CreateReturnForm = () => {
 
     const onChangeShowAdd = () => {
         if (listOrderProducts?.length === 0) {
-            toast.warn("Vui lòng chọn phiếu xuất kho!")
+            toast.warn("Vui lòng chọn phiếu bán hàng!")
             return;
         }
         setIsOpenModalAdd(!isOpenModalAdd);

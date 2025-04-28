@@ -264,7 +264,7 @@ const Supplier = () => {
                     <div className="relative z-50 w-full max-w-2xl max-h-screen overflow-y-auto bg-white rounded-lg shadow-lg">
                         <div className="flex items-center justify-between p-4 border-b border-gray-200 rounded-t md:p-5 dark:border-gray-600">
                             <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                                {statusModal ? 'Chỉnh sửa thương hiệu' : 'Thêm thương hiệu mới'}
+                                {statusModal ? 'Chỉnh sửa nhà cung cấp' : 'Thêm nhà cung cấp mới'}
                             </h3>
                             <button type="button" onClick={handleCloseModalCreate} className="inline-flex items-center justify-center w-8 h-8 text-sm text-gray-400 bg-transparent rounded-lg hover:bg-gray-200 hover:text-gray-900 ms-auto dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="crud-modal">
                                 <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">

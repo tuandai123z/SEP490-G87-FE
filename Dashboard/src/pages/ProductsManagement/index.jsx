@@ -249,6 +249,7 @@ const ProductsManagement = () => {
         setIsOpenModalCreate(true);
         setCurrentProduct(product)
         setProductName(product?.name);
+        console.log(product?.imagePath);
         setProductDescription(product?.description);
         setCurrentImg(product?.imagePath)
         setCurrentUnit(product?.unitCode);
@@ -395,7 +396,7 @@ const ProductsManagement = () => {
                                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     {item?.name}
                                 </th>
-                                <th scope="row" className="flex justify-start items-start px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                <th scope="row" className="flex items-start justify-start px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     <img src={item?.imagePath} alt={item?.name} className='object-cover rounded-lg h-[50px] w-28' />
                                 </th>
                                 <td className="px-6 py-4">
