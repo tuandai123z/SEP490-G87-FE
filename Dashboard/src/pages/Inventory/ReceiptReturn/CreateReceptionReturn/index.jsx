@@ -211,8 +211,6 @@ const CreateReceptionReturn = () => {
                                 <th scope="col" className="px-6 py-3 border border-blue-300">Mã hàng</th>
                                 <th scope="col" className="px-6 py-3 border border-blue-300">Tên hàng</th>
                                 <th scope="col" className="px-6 py-3 border border-blue-300">ĐVT</th>
-                                <th scope="col" className="px-6 py-3 border border-blue-300">NSX</th>
-                                <th scope="col" className="px-6 py-3 border border-blue-300">HSD</th>
                                 <th scope="col" className="px-6 py-3 border border-blue-300">Số lượng</th>
                                 <th scope="col" className="px-6 py-3 border border-blue-300 ">Giá nhập<span className="pl-1 text-lg font-semibold text-red">*</span></th>
                                 <th scope="col" className="px-6 py-3 border border-blue-300">Thành tiền</th>
@@ -227,22 +225,6 @@ const CreateReceptionReturn = () => {
                                         </th>
                                         <td className="px-6 py-4 border border-blue-300">{item?.productInformation?.name}</td>
                                         <td className="px-6 py-4 border border-blue-300">{item?.productInformation?.unitName}</td>
-                                        <td className="px-6 py-4 border border-blue-300">
-                                            <input
-                                                type="date"
-                                                value={item?.dateOfManufacture}
-                                                onChange={(e) => handleChangeManufactureDate(index, e.target.value)}
-                                                className="w-full px-2 py-1 border border-gray-300 rounded"
-                                            />
-                                        </td>
-                                        <td className="px-6 py-4 border border-blue-300">
-                                            <input
-                                                type="date"
-                                                value={item?.dateOfExpiry}
-                                                onChange={(e) => handleChangeExpireDate(index, e.target.value)}
-                                                className="w-full px-2 py-1 border border-gray-300 rounded"
-                                            />
-                                        </td>
                                         <td className="px-6 py-4 border border-blue-300">{item?.quantityReturn}</td>
                                         <td className="px-4 py-4 border border-blue-300">{formatVND((1 - (item?.discount / 100)) * item?.productInformation?.sellingPrice)}</td>
                                         <td className="px-6 py-4 border border-blue-300">{formatVND(item?.quantityReturn * (1 - (item?.discount / 100)) * item?.productInformation?.sellingPrice)}</td>
@@ -252,8 +234,6 @@ const CreateReceptionReturn = () => {
                             {listProducts?.length !== 0 && (
                                 <tr className="text-black border border-b border-blue-400" >
                                     <th scope="row" className="px-6 py-4 font-medium text-black border border-l-0 border-r-0 border-blue-300 whitespace-nowrap">Tổng tiền:</th>
-                                    <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
-                                    <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
                                     <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
                                     <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
                                     <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>

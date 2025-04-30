@@ -18,6 +18,7 @@ const StatisticManagement = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [fromDate, setFromDate] = useState('');
     const [toDate, setToDate] = useState('');
+    const [purpose, setPurpose] = useState('');
     const [isOpenModal, setIsOpenModal] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const ref = useRef(false);
@@ -105,12 +106,15 @@ const StatisticManagement = () => {
             return;
         }
         axiosInstance
-            .post(`/inventory-sheet/sheet?startDate=${fromDate}&endDate=${toDate}`)
+            .post(`/inventory-sheet/sheet?startDate=${fromDate}&endDate=${toDate}&reason=${purpose}`)
             .then(res => {
                 const data = res.data;
                 toast.success("Thêm bảng kiểm kê thành công!")
                 getListSheet();
                 setIsOpenModal(false);
+                setFromDate('');
+                setToDate('');
+                setPurpose('');
             })
             .catch((err) => {
                 if (err.response) {
@@ -208,7 +212,7 @@ const StatisticManagement = () => {
                                         <td className="px-6 py-2 text-right border border-blue-400">{item?.code}</td>
                                         <td className="px-6 py-2 text-right border border-blue-400">{item?.startDate}</td>
                                         <td className="px-6 py-2 text-right border border-blue-400">{item?.endDate}</td>
-                                        <td className="px-6 py-2 text-center border border-blue-400"></td>
+                                        <td className="px-6 py-2 text-center border border-blue-400">{item?.reason}</td>
                                         <td className="flex items-center justify-center gap-3 px-6 py-2 border-blue-400 ">
                                             <TbEyeSearch className="text-lg font-bold text-blue-700 transition-all duration-500 shadow-sm cursor-pointer hover:scale-[140%] " onClick={() => navigate(`/inventory/statisticDetail/${item?.code}`)} />
                                             <FaFileExport className="text-lg font-bold text-blue-700 transition-all duration-500 shadow-sm cursor-pointer hover:scale-[140%] " onClick={() => handleExport(item?.code)} />
@@ -259,7 +263,10 @@ const StatisticManagement = () => {
                                             <label htmlFor="unit" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Đến ngày</label>
                                             <input type="date" name="unit" id="unit" value={toDate} onChange={handleToDateChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Nhập đơn vị" required="" />
                                         </div>
-
+                                        <div className="col-span-2 sm:col-span-2">
+                                            <label htmlFor="purpose" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Mục đích</label>
+                                            <input type="text" name="purpose" id="unit" value={purpose} onChange={e => setPurpose(e.target.value)} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Nhập mục đích" required="" />
+                                        </div>
                                     </div>
                                     <div className="flex justify-between">
                                         <button onClick={() => setIsOpenModal(false)} type="submit" className="text-black inline-flex items-center shadow-lg bg-white border border-blue-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center mt-6">

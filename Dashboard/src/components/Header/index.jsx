@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { clearUser } from '../../actions/userActions';
-import { ADMIN_ROLE } from '../../utils/constants';
+import { ADMIN_ROLE, INVENTORY_ROLE, SALE_ROLE } from '../../utils/constants';
 
 const Header = () => {
   const [open, setOpen] = useState(false);
@@ -36,16 +36,16 @@ const Header = () => {
 
             {open && (
               <div className="bg-white border h-[180px] w-[180px] absolute bottom-[-165px] z-20 right-0 pt-[15px] pl-[15px] space-y-[10px]">
-                {dataUser?.role === ADMIN_ROLE && <p className="cursor-pointer hover:text-[blue] font-semibold" onClick={() => navigate('/admin/dashboard')}>
+                {(dataUser?.role === ADMIN_ROLE || dataUser?.role === INVENTORY_ROLE) && <p className="cursor-pointer hover:text-[blue] font-semibold" onClick={() => navigate('/admin/dashboard')}>
                   Tổng quan
                 </p>}
-                <p className="cursor-pointer hover:text-[blue] font-semibold" onClick={() => navigate('/profile')}>
+                <p className="cursor-pointer hover:text-[blue] font-semibold" onClick={() => navigate(`/profile`)}>
                   Thông tin
                 </p>
                 <p className="cursor-pointer hover:text-[blue] font-semibold"onClick={() => {window.location.href = `${routerLadingPage}`}}>
                 Website 
                 </p>
-                <p className="cursor-pointer hover:text-[blue] font-semibold" onClick={() => navigate(`/changePassword`)}>
+                <p className="cursor-pointer hover:text-[blue] font-semibold" onClick={() => navigate(`${dataUser?.role === SALE_ROLE ? '/sale/changePassword' : "/changePassword"}`)}>
                   Đổi mật khẩu
                 </p>
                 <p className="cursor-pointer hover:text-[blue] font-semibold" onClick={() => handleLogout()}>

@@ -19,8 +19,8 @@ const CreateReturnForm = () => {
     const [listOrderSaleCode, setListOrderSaleCode] = useState([]);
     const [orderCodeSearch, setOrderCodeSearch] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const totalCost = listOrderProducts && listOrderProducts?.reduce((sum, product) => sum + Number(product?.quantity * product?.sellingPrice * (100 - product?.discount) / 100), Number(0));
     const orderReturn = useSelector(state => state.orderReturn);
+    const totalCost = orderReturn && orderReturn?.reduce((sum, product) => sum + Number(product?.quantity * product?.sellingPrice * (100 - product?.discount) / 100), Number(0));
     const dataUser = useSelector(state => state.user);
     const ref = useRef(false);
     const navigate = useNavigate();
@@ -208,7 +208,6 @@ const CreateReturnForm = () => {
                                 <th scope="col" className="px-6 py-3 border border-blue-300">ĐVT</th>
                                 <th scope="col" className="px-6 py-3 border border-blue-300">Số lượng</th>
                                 <th scope="col" className="px-6 py-3 border border-blue-300">Trạng thái</th>
-                                <th scope="col" className="px-6 py-3 border border-blue-300">Thành tiền</th>
                                 <th scope="col" className="px-6 py-3 border border-blue-300">Lý do</th>
                             </tr>
                         </thead>
@@ -245,7 +244,6 @@ const CreateReturnForm = () => {
                                             </label>
                                         </td>
 
-                                        <td className="px-6 py-4 border border-blue-300">{formatVND(item?.quantity * item?.sellingPrice * (100 - item?.discount) / 100)}</td>
                                         <td className="px-6 py-4 border border-blue-300">
                                             <textarea
                                                 type="text"
@@ -259,21 +257,10 @@ const CreateReturnForm = () => {
                                     </tr>
                                 )
                             })}
-                            {orderReturn?.length !== 0 && (
-                                <tr className="text-black border border-b border-blue-400" >
-                                    <th scope="row" className="px-6 py-4 font-medium text-black border border-l-0 border-r-0 border-blue-300 whitespace-nowrap">Tổng tiền:</th>
-                                    <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
-                                    <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
-                                    <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
-                                    <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
-                                    <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
-                                    <td className="px-6 py-4 border border-r-0 border-blue-300">{formatVND(totalCost)}</td>
-                                </tr>
-                            )}
+
                             {orderReturn?.length === 0 && (
                                 <tr className="text-black border border-b border-blue-400" >
                                     <th scope="row" className="px-6 py-4 font-medium text-black border border-blue-300 whitespace-nowrap">Chưa có thiết bị nào được chọn</th>
-                                    <td className="px-6 py-4 border border-blue-300"></td>
                                     <td className="px-6 py-4 border border-blue-300"></td>
                                     <td className="px-6 py-4 border border-blue-300"></td>
                                     <td className="px-6 py-4 border border-blue-300"></td>

@@ -36,6 +36,7 @@ const StatisticDetail = () => {
                 const data = res.data;
                 setData(data.sheet);
                 setPaginationInformation(data.data)
+                console.log(data, '==========');
                 setListProduct(data?.data?.content)
             })
             .catch((err) => {

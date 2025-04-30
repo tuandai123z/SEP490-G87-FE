@@ -119,14 +119,14 @@ const InvoicePDF = React.forwardRef(({ data }, ref) => {
                         <td colSpan="6" className="px-6 py-2 text-right border border-gray-300">Cộng tiền hàng:</td>
                         <td className="text-center border border-gray-300">{formatVND(totalCost)}</td>
                     </tr>
-                    <tr>
+                    {/* <tr>
                         <td colSpan="6" className="px-6 py-2 text-right border border-gray-300">Tiền thuế GTGT:</td>
                         <td className="text-center border border-gray-300">{formatVND(totalCost * VAT)}</td>
                     </tr>
                     <tr>
                         <td colSpan="6" className="px-6 py-2 font-bold text-right border border-gray-300">Tổng tiền thanh toán:</td>
                         <td className="font-bold text-center border border-gray-300">{formatVND(totalCost * (1 + VAT))}</td>
-                    </tr>
+                    </tr> */}
                 </tbody>
             </table>
 

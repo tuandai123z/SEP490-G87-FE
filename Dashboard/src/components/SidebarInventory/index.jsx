@@ -138,7 +138,7 @@ const SidebarInventory = () => {
                 }
             ],
             roles: [
-                ADMIN_ROLE, SALE_ROLE, MANAGER_ROLE
+                ADMIN_ROLE, SALE_ROLE, MANAGER_ROLE, INVENTORY_ROLE
             ]
         },
         {
@@ -181,7 +181,7 @@ const SidebarInventory = () => {
                 }
             ],
             roles: [
-                ADMIN_ROLE, MANAGER_ROLE
+                ADMIN_ROLE, MANAGER_ROLE, INVENTORY_ROLE
             ]
         },
     ]
@@ -216,7 +216,7 @@ const SidebarInventory = () => {
                     />
                 )
             }))}
-            {roleUser === INVENTORY_ROLE && (
+            {/* {roleUser === INVENTORY_ROLE && (
                 // <div
                 //     className={`flex items-center justify-between gap-[10px] py-[15px] cursor-pointer transition ease-in-out duration-300 rounded-full pl-4 `}
                 // // onClick={() => handleNavigate("/admin/management/products")}
@@ -241,7 +241,7 @@ const SidebarInventory = () => {
                         <FaCube />
                     </div>
                 </li>
-            )}
+            )} */}
 
         </div>
     );

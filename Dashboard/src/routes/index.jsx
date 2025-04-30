@@ -91,10 +91,10 @@ const publicRoutes = [
 const adminRoutes = [
   { path: '/admin/dashboard', component: Dashboard, layout: DefaultLayout },
   { path: '/admin/management/staffs', component: StaffManagement, layout: DefaultLayout },
-  { path: '/admin/management/units', component: UnitsManagement, layout: DefaultLayout },
   { path: '/admin/management/products', component: ProductsManagement, layout: DefaultLayout },
   { path: '/admin/management/category', component: CategoryManagement, layout: DefaultLayout },
   { path: '/admin/management/branch', component: BranchManagement, layout: DefaultLayout },
+  { path: '/admin/management/units', component: UnitsManagement, layout: DefaultLayout },
   { path: '/inventory/supplier', component: Supplier, layout: DefaultLayout },
   { path: '/admin/management/general', component: GeneralSetting, layout: DefaultLayout },
   { path: '/inventory/order/edit/:slug', component: EditOrder, layout: InventoryLayout },
@@ -125,6 +125,44 @@ const adminRoutes = [
   { path: '/inventory/export-return/create', component: CreateExportDeliveryReturn, layout: InventoryLayout },
   { path: '/inventory/export/create/:slug', component: CreateExportReturn, layout: InventoryLayout },
 ]
+
+const inventoryRoutes = [
+  { path: '/inventory/statistic', component: StatisticManagement, layout: InventoryLayout },
+  { path: '/inventory/statisticDetail/:slug', component: StatisticDetail, layout: InventoryLayout },
+  { path: '/inventory/orderSale/create', component: CreateOrderSale, layout: InventoryLayout },
+  { path: '/inventory/orderSale/management', component: OrderSaleManagement, layout: InventoryLayout },
+  { path: '/inventory/orderSale/edit/:slug', component: EditOrderSale, layout: InventoryLayout },
+  { path: '/inventory/orderSale/view/:slug', component: ViewOrderSale, layout: InventoryLayout },
+  { path: '/inventory/order/edit/:slug', component: EditOrder, layout: InventoryLayout },
+  { path: '/inventory/order/create', component: CreateOrder, layout: InventoryLayout },
+  { path: '/inventory/order/management', component: OrderManagement, layout: InventoryLayout },
+  { path: '/inventory/order/view/:slug', component: ViewOrder, layout: InventoryLayout },
+  { path: '/admin/dashboard', component: Dashboard, layout: DefaultLayout },
+  { path: '/inventory/reception/management', component: ReceptionManagement, layout: InventoryLayout },
+  { path: '/inventory/reception/create', component: CreateReception, layout: InventoryLayout },
+  { path: '/inventory/reception/edit/:slug', component: EditReception, layout: InventoryLayout },
+  { path: '/inventory/reception/detail/:slug', component: InventoryReceptDetail, layout: InventoryLayout },
+  { path: '/inventory/export/management', component: ExportManagement, layout: InventoryLayout },
+  { path: '/inventory/export/create', component: CreateExportDelivery, layout: InventoryLayout },
+  { path: '/inventory/export/edit/:slug', component: EditExportDelivery, layout: InventoryLayout },
+  { path: '/inventory/receipt-return/management', component: ReceptionReturnManagement, layout: InventoryLayout },
+  { path: '/inventory/receipt-return/create', component: CreateReceptionReturn, layout: InventoryLayout },
+  { path: '/inventory/receipt-return/edit/:slug', component: EditReturnForm, layout: InventoryLayout },
+  { path: '/inventory/receipt-return/detail/:slug', component: InventoryReceptReturnDetail, layout: InventoryLayout },
+  { path: '/admin/management/inventory', component: Inventory, layout: DefaultLayout },
+  { path: '/inventory/statistic', component: StatisticManagement, layout: InventoryLayout },
+  { path: '/inventory/statisticDetail/:slug', component: StatisticDetail, layout: InventoryLayout },
+  { path: '/inventory/export-return/create', component: CreateExportDeliveryReturn, layout: InventoryLayout },
+  { path: '/inventory/export/create/:slug', component: CreateExportReturn, layout: InventoryLayout },
+  { path: '/admin/management/products', component: ProductsManagement, layout: DefaultLayout },
+  // { path: '/inventory/management/products', component: ProductsManagement, layout: InventoryLayout },
+  { path: '/admin/management/category', component: CategoryManagement, layout: DefaultLayout },
+  { path: '/admin/management/branch', component: BranchManagement, layout: DefaultLayout },
+  { path: '/admin/management/units', component: UnitsManagement, layout: DefaultLayout },
+  { path: '/inventory/supplier', component: Supplier, layout: DefaultLayout },
+
+]
+
 
 const managerRoutes = [
   { path: '/admin/management/units', component: UnitsManagement, layout: DefaultLayout },
@@ -172,28 +210,7 @@ const saleRoutes = [
   { path: '/inventory/return/create', component: CreateReturnForm, layout: InventoryLayout },
   { path: '/inventory/return/edit/:slug', component: EditReturnForm, layout: InventoryLayout },
   { path: '/inventory/return/view/:slug', component: ViewReturnForm, layout: InventoryLayout },
-]
-
-
-const inventoryRoutes = [
-  { path: '/inventory/reception/management', component: ReceptionManagement, layout: InventoryLayout },
-  { path: '/inventory/reception/create', component: CreateReception, layout: InventoryLayout },
-  { path: '/inventory/reception/edit/:slug', component: EditReception, layout: InventoryLayout },
-  { path: '/inventory/reception/detail/:slug', component: InventoryReceptDetail, layout: InventoryLayout },
-  { path: '/inventory/export/management', component: ExportManagement, layout: InventoryLayout },
-  { path: '/inventory/export/create', component: CreateExportDelivery, layout: InventoryLayout },
-  { path: '/inventory/export/edit/:slug', component: EditExportDelivery, layout: InventoryLayout },
-  { path: '/inventory/receipt-return/management', component: ReceptionReturnManagement, layout: InventoryLayout },
-  { path: '/inventory/receipt-return/create', component: CreateReceptionReturn, layout: InventoryLayout },
-  { path: '/inventory/receipt-return/edit/:slug', component: EditReturnForm, layout: InventoryLayout },
-  { path: '/inventory/receipt-return/detail/:slug', component: InventoryReceptReturnDetail, layout: InventoryLayout },
-  { path: '/admin/management/inventory', component: Inventory, layout: DefaultLayout },
-  { path: '/inventory/statistic', component: StatisticManagement, layout: InventoryLayout },
-  { path: '/inventory/statisticDetail/:slug', component: StatisticDetail, layout: InventoryLayout },
-  { path: '/inventory/export-return/create', component: CreateExportDeliveryReturn, layout: InventoryLayout },
-  { path: '/inventory/export/create/:slug', component: CreateExportReturn, layout: InventoryLayout },
-  { path: '/admin/management/products', component: ProductsManagement, layout: DefaultLayout },
-  { path: '/inventory/management/products', component: ProductsManagement, layout: InventoryLayout },
+  { path: '/sale/changePassword', component: ChangePassword, layout: InventoryLayout },
 ]
 
 

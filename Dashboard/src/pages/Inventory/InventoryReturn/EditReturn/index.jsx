@@ -130,7 +130,6 @@ const EditReturnForm = () => {
                                     <th scope="col" className="px-6 py-3 border border-blue-300">Số lượng</th>
                                     <th scope="col" className="px-6 py-3 border border-blue-300">Tình trạng</th>
                                     <th scope="col" className="px-6 py-3 border border-blue-300">Lý do</th>
-                                    <th scope="col" className="px-6 py-3 border border-blue-300">Thành tiền</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -146,32 +145,9 @@ const EditReturnForm = () => {
                                             <td className="px-6 py-4 border border-blue-300">{item?.quantityReturn}</td>
                                             <td className="px-6 py-4 border border-blue-300">{item?.statusProduct === 'BROKEN' ? "Hỏng" : "Cũ"}</td>
                                             <td className="px-6 py-4 border border-blue-300">{item?.reason}</td>
-                                            <td className="px-6 py-4 border border-blue-300">{formatVND(item?.quantityReturn * (1 - (item?.discount / 100)) * item?.productInformation?.sellingPrice)}</td>
                                         </tr>
                                     )
                                 })}
-                                {listOrderProducts?.length !== 0 && (
-                                    <>
-                                        <tr className="text-black border border-b border-blue-400" >
-                                            <th scope="row" className="px-6 py-4 font-medium text-black border border-l-0 border-r-0 border-blue-300 whitespace-nowrap">Cộng tiền hàng:</th>
-                                            <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
-                                            <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
-                                            <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
-                                            <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
-                                            <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
-                                            <td className="px-6 py-4 border border-r-0 border-blue-300">{formatVND(totalCost)}</td>
-                                        </tr>
-                                        <tr className="text-black border border-b border-blue-400" >
-                                            <th scope="row" className="px-6 py-4 font-medium text-black border border-l-0 border-r-0 border-blue-300 whitespace-nowrap">Tổng tiền thanh toán:</th>
-                                            <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
-                                            <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
-                                            <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
-                                            <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
-                                            <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
-                                            <td className="px-6 py-4 border border-r-0 border-blue-300">{formatVND(totalCost)}</td>
-                                        </tr>
-                                    </>
-                                )}
                                 {listOrderProducts?.length === 0 && (
                                     <tr className="text-black border border-b border-blue-400" >
                                         <th scope="row" className="px-6 py-4 font-medium text-black border border-blue-300 whitespace-nowrap">Chưa có thiết bị nào được chọn</th>
@@ -179,7 +155,6 @@ const EditReturnForm = () => {
                                         <td className="px-6 py-4 border border-blue-300"></td>
                                         <td className="px-6 py-4 border border-blue-300"></td>
                                         <td className="px-6 py-4 border border-blue-300"></td>
-                                        <td className="px-4 py-4 border border-blue-300"></td>
                                         <td className="px-6 py-4 border border-blue-300"></td>
                                     </tr>
                                 )}

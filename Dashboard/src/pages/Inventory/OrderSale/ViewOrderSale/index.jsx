@@ -37,6 +37,7 @@ const ViewOrderSale = () => {
                     discount: item?.discount * 100
                 }));
                 const action = importOrderSale(dataImport);
+                console.log(data);
                 dispatch(action);
             })
             .catch((err) => {
