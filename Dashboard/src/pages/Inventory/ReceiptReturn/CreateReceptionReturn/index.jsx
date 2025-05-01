@@ -212,8 +212,6 @@ const CreateReceptionReturn = () => {
                                 <th scope="col" className="px-6 py-3 border border-blue-300">Tên hàng</th>
                                 <th scope="col" className="px-6 py-3 border border-blue-300">ĐVT</th>
                                 <th scope="col" className="px-6 py-3 border border-blue-300">Số lượng</th>
-                                <th scope="col" className="px-6 py-3 border border-blue-300 ">Giá nhập<span className="pl-1 text-lg font-semibold text-red">*</span></th>
-                                <th scope="col" className="px-6 py-3 border border-blue-300">Thành tiền</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -226,30 +224,14 @@ const CreateReceptionReturn = () => {
                                         <td className="px-6 py-4 border border-blue-300">{item?.productInformation?.name}</td>
                                         <td className="px-6 py-4 border border-blue-300">{item?.productInformation?.unitName}</td>
                                         <td className="px-6 py-4 border border-blue-300">{item?.quantityReturn}</td>
-                                        <td className="px-4 py-4 border border-blue-300">{formatVND((1 - (item?.discount / 100)) * item?.productInformation?.sellingPrice)}</td>
-                                        <td className="px-6 py-4 border border-blue-300">{formatVND(item?.quantityReturn * (1 - (item?.discount / 100)) * item?.productInformation?.sellingPrice)}</td>
                                     </tr>
                                 )
                             })}
-                            {listProducts?.length !== 0 && (
-                                <tr className="text-black border border-b border-blue-400" >
-                                    <th scope="row" className="px-6 py-4 font-medium text-black border border-l-0 border-r-0 border-blue-300 whitespace-nowrap">Tổng tiền:</th>
-                                    <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
-                                    <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
-                                    <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
-                                    <td className="px-6 py-4 border border-l-0 border-r-0 border-blue-300"></td>
-                                    <td className="px-6 py-4 border border-r-0 border-blue-300">{formatVND(totalCost)}</td>
-                                </tr>
-                            )}
                             {listProducts?.length === 0 && (
                                 <tr className="text-black border border-b border-blue-400" >
                                     <th scope="row" className="px-6 py-4 font-medium text-black border border-blue-300 whitespace-nowrap">Chưa có phiếu nào được chọn</th>
                                     <td className="px-6 py-4 border border-blue-300"></td>
                                     <td className="px-6 py-4 border border-blue-300"></td>
-                                    <td className="px-6 py-4 border border-blue-300"></td>
-                                    <td className="px-6 py-4 border border-blue-300"></td>
-                                    <td className="px-6 py-4 border border-blue-300"></td>
-                                    <td className="px-4 py-4 border border-blue-300"></td>
                                     <td className="px-6 py-4 border border-blue-300"></td>
                                 </tr>
                             )}

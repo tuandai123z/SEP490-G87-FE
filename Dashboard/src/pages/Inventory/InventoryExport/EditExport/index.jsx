@@ -20,6 +20,8 @@ const EditExportDelivery = () => {
     const [isOpenModalConfirm, setIsOpenModalConfirm] = useState(false);
     const totalCost = listOrderProducts && listOrderProducts?.reduce((sum, product) => sum + Number(product?.exportQuantity * product?.priceExport), Number(0));
     const ref = useRef(false);
+    const user = useSelector(state => state.user);
+    const roleUser = user.role;
     const dispath = useDispatch();
     const { slug } = useParams();
     const navigate = useNavigate();
@@ -185,7 +187,6 @@ const EditExportDelivery = () => {
                                         <td className="px-6 py-4 border border-blue-300"></td>
                                         <td className="px-6 py-4 border border-blue-300"></td>
                                         <td className="px-6 py-4 border border-blue-300"></td>
-                                        <td className="px-6 py-4 border border-blue-300"></td>
                                         <td className="px-4 py-4 border border-blue-300"></td>
                                         <td className="px-6 py-4 border border-blue-300"></td>
                                     </tr>
@@ -205,7 +206,7 @@ const EditExportDelivery = () => {
                 <div className="flex flex-col gap-3">
                     <div className="flex items-center justify-between ">
                         {orderDetail?.approveStatus !== 'WAITING' && <span>{orderDetail?.approveStatus === 'APPROVED' ? 'Duyệt bởi' : 'Từ chối bởi'}</span>}
-                        {orderDetail?.approveStatus === 'WAITING' && <div className="flex justify-between w-full ">
+                        {orderDetail?.approveStatus === 'WAITING' && (roleUser === 'ADMIN') && <div className="flex justify-between w-full ">
                             <label className="flex items-center gap-2 cursor-pointer">
                                 <input
                                     type="radio"
@@ -244,7 +245,7 @@ const EditExportDelivery = () => {
                     <input type="text" disabled value={orderDetail?.approveStatus !== 'WAITING' ? orderDetail?.approveBy : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
                     <input type="text" disabled value={orderDetail?.approveStatus !== 'WAITING' ? `${formatDate(orderDetail?.approveDate)} ` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
                 </div>
-                {orderDetail?.approveStatus === 'WAITING' && <div className="flex justify-end">
+                {orderDetail?.approveStatus === 'WAITING' && (roleUser === 'ADMIN') && <div className="flex justify-end">
                     <div
                         onClick={() => handleOpenChange()}
                         className="flex items-center justify-center px-2 py-1 transition-all duration-150 bg-blue-400 rounded-md cursor-pointer font-semibold w-[40%] hover:bg-blue-600">

@@ -20,6 +20,7 @@ const EditOrder = () => {
     const [orderDetail, setOrderDetail] = useState('');
     const [listProducts, setListProducts] = useState([]);
     const dataUser = useSelector(state => state.user);
+    const roleUser = dataUser.role;
     const products = useSelector(state => state.order);
     const [isOpenModalEdit, setIsOpenModalEdit] = useState(false);
     const [isOpenModalConfirm, setIsOpenModalConfirm] = useState(false);
@@ -292,7 +293,7 @@ const EditOrder = () => {
                 <div className="flex flex-col gap-3">
                     <div className="flex items-center justify-between ">
                         {orderDetail?.approve !== 'WAITING' && <span>{orderDetail?.approve === 'APPROVED' ? 'Duyệt bởi' : 'Từ chối bởi'} </span>}
-                        {orderDetail && (orderDetail?.approve === 'WAITING') && (
+                        {orderDetail && (orderDetail?.approve === 'WAITING') && (roleUser === 'ADMIN') && (
                             <div className="flex justify-between w-full ">
                                 <label className="flex items-center gap-2 cursor-pointer">
                                     <input
@@ -343,7 +344,7 @@ const EditOrder = () => {
                     <input type="text" disabled value={''} className='w-full px-4 py-1 text-right border border-gray-500' />
                     <input type="text" disabled value={orderDetail?.deliveryStatus === 'RECEIVE_DELIVERY' ? `${orderDetail?.actionTime?.split('.')[0]?.split('T')[0]} ${orderDetail?.actionTime?.split('.')[0]?.split('T')[1]}` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
                 </div>}
-                {orderDetail?.approve === 'WAITING' && <div className="flex justify-end">
+                {orderDetail?.approve === 'WAITING' && (roleUser === 'ADMIN') && <div className="flex justify-end">
                     <div
                         onClick={() => handleOpenChange()}
                         className="flex items-center justify-center px-2 py-1 transition-all duration-150 bg-blue-400 rounded-md cursor-pointer font-semibold w-[40%] hover:bg-blue-600">

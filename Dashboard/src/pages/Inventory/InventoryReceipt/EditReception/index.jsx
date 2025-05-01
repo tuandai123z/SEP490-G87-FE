@@ -23,6 +23,8 @@ const EditReception = () => {
     const [contentModalConfirm, setContentModalConfirm] = useState('');
     const [titleModalBtnConfirm, setTitleModalBtnConfirm] = useState('');
     const [statusChange, setStatusChange] = useState('APPROVE');
+    const dataUser = useSelector(state => state.user);
+    const roleUser = dataUser.role;
     const totalCost = listProducts && listProducts?.reduce((sum, product) => sum + Number(product?.unitPrice) * Number(product?.quantityShipped), Number(0));
     const ref = useRef(false);
     const dispatch = useDispatch();
@@ -316,7 +318,7 @@ const EditReception = () => {
                 <div className="flex flex-col gap-3">
                     <div className="flex items-center justify-between ">
                         {receptionDetail?.approve !== 'WAITING' && <span>{receptionDetail?.approve === 'APPROVED' ? 'Duyệt bởi' : 'Từ chối bởi'}</span>}
-                        {receptionDetail?.approve === 'WAITING' && <div className="flex justify-between w-full ">
+                        {receptionDetail?.approve === 'WAITING' && (roleUser === 'ADMIN') && <div className="flex justify-between w-full ">
                             <label className="flex items-center gap-2 cursor-pointer">
                                 <input
                                     type="radio"
@@ -374,7 +376,7 @@ const EditReception = () => {
                     <input type="text" disabled value={receptionDetail?.approve === 'REJECTED' ? receptionDetail?.username : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
                     <input type="text" disabled value={receptionDetail?.approve === 'REJECTED' ? `${receptionDetail?.actionTime?.split('.')[0]?.split('T')[0]} ${receptionDetail?.actionTime?.split('.')[0]?.split('T')[1]}` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
                 </div> */}
-                {receptionDetail?.approve === 'WAITING' && <div className="flex justify-end">
+                {receptionDetail?.approve === 'WAITING' && (roleUser === 'ADMIN') && <div className="flex justify-end">
                     <div
                         onClick={() => handleOpenChange()}
                         className="flex items-center justify-center px-2 py-1 transition-all duration-150 bg-blue-400 rounded-md cursor-pointer font-semibold w-[40%] hover:bg-blue-600">

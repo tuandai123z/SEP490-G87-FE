@@ -74,7 +74,7 @@ const BranchManagement = () => {
         axiosInstance
             .get(`/brand/delete/${currentBranch?.code}`)
             .then(res => {
-                toast.success(`Xoá thươNg hiệu ${currentBranch?.name} thành công!`)
+                toast.success(`Xoá thương hiệu ${currentBranch?.name} thành công!`)
                 handleCloseModalDelete();
                 getListBranch();
             })

@@ -21,6 +21,7 @@ const EditOrderSale = () => {
     const [orderSaleDetail, setOrderSaleDetail] = useState('');
     const order = useSelector(state => state.sale);
     const user = useSelector(state => state.user);
+    const roleUser = user.role;
     const [listProductSale, setListProductSale] = useState(order);
     const [currentCustomer, setCurrentCustomer] = useState({});
     const [statusChange, setStatusChange] = useState('APPROVED');
@@ -349,7 +350,7 @@ const EditOrderSale = () => {
                 <div className="flex flex-col gap-3">
                     <div className="flex items-center justify-between ">
                         {orderSaleDetail?.approveStatus !== 'WAITING' && <span>{orderSaleDetail?.approveStatus === 'APPROVED' ? "Duyệt bởi" : "Từ chối bởi"}</span>}
-                        {orderSaleDetail?.approveStatus === 'WAITING' && <div className="flex justify-between w-full ">
+                        {orderSaleDetail?.approveStatus === 'WAITING' && (roleUser === 'ADMIN') && <div className="flex justify-between w-full ">
                             <label className="flex items-center gap-2 cursor-pointer">
                                 <input
                                     type="radio"
@@ -406,7 +407,7 @@ const EditOrderSale = () => {
                     <input type="text" disabled value={orderSaleDetail?.deliveryStatus !== 'WAITING_DELIVERY' ? `${orderSaleDetail?.deliveryBy}` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
                     <input type="text" disabled value={orderSaleDetail?.deliveryStatus !== 'WAITING_DELIVERY' ? `${formatDate(orderSaleDetail?.deliveryDate)} ` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
                 </div>}
-                {orderSaleDetail?.approveStatus === 'WAITING' && <div className="flex justify-end">
+                {orderSaleDetail?.approveStatus === 'WAITING' && (roleUser === 'ADMIN') && <div className="flex justify-end">
                     <div
                         onClick={() => handleOpenChange()}
                         className="flex items-center justify-center px-2 py-1 transition-all duration-150 bg-blue-400 rounded-md cursor-pointer font-semibold w-[40%] hover:bg-blue-600">
