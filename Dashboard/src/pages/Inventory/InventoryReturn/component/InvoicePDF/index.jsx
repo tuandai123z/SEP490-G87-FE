@@ -2,67 +2,6 @@ import React from 'react';
 import { formatVND } from '../../../../../utils/format';
 
 const InvoicePDF = React.forwardRef(({ data }, ref) => {
-    const VAT = 0.1;
-    const units = ["", "nghìn", "triệu", "tỷ", "nghìn tỷ", "triệu tỷ"];
-    const ones = ["", "một", "hai", "ba", "bốn", "năm", "sáu", "bảy", "tám", "chín"];
-    const tens = ["", "mười", "hai mươi", "ba mươi", "bốn mươi", "năm mươi", "sáu mươi", "bảy mươi", "tám mươi", "chín mươi"];
-
-    const convertThreeDigits = (num, isThousand) => {
-        let str = "";
-        const hundred = Math.floor(num / 100);
-        const ten = Math.floor((num % 100) / 10);
-        const one = num % 10;
-        if (hundred > 0) {
-            str += ones[hundred] + " trăm ";
-            if (ten === 0 && one > 0) str += "lẻ "; // Xử lý trường hợp có "lẻ"
-        }
-
-        if (ten > 1) {
-            str += tens[ten] + " ";
-            if (one === 1) str += "mốt "; // 21 -> "hai mươi mốt" 
-            else if (one === 5) str += "lăm "; // 25 -> "hai mươi lăm"
-            else if (one > 0) str += ones[one] + " ";
-        } else if (ten === 1) {
-            str += "mười ";
-            if (one === 5) str += "lăm "; // 15 -> "mười lăm"
-            else if (one > 0) str += ones[one] + " ";
-        } else if (one > 0) {
-            str += ones[one] + " ";
-        }
-        return str.trim();
-    };
-
-    const numberToWords = (num) => {
-        if (num === 0) return "Không đồng";
-
-        let result = "";
-        let unitIndex = 0;
-        let isThousand = false; // Đánh dấu khi vượt quá 1000 để xử lý "lẻ"
-
-        while (num > 0) {
-            const threeDigits = num % 1000;
-            if (threeDigits > 0) {
-                let words = convertThreeDigits(threeDigits, isThousand);
-                // let unitName = units[unitIndex] || ""; // Tránh undefined
-                // if (words) {
-                //     result = words + (unitName ? " " + unitName : "") + (result ? " " + result : "");
-                // }
-
-                let unitName = unitIndex > 0 ? units[unitIndex] : "";
-
-                // Kiểm tra giá trị trước khi nối chuỗi
-                if (words && unitName !== undefined) {
-                    result = words + (unitName ? " " + unitName : "") + (result ? " " + result : "");
-                }
-            }
-
-            num = Math.floor(num / 1000);
-            unitIndex++;
-            isThousand = true; // Nếu có số hàng nghìn trở lên, cho phép thêm "lẻ"
-        }
-
-        return result.trim() + " đồng";
-    };
 
     const convertDate = (date) => {
         const listDate = date?.split('T')[0]?.split('-');
@@ -112,12 +51,12 @@ const InvoicePDF = React.forwardRef(({ data }, ref) => {
                                 <td className="px-6 py-2 align-middle border border-gray-300">{p?.productInformation?.name}</td>
                                 <td className="px-6 py-2 text-center align-middle border border-gray-300">{p?.productInformation?.unitName}</td>
                                 <td className="px-6 py-2 text-center align-middle border border-gray-300">{p?.quantityReturn}</td>
-                                <td className="px-6 py-2 text-center align-middle border border-gray-300">{formatVND(p?.quantityReturn * (1 - (p?.discount)) * p?.productInformation?.sellingPrice)}</td>
+                                <td className="px-6 py-2 text-center align-middle border border-gray-300">{formatVND(0)}</td>
                             </tr>)
                     })}
                     <tr>
-                        <td colSpan="6" className="px-6 py-2 text-right border border-gray-300">Cộng tiền hàng:</td>
-                        <td className="text-center border border-gray-300">{formatVND(totalCost)}</td>
+                        <td colSpan="5" className="px-6 py-2 text-right border border-gray-300">Cộng tiền hàng:</td>
+                        <td className="text-center border border-gray-300">Hoàn hàng</td>
                     </tr>
                     {/* <tr>
                         <td colSpan="6" className="px-6 py-2 text-right border border-gray-300">Tiền thuế GTGT:</td>
@@ -131,7 +70,6 @@ const InvoicePDF = React.forwardRef(({ data }, ref) => {
             </table>
 
             <div className="flex flex-col mt-3 mb-12">
-                <p className="flex gap-3 ml-4">Số tiền bằng chữ: <span className='font-semibold'>{numberToWords(totalCost * (1 + VAT))}</span></p>
                 <p className="mt-6 mr-10 text-sm italic text-right">Ngày ..... tháng ..... năm ........</p>
                 <div className='flex justify-around mx-4 mt-1'>
                     <p className='font-semibold'>Người mua hàng</p>

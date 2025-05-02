@@ -7,28 +7,31 @@ const InvoicePDF = React.forwardRef(({ data }, ref) => {
     const ones = ["", "một", "hai", "ba", "bốn", "năm", "sáu", "bảy", "tám", "chín"];
     const tens = ["", "mười", "hai mươi", "ba mươi", "bốn mươi", "năm mươi", "sáu mươi", "bảy mươi", "tám mươi", "chín mươi"];
 
+
     const convertThreeDigits = (num, isThousand) => {
         let str = "";
         const hundred = Math.floor(num / 100);
         const ten = Math.floor((num % 100) / 10);
         const one = num % 10;
+
         if (hundred > 0) {
             str += ones[hundred] + " trăm ";
-            if (ten === 0 && one > 0) str += "lẻ "; // Xử lý trường hợp có "lẻ"
+            if (ten === 0 && one > 0) str += "lẻ ";
         }
 
         if (ten > 1) {
             str += tens[ten] + " ";
-            if (one === 1) str += "mốt "; // 21 -> "hai mươi mốt" 
-            else if (one === 5) str += "lăm "; // 25 -> "hai mươi lăm"
+            if (one === 1) str += "mốt ";
+            else if (one === 5) str += "lăm ";
             else if (one > 0) str += ones[one] + " ";
         } else if (ten === 1) {
             str += "mười ";
-            if (one === 5) str += "lăm "; // 15 -> "mười lăm"
+            if (one === 5) str += "lăm ";
             else if (one > 0) str += ones[one] + " ";
         } else if (one > 0) {
             str += ones[one] + " ";
         }
+
         return str.trim();
     };
 
@@ -37,28 +40,21 @@ const InvoicePDF = React.forwardRef(({ data }, ref) => {
 
         let result = "";
         let unitIndex = 0;
-        let isThousand = false; // Đánh dấu khi vượt quá 1000 để xử lý "lẻ"
+        let isThousand = false;
 
         while (num > 0) {
             const threeDigits = num % 1000;
+
             if (threeDigits > 0) {
-                let words = convertThreeDigits(threeDigits, isThousand);
-                // let unitName = units[unitIndex] || ""; // Tránh undefined
-                // if (words) {
-                //     result = words + (unitName ? " " + unitName : "") + (result ? " " + result : "");
-                // }
+                const words = convertThreeDigits(threeDigits, isThousand);
+                const unitName = units[unitIndex] || ""; // Fix tránh undefined
 
-                let unitName = unitIndex > 0 ? units[unitIndex] : "";
-
-                // Kiểm tra giá trị trước khi nối chuỗi
-                if (words && unitName !== undefined) {
-                    result = words + (unitName ? " " + unitName : "") + (result ? " " + result : "");
-                }
+                result = words + (unitName ? " " + unitName : "") + (result ? " " + result : "");
             }
 
             num = Math.floor(num / 1000);
             unitIndex++;
-            isThousand = true; // Nếu có số hàng nghìn trở lên, cho phép thêm "lẻ"
+            isThousand = true;
         }
 
         return result.trim() + " đồng";
@@ -129,7 +125,7 @@ const InvoicePDF = React.forwardRef(({ data }, ref) => {
                             </tr>
                             <tr>
                                 <td colSpan="6" className="px-6 py-2 font-bold text-right border border-gray-300">Tổng tiền thanh toán:</td>
-                                <td className="font-bold text-center border border-gray-300">{formatVND(totalCost * (1 + VAT))}</td>
+                                <td className="font-bold text-center border border-gray-300">{formatVND(Math.round(totalCost * (1 + VAT)))}</td>
                             </tr>
                         </>
                     )}
@@ -137,7 +133,7 @@ const InvoicePDF = React.forwardRef(({ data }, ref) => {
             </table>
 
             <div className="flex flex-col mt-3 mb-12">
-                {data?.deliveryType !== 'DELIVERY_RETURN' && <p className="flex gap-3 ml-4">Số tiền bằng chữ: <span className='font-semibold'>{numberToWords(totalCost * (1 + VAT))}</span></p>}
+                {data?.deliveryType !== 'DELIVERY_RETURN' && <p className="flex gap-3 ml-4">Số tiền bằng chữ: <span className='font-semibold'>{numberToWords(Math.round(totalCost * (1 + VAT)))}</span></p>}
                 <p className="mt-6 mr-10 text-sm italic text-right">Ngày ..... tháng ..... năm ........</p>
                 <div className='flex justify-around mx-4 mt-1'>
                     <p className='font-semibold'>Người mua hàng</p>

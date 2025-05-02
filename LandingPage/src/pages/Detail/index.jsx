@@ -74,7 +74,7 @@ const Detail = () => {
       <div className="flex flex-col items-center w-full gap-6 py-10">
         <div className="w-[80%] grid grid-cols-2 gap-4 pt-8">
           <div className="col-span-1 px-4">
-            <img src="https://thietbidienhaiphong.com/wp-content/uploads/2015/03/download-3-247x184.jpg" alt="" className="w-full" />
+            <img src={product?.imagePath} alt="" className="w-full" />
           </div>
           <div className="flex flex-col col-span-1 gap-4 px-4 pt-3 pb-8">
             <div className="flex items-center text-[#777] gap-2">

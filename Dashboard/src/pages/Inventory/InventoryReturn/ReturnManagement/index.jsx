@@ -276,7 +276,7 @@ const ReturnManagement = () => {
                                             <td className="px-6 py-2 text-right border border-blue-400">{item?.returnForm?.code}</td>
                                             <td className="px-6 py-2 text-right border border-blue-400">{item?.customer?.name}</td>
                                             <td className="px-6 py-2 text-right border border-blue-400">{item?.customer?.phoneNumber}</td>
-                                            <td className="px-6 py-2 text-right border border-blue-400">{formatVND(item?.returnForm?.totalAmount)}</td>
+                                            <td className="px-6 py-2 text-right border border-blue-400">Hoàn hàng</td>
                                             <td className="px-6 py-2 text-right border border-blue-400">{`${formatDate(item?.returnForm?.createAt)}`}</td>
                                             <td className="px-6 py-2 text-center border border-blue-400">
                                                 {item?.returnForm?.approveStatus === 'WAITING' && <span className="px-4 py-1 font-medium uppercase bg-orange-300 rounded-lg">CHỜ DUYỆT</span>}

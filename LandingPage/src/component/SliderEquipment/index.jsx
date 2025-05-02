@@ -50,7 +50,7 @@ const SliderEquipment = ({ items, title }) => {
                 }}
               >
                 <div className="flex items-center justify-center ">
-                  <img src={'https://thietbidienhaiphong.com/wp-content/uploads/2015/03/download-3-247x184.jpg'} alt={items?.name} className="w-full" />
+                  <img src={item?.imagePath} alt={items?.name} className="w-full" />
                 </div>
 
                 <div className="flex flex-col gap-4 p-4">
