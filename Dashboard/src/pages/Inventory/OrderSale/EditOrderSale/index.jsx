@@ -386,8 +386,10 @@ const EditOrderSale = () => {
                                 <FaKey className="" />
                             </div>)}
                     </div>
-                    <input type="text" disabled value={orderSaleDetail?.approveStatus !== 'WAITING' ? orderSaleDetail?.approveBy : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
-                    <input type="text" disabled value={orderSaleDetail?.approveStatus !== 'WAITING' ? `${formatDate(orderSaleDetail?.approveDate)} ` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
+                    {orderSaleDetail?.approveStatus === 'WAITING' && (roleUser === 'ADMIN') && <>
+                        <input type="text" disabled value={orderSaleDetail?.approveStatus !== 'WAITING' ? orderSaleDetail?.approveBy : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
+                        <input type="text" disabled value={orderSaleDetail?.approveStatus !== 'WAITING' ? `${formatDate(orderSaleDetail?.approveDate)} ` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
+                    </>}
                 </div>
                 {orderSaleDetail?.approveStatus !== 'REJECTED' && <div className="flex flex-col gap-3">
                     <div className="flex items-center justify-between ">

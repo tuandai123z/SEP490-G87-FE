@@ -242,8 +242,10 @@ const EditExportDelivery = () => {
                                 <FaKey className="" />
                             </div>)}
                     </div>
-                    <input type="text" disabled value={orderDetail?.approveStatus !== 'WAITING' ? orderDetail?.approveBy : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
-                    <input type="text" disabled value={orderDetail?.approveStatus !== 'WAITING' ? `${formatDate(orderDetail?.approveDate)} ` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
+                    {orderDetail?.approveStatus === 'WAITING' && (roleUser === 'ADMIN') && <>
+                        <input type="text" disabled value={orderDetail?.approveStatus !== 'WAITING' ? orderDetail?.approveBy : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
+                        <input type="text" disabled value={orderDetail?.approveStatus !== 'WAITING' ? `${formatDate(orderDetail?.approveDate)} ` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
+                    </>}
                 </div>
                 {orderDetail?.approveStatus === 'WAITING' && (roleUser === 'ADMIN') && <div className="flex justify-end">
                     <div

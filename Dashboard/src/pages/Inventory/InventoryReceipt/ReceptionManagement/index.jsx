@@ -188,7 +188,7 @@ const ReceptionManagement = () => {
                                         </th>
                                         <td className="px-6 py-2 text-right border border-blue-400">{order?.code}</td>
                                         <td className="px-6 py-2 text-right border border-blue-400">{orderItem?.supplier?.name || 'Hoàn hàng'}</td>
-                                        <td className="px-6 py-2 text-right border border-blue-400">{formatVND(order?.totalAmount)}</td>
+                                        <td className="px-6 py-2 text-right border border-blue-400">{orderItem?.supplier?.name ? formatVND(order?.totalAmount) : 'Hoàn hàng'}</td>
                                         <td className="px-6 py-2 text-right border border-blue-400">{`${order?.createAtDateTime?.split('.')[0]?.split('T')[0]} ${order?.createAtDateTime?.split('.')[0]?.split('T')[1]}`}</td>
                                         <td className="px-6 py-2 text-center border border-blue-400">
                                             {order?.approve === 'WAITING' && <span className="px-4 py-1 font-medium uppercase bg-orange-300 rounded-lg">CHỜ DUYỆT</span>}

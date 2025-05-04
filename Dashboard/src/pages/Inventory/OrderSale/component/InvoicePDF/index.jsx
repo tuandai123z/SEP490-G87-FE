@@ -7,7 +7,6 @@ const InvoicePDF = React.forwardRef(({ data }, ref) => {
     const ones = ["", "một", "hai", "ba", "bốn", "năm", "sáu", "bảy", "tám", "chín"];
     const tens = ["", "mười", "hai mươi", "ba mươi", "bốn mươi", "năm mươi", "sáu mươi", "bảy mươi", "tám mươi", "chín mươi"];
 
-
     const convertThreeDigits = (num, isThousand) => {
         let str = "";
         const hundred = Math.floor(num / 100);
@@ -66,7 +65,7 @@ const InvoicePDF = React.forwardRef(({ data }, ref) => {
         return ''
     }
 
-    const totalCost = data?.products && data?.products?.reduce((sum, product) => sum + Number(product?.sellingPrice * product?.quantity), Number(0));
+    const totalCost = data?.products && data?.products?.reduce((sum, product) => sum + Number(product?.sellingPrice * (1 - product?.discount / 100) * product?.quantity), Number(0));
 
     return (
         <div ref={ref} className="w-full p-5 mx-auto border border-gray-300 rounded-lg shadow-lg">
@@ -109,8 +108,8 @@ const InvoicePDF = React.forwardRef(({ data }, ref) => {
                                 <td className="px-6 py-2 align-middle border border-gray-300">{p?.name}</td>
                                 <td className="px-6 py-2 text-center align-middle border border-gray-300">{p?.unitName}</td>
                                 <td className="px-6 py-2 text-center align-middle border border-gray-300">{p?.quantity}</td>
-                                <td className="px-6 py-2 text-center align-middle border border-gray-300">{formatVND(p?.sellingPrice)}</td>
-                                <td className="px-6 py-2 text-center align-middle border border-gray-300">{formatVND(p?.sellingPrice * p?.quantity)}</td>
+                                <td className="px-6 py-2 text-center align-middle border border-gray-300">{formatVND(p?.sellingPrice * (1 - p?.discount / 100))}</td>
+                                <td className="px-6 py-2 text-center align-middle border border-gray-300">{formatVND(p?.sellingPrice * (1 - p?.discount / 100) * p?.quantity)}</td>
                             </tr>)
                     })}
                     <tr>

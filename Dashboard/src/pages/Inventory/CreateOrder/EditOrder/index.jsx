@@ -330,8 +330,10 @@ const EditOrder = () => {
                                 <FaKey className="" />
                             </div>)}
                     </div>
-                    <input type="text" disabled value={orderDetail?.approve !== 'WAITING' ? orderDetail?.username : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
-                    <input type="text" disabled value={orderDetail?.approve !== 'WAITING' ? `${orderDetail?.actionTime?.split('.')[0]?.split('T')[0]} ${orderDetail?.actionTime?.split('.')[0]?.split('T')[1]}` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
+                    {orderDetail && (orderDetail?.approve === 'WAITING') && (roleUser === 'ADMIN') && <>
+                        <input type="text" disabled value={orderDetail?.approve !== 'WAITING' ? orderDetail?.username : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
+                        <input type="text" disabled value={orderDetail?.approve !== 'WAITING' ? `${orderDetail?.actionTime?.split('.')[0]?.split('T')[0]} ${orderDetail?.actionTime?.split('.')[0]?.split('T')[1]}` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
+                    </>}
                 </div>
                 {orderDetail?.approve !== 'REJECTED' && <div className="flex flex-col gap-3">
                     <div className="flex items-center justify-between ">

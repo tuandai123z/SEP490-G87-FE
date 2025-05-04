@@ -102,7 +102,6 @@ const InventoryReceptReturnDetail = () => {
                                     <th scope="col" className="px-6 py-3 border border-blue-300">NSX</th>
                                     <th scope="col" className="px-6 py-3 border border-blue-300">HSD</th>
                                     <th scope="col" className="px-6 py-3 border border-blue-300">Số lượng</th>
-                                    <th scope="col" className="px-6 py-3 border border-blue-300 ">Giá nhập<span className="pl-1 text-lg font-semibold text-red">*</span></th>
                                     <th scope="col" className="px-6 py-3 border border-blue-300">Thành tiền</th>
                                 </tr>
                             </thead>
@@ -132,10 +131,7 @@ const InventoryReceptReturnDetail = () => {
                                                 />
                                             </td>
                                             <td className="px-4 py-4 text-center border border-blue-300">{item?.quantityShipped}</td>
-                                            <td className="px-2 py-4 border border-blue-300">
-                                                {formatVND(item?.unitPrice)}
-                                            </td>
-                                            <td className="px-4 py-4 border border-blue-300">{formatVND(item?.unitPrice * item?.quantityShipped)}</td>
+                                            <td className="px-4 py-4 border border-blue-300">Hoàn hàng</td>
                                         </tr>
                                     )
                                 })}

@@ -261,7 +261,7 @@ const EditReception = () => {
                                                     type="date"
                                                     value={item?.dateOfManufacture}
                                                     onChange={(e) => handleChangeManufactureDate(index, e.target.value)}
-                                                    className="w-full px-2 py-1 border border-gray-300 rounded"
+                                                    className="w-full px-2 py-1 border border-gray-300 rounded "
                                                 />
                                             </td>
                                             <td className="px-2 py-4 border border-blue-300">
@@ -269,7 +269,7 @@ const EditReception = () => {
                                                     type="date"
                                                     value={item?.dateExpired}
                                                     onChange={(e) => handleChangeExpireDate(index, e.target.value)}
-                                                    className="w-full px-2 py-1 border border-gray-300 rounded"
+                                                    className="w-full px-2 py-1 border border-gray-300 rounded "
                                                 />
                                             </td>
                                             <td className="px-4 py-4 text-center border border-blue-300">{item?.quantityShipped}</td>
@@ -354,8 +354,10 @@ const EditReception = () => {
                                 <FaKey className="" />
                             </div>)}
                     </div>
-                    <input type="text" disabled value={receptionDetail?.approve === 'APPROVED' ? receptionDetail?.username : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
-                    <input type="text" disabled value={receptionDetail?.approve === 'APPROVED' ? `${receptionDetail?.actionTime?.split('.')[0]?.split('T')[0]} ${receptionDetail?.actionTime?.split('.')[0]?.split('T')[1]}` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
+                    {receptionDetail?.approve === 'WAITING' && (roleUser === 'ADMIN') && <>
+                        <input type="text" disabled value={receptionDetail?.approve === 'APPROVED' ? receptionDetail?.username : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
+                        <input type="text" disabled value={receptionDetail?.approve === 'APPROVED' ? `${receptionDetail?.actionTime?.split('.')[0]?.split('T')[0]} ${receptionDetail?.actionTime?.split('.')[0]?.split('T')[1]}` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
+                    </>}
                 </div>
                 {/* <div className="flex flex-col gap-3">
                     <div className="flex items-center justify-between ">

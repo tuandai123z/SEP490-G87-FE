@@ -186,7 +186,7 @@ const SidebarInventory = () => {
         },
     ]
     const handleNavigate = (url) => {
-        if (roleUser !== ADMIN_ROLE && roleUser !== MANAGER_ROLE) return
+        if (roleUser !== ADMIN_ROLE && roleUser !== MANAGER_ROLE && roleUser !== INVENTORY_ROLE) return
         navigate(url)
     }
 
@@ -199,7 +199,7 @@ const SidebarInventory = () => {
                     className="cursor-pointer h-fit"
         />
             </div>
-            <div className={`flex items-center gap-[15px] py-[20px] border-b-[1px] rounded pl-4 ${(roleUser === ADMIN_ROLE || roleUser === MANAGER_ROLE) ? ' transition ease-in-out duration-300 hover:bg-secondary border-[#EDEDED]/[0.3] cursor-pointer' : "cursor-default"}`}
+            <div className={`flex items-center gap-[15px] py-[20px] border-b-[1px] rounded pl-4 ${(roleUser === ADMIN_ROLE || roleUser === MANAGER_ROLE || roleUser === INVENTORY_ROLE) ? ' transition ease-in-out duration-300 hover:bg-secondary border-[#EDEDED]/[0.3] cursor-pointer' : "cursor-default"}`}
                 onClick={() => handleNavigate('/inventory/statistic')}>
                 <MdInventory color="white" />
                 <p className="text-[18px] leading-[20px] font-bold text-white ">Báo cáo kho</p>

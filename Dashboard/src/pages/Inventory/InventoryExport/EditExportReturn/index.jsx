@@ -19,6 +19,8 @@ const EditExportReturn = () => {
     const [isOpenModalConfirm, setIsOpenModalConfirm] = useState(false);
     const totalCost = listOrderProducts && listOrderProducts?.reduce((sum, product) => sum + Number(product?.exportQuantity * product?.priceExport), Number(0));
     const ref = useRef(false);
+    const dataUser = useSelector(state => state.user);
+    const roleUser = dataUser.role;
     const dispath = useDispatch();
     const { slug } = useParams();
     const navigate = useNavigate();
@@ -169,7 +171,7 @@ const EditExportReturn = () => {
                                 <span>Duyệt</span>
                                 <FaKey className="" />
                             </div>)} */}
-                        {orderDetail?.approveStatus === 'WAITING' && <div className="flex justify-between w-full ">
+                        {orderDetail?.approveStatus === 'WAITING' && (roleUser === 'ADMIN') && <div className="flex justify-between w-full ">
                             <label className="flex items-center gap-2 cursor-pointer">
                                 <input
                                     type="radio"
@@ -205,10 +207,11 @@ const EditExportReturn = () => {
                                 <FaKey className="" />
                             </div>)}
                     </div>
-                    <input type="text" disabled value={orderDetail?.approveStatus !== 'WAITING' ? orderDetail?.approveBy : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
-                    <input type="text" disabled value={orderDetail?.approveStatus !== 'WAITING' ? `${formatDate(orderDetail?.approveDate)} ` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
+                    {orderDetail?.approveStatus === 'WAITING' && (roleUser === 'ADMIN') && <>
+                        <input type="text" disabled value={orderDetail?.approveStatus !== 'WAITING' ? orderDetail?.approveBy : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
+                        <input type="text" disabled value={orderDetail?.approveStatus !== 'WAITING' ? `${formatDate(orderDetail?.approveDate)} ` : ''} className='w-full px-4 py-1 text-right border border-gray-500' /></>}
                 </div>
-                {orderDetail?.approveStatus === 'WAITING' && <div className="flex justify-end">
+                {orderDetail?.approveStatus === 'WAITING' && roleUser === 'ADMIN' && <div className="flex justify-end">
                     <div
                         onClick={() => handleOpenChange()}
                         className="flex items-center justify-center px-2 py-1 transition-all duration-150 bg-blue-400 rounded-md cursor-pointer font-semibold w-[40%] hover:bg-blue-600">
