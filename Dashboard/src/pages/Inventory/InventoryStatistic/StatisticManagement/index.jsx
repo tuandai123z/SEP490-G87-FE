@@ -23,7 +23,7 @@ const StatisticManagement = () => {
     const [isLoading, setIsLoading] = useState(false);
     const ref = useRef(false);
     const [paginationInformation, setPaginationInformation] = useState('');
-    const size = 6;
+    const size = 10;
     const navigate = useNavigate();
 
 
@@ -44,7 +44,6 @@ const StatisticManagement = () => {
                 setListReceptions(listData);
                 setPaginationInformation(data);
                 setIsLoading(false);
-                console.log(data);
             })
             .catch((err) => {
                 if (err.response) {
