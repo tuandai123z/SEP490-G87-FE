@@ -8,6 +8,7 @@ import { formatVND } from "../../../../utils/format";
 import { FaKey } from "react-icons/fa";
 import ModalAlertConfirm from "../../../../components/common/ModalAlerConfirm";
 import { IoMdArrowRoundBack } from "react-icons/io";
+import { ADMIN_ROLE } from "../../../../utils/constants";
 
 const EditReturnForm = () => {
     const [listOrderProducts, setListOrderProducts] = useState([]);
@@ -17,6 +18,8 @@ const EditReturnForm = () => {
     const [titleModalConfirm, setTitleModalConfirm] = useState('');
     const [contentModalConfirm, setContentModalConfirm] = useState('');
     const [titleModalBtnConfirm, setTitleModalBtnConfirm] = useState('');
+    const dataUser = useSelector(state => state.user);
+    const roleUser = dataUser.role;
     const [isOpenModalConfirm, setIsOpenModalConfirm] = useState(false); 
     const totalCost = listOrderProducts && listOrderProducts?.reduce((sum, product) => sum + Number(product?.quantityReturn * (1 - (product?.discount / 100)) * product?.productInformation?.sellingPrice), Number(0));
     const ref = useRef(false);
@@ -173,7 +176,7 @@ const EditReturnForm = () => {
                 <div className="flex flex-col gap-3">
                     <div className="flex items-center justify-between ">
                         {returnDetail?.approveStatus !== 'WAITING' && <span>{returnDetail?.approveStatus === 'APPROVED' ? "Duyệt bởi" : 'Từ chối bởi'}</span>}
-                        {returnDetail?.approveStatus === 'WAITING' && <div className="flex justify-between w-full ">
+                        {returnDetail?.approveStatus === 'WAITING' && (roleUser === ADMIN_ROLE) && <div className="flex justify-between w-full ">
                             <label className="flex items-center gap-2 cursor-pointer">
                                 <input
                                     type="radio"
@@ -209,8 +212,10 @@ const EditReturnForm = () => {
                                 <FaKey className="" />
                             </div>)}
                     </div>
-                    <input type="text" disabled value={returnDetail?.approveStatus !== 'WAITING' ? returnDetail?.approveBy : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
-                    <input type="text" disabled value={returnDetail?.approveStatus !== 'WAITING' ? `${formatDate(returnDetail?.approveDate)} ` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
+                    {returnDetail?.approveStatus === 'WAITING' && (roleUser === ADMIN_ROLE) && <>
+                        <input type="text" disabled value={returnDetail?.approveStatus !== 'WAITING' ? returnDetail?.approveBy : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
+                        <input type="text" disabled value={returnDetail?.approveStatus !== 'WAITING' ? `${formatDate(returnDetail?.approveDate)} ` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
+                    </>}
                 </div>
                 {returnDetail?.approveStatus !== 'REJECTED' && <div className="flex flex-col gap-3">
                     <div className="flex items-center justify-between ">
@@ -223,7 +228,7 @@ const EditReturnForm = () => {
                     <input type="text" disabled value={''} className='w-full px-4 py-1 text-right border border-gray-500' />
                     <input type="text" disabled value={returnDetail?.deliveryStatus === 'RECEIVE_DELIVERY' ? `${formatDate(returnDetail?.actionTime)} ` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
                 </div>}
-                {returnDetail?.approveStatus === 'WAITING' && <div className="flex justify-end">
+                {returnDetail?.approveStatus === 'WAITING' && (roleUser === ADMIN_ROLE) && <div className="flex justify-end">
                     <div
                         onClick={() => handleOpenChange()}
                         className="flex items-center justify-center px-2 py-1 transition-all duration-150 bg-blue-400 rounded-md cursor-pointer font-semibold w-[40%] hover:bg-blue-600">
