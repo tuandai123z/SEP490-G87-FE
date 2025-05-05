@@ -31,6 +31,7 @@ const settings = {
 const SliderEquipment = ({ items, title }) => {
   const navigate = useNavigate();
   if (!items || items.length === 1) return null;
+  console.log(items, '==========');
 
   return (
     <div className="flex justify-center w-full px-4 pb-8 ">
@@ -50,7 +51,7 @@ const SliderEquipment = ({ items, title }) => {
                 }}
               >
                 <div className="flex items-center justify-center ">
-                  <img src={item?.imagePath} alt={items?.name} className="w-full" />
+                  <img src={item?.imagePath} alt={items?.name} className="w-full h-[300px]" />
                 </div>
 
                 <div className="flex flex-col gap-4 p-4">

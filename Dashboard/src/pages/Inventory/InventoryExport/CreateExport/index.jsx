@@ -39,7 +39,7 @@ const CreateExportDelivery = () => {
                 const resultListOrderCode = data?.content?.map(item => item?.code);
                 setListOrderSaleCode(resultListOrderCode);
                 setListOrdersSale(data.content)
-                console.log(data);
+                (data);
             })
             .catch((err) => {
                 if (err.response) {

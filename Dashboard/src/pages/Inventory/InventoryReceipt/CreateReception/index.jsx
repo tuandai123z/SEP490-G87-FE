@@ -39,7 +39,6 @@ const CreateReception = () => {
             .then(res => {
                 const data = res.data;
                 setListOrders(data);
-                console.log(data);
             })
             .catch((err) => {
                 if (err.response) {

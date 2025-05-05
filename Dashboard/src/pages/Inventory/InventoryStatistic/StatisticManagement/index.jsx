@@ -202,6 +202,7 @@ const StatisticManagement = () => {
                     <table className="w-full text-sm text-left text-blue-100 border border-blue-400 shadow-sm rtl:text-right dark:text-blue-100">
                         <thead className="text-xs text-white uppercase bg-blue-400 border border-blue-400 dark:text-white">
                             <tr>
+                                <th className="px-6 py-3 text-center border border-blue-400"></th>
                                 <th className="px-6 py-3 text-center border border-blue-400">SỐ</th>
                                 <th className="px-6 py-3 text-right border border-blue-400">NGÀY</th>
                                 <th className="px-6 py-3 text-center border border-blue-400">ĐẾN NGÀY</th>
@@ -213,6 +214,7 @@ const StatisticManagement = () => {
                             {listReceptions && listReceptions?.map((item, index) => {
                                 return (
                                     <tr className="text-black border border-b border-blue-400" key={index}>
+                                        <td className="px-6 py-2 text-right border border-blue-400">{index + 10 * (currentPage - 1) + 1}</td>
                                         <td className="px-6 py-2 text-right border border-blue-400">{item?.code}</td>
                                         <td className="px-6 py-2 text-right border border-blue-400">{item?.startDate}</td>
                                         <td className="px-6 py-2 text-right border border-blue-400">{item?.endDate}</td>
