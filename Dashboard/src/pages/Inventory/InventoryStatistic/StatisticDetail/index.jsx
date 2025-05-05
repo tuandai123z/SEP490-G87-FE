@@ -12,8 +12,6 @@ import { formatVND } from "../../../../utils/format";
 
 
 const StatisticDetail = () => {
-    const [fromDateSearch, setFromDateSearch] = useState('');
-    const [toDateSearch, setToDateSearch] = useState('');
     const [listProduct, setListProduct] = useState([]);
     const [data, setData] = useState();
     const [currentPage, setCurrentPage] = useState(1);
@@ -25,7 +23,7 @@ const StatisticDetail = () => {
     const [currentNumberBase, setCurrentNumberbase] = useState(20);
     const ref = useRef(false);
     const [paginationInformation, setPaginationInformation] = useState('');
-    const size = 10;
+    const size = 6;
     const { slug } = useParams();
     const navigate = useNavigate();
 
@@ -50,9 +48,9 @@ const StatisticDetail = () => {
             });
     }
 
-    const handleSearch = () => {
-        setCurrentNumberbase(numberBase);
-    }
+    useEffect(() => {
+        getDetail()
+    }, [currentPage])
 
     useEffect(() => {
         if (ref.current) return
