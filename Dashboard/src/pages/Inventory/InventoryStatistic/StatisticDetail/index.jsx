@@ -29,7 +29,12 @@ const StatisticDetail = () => {
 
     const getDetail = () => {
         axiosInstance
-            .get(`/inventory-sheet/${slug}`)
+            .get(`/inventory-sheet/${slug}`, {
+                params: {
+                    page: currentPage - 1,
+                    size: size,
+                }
+            })
             .then(res => {
                 const data = res.data;
                 setData(data.sheet);
