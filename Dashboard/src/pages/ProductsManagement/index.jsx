@@ -184,7 +184,6 @@ const ProductsManagement = () => {
                 isChangeImage: isChangeImage
             }
             setIsLoading(true);
-            console.log(unit, '0000000000000000');
             axiosInstance
                 .put(`/products/update/${currentProduct?.code}`, product)
                 .then(res => {
@@ -250,7 +249,6 @@ const ProductsManagement = () => {
         setIsOpenModalCreate(true);
         setCurrentProduct(product)
         setProductName(product?.name);
-        console.log(product?.imagePath);
         setProductDescription(product?.description);
         setCurrentImg(product?.imagePath)
         setCurrentUnit(product?.unitCode);
@@ -276,7 +274,7 @@ const ProductsManagement = () => {
         setProductName('');
         setImageBase64('');
         setCurrentImg('');
-        setUnit('');
+        setCurrentUnit('');
         setIsChangeImage(false);
         setSellingPrice(0);
     }
