@@ -184,6 +184,7 @@ const ProductsManagement = () => {
                 isChangeImage: isChangeImage
             }
             setIsLoading(true);
+            console.log(unit, '0000000000000000');
             axiosInstance
                 .put(`/products/update/${currentProduct?.code}`, product)
                 .then(res => {
