@@ -34,6 +34,7 @@ const EditReturnForm = () => {
                 setReturnDetail(data?.returnForm);
                 setReturnOverview(data)
                 setListOrderProducts(data?.returnProducts)
+                console.log(data, '========');
             })
             .catch((err) => {
                 if (err.response) {
@@ -212,7 +213,7 @@ const EditReturnForm = () => {
                                 <FaKey className="" />
                             </div>)}
                     </div>
-                    {returnDetail?.approveStatus === 'WAITING' && (roleUser === ADMIN_ROLE) && <>
+                    {returnDetail?.approveStatus !== 'WAITING' && (roleUser === ADMIN_ROLE) && <>
                         <input type="text" disabled value={returnDetail?.approveStatus !== 'WAITING' ? returnDetail?.approveBy : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
                         <input type="text" disabled value={returnDetail?.approveStatus !== 'WAITING' ? `${formatDate(returnDetail?.approveDate)} ` : ''} className='w-full px-4 py-1 text-right border border-gray-500' />
                     </>}

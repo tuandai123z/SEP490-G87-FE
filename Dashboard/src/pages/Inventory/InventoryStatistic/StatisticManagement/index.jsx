@@ -167,6 +167,10 @@ const StatisticManagement = () => {
         }
     }
 
+    useEffect(() => {
+        getListSheet();
+    }, [currentPage])
+
     return (
         <div className="relative overflow-x-auto ">
             <div className="flex items-center justify-between w-full h-auto gap-4 px-2 py-4 mb-2">
